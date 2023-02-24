@@ -1,6 +1,4 @@
-# eat drain arson
-
-_a tragicomic npc survival sim_
+# moving castles
 
 ---
 
