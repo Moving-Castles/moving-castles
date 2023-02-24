@@ -1,0 +1,53 @@
+{
+  "name": "eat-drain-arson",
+  "version": "0.0.0",
+  "description": "A tragicomic npc survival sim",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moving-castles/eat-drain-arson.git"
+  },
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "prepare": "yarn workspace contracts prepare",
+    "dev": "run-pty % yarn dev:node % yarn dev:client % yarn dev:contracts",
+    "dev:client": "yarn workspace client run start",
+    "dev:node": "yarn workspace contracts run devnode",
+    "dev:contracts": "yarn workspace contracts run dev",
+    "commit": "cz",
+    "prettier:check": "prettier --check 'src/**/*.ts'",
+    "prettier": "prettier --write 'packages/**/*.ts'",
+    "lint": "eslint . --ext .ts",
+    "lerna:release": "lerna version --conventional-commits --yes",
+    "lerna:publish": "lerna publish --no-private --force-publish",
+    "foundryup": "curl -L https://foundry.paradigm.xyz | bash && exec \"$SHELL\" && foundryup",
+    "link:mud": "for i in node_modules/@latticexyz/*; do yarn link @latticexyz/$(basename $i); done",
+    "unlink:mud": "for i in node_modules/@latticexyz/*; do yarn unlink @latticexyz/$(basename $i); done && yarn install --force"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.3",
+    "@commitlint/config-conventional": "^17.4.3",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "3.3.0",
+    "eslint": "^8.34.0",
+    "lerna": "^6.4.1",
+    "lint-staged": ">=13",
+    "prettier": "^2.8.4",
+    "run-pty": "^4.0.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix",
+    "*.{ts,css,md,sol}": "prettier --write"
+  }
+}
