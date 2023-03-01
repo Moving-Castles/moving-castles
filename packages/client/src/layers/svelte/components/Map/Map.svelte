@@ -93,11 +93,11 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .center-map-button {
     position: fixed;
-    top: 82px;
-    left: 120px;
+    top: 10px;
+    left: 10px;
     z-index: 1000;
   }
 
@@ -117,7 +117,7 @@
     box-sizing: border-box;
     width: 3003px;
     height: 3003px;
-    background: rgb(59, 58, 68);
+    background: rgb(100, 100, 100);
     border: 1px solid white;
     position: relative;
   }

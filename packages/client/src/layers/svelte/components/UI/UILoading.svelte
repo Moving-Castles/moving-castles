@@ -9,11 +9,17 @@
   <div class="loading-message">{$loadingMessage}</div>
 </div>
 
-<style>
+<style lang="scss">
   .ui-loading {
     width: 100%;
     height: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    flex-direction: column;
+    color: black;
   }
 
   .loading-message {

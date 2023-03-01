@@ -83,7 +83,7 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .base-entity {
     aspect-ratio: 1;
     border-radius: 100%;

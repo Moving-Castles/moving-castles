@@ -48,21 +48,23 @@
   {/each}
 </div>
 
-<style>
+<style lang="scss">
   .tile {
     width: 300px;
     height: 300px;
     float: left;
     font-size: 8px;
-    border: 1px solid white;
+    border: 1px solid lightgrey;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* background-image: url("/img/map.png"); */
+    background-size: contain;
   }
 
   .tile:hover {
-    background: rgb(70, 69, 81);
+    background-color: rgb(60, 60, 60);
   }
 
   .coords {

@@ -24,7 +24,7 @@
   {/if}
 </div>
 
-<style>
+<style lang="scss">
   .ui-spawn {
     width: 100%;
     height: 100%;
@@ -32,6 +32,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 32px;
+    flex-direction: column;
   }
 
   button {
@@ -43,6 +45,8 @@
     position: relative;
     padding: var(--padding-button);
     background: transparent;
-    border: 1px solid white;
+    border: 1px solid black;
+    color: black;
+    font-size: 32px;
   }
 </style>

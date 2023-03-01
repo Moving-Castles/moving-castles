@@ -1,6 +1,7 @@
 <script lang="ts">
   import { playerAddress, playerCore } from "../../modules/player";
   import { shortenAddress, addressToColor } from "../../utils/ui";
+  import { idToName, seedToCastleName } from "../../utils/name";
   export let channelId: string;
 
   type Message = {
@@ -40,7 +41,7 @@
 <div class="debug-chat">
   chat:
   {#if channelId}
-    <span style={"background:" + addressToColor(channelId) + ";"}>{shortenAddress(channelId)}</span>
+    <span style={"background:" + addressToColor(channelId) + ";"}>{seedToCastleName(channelId)}</span>
   {:else}
     <span class="void">Ţ̶̨̡̡̣̮͓̪̖̦̱͍͖̭͖̠̱̣͕͔̊̀̚͜͝͠ͅH̷̛͚̟̮̜͖͔̳̬̳̱͇̩̙͚͍̿͑͂̀̑̈͗́͊̏̇̈́͛̄̑̇͐̂̍͗̈́͑̽̉̾̚̚̚͘̕͘̕Ë̸̮̘̠͉͛́͆̈́̔̍̐͛͒͊̏͠͠ͅ ̷̧̧̡̝̩̱̰̠̖̳̤͉̪͓̭̤̙̞͈͉̝͍̫̘͇̫̙̦̘̬̻̝̣̰̺̼̘͕͖̜̯̖̿V̴̡̧̨̨̯͔̯̖̪̫̞̯̫̩͇̬͔̟̥͖̹̪̊̂̆̅̀̆͋̒͌̇̆̂͂̊͑̀̅͌͘̚͜͠͝ͅO̸̬̘̭̖̠̥̰͔͎̲̼͈̟͚̙͉̙̰͉͉̱̙̹͉̪̹̪͕̣̭͚̲̺̪̙̞̻͋̋̔͛̀̀̃̆̂̇̀͌́̽̽̇̾̀̐Į̷̢̨̧̨̛̛̻̲͖̞͔̱͔̺̻̹̯̹̱̻̰̥̹̤̘̣̞̹̺̞̬̜̭̜̤̦̟̟̟̳͙̙̭̗͚̥̼̽̓̋͂́̐̓́̿̀͌̔́̔̀̊̅͘̚͜͝͝D̵̨̨̨̡̛̛̮̟͚̺̺̟̥̹̱̺̜̬͓͙̗̩͓̟͕͎̜̗̦̪̟̟͔̞̘̰̏̾͋̂̆͂̽̎̇̐̈́̎̑͌͐̆̓͗̾̓͛͛̏̽̋̑͗̄͌͘̚͜͝͝͠</span>
   {/if}
@@ -62,13 +63,13 @@
   <div>
     {#each messages as msg}
       <div>
-        <span style={"background:" + addressToColor(msg.id) + ";"}>{shortenAddress(msg.id)}</span>: {msg.text}
+        <span style={"background:" + addressToColor(msg.id) + ";"}>{idToName(msg.id)}</span>: {msg.text}
       </div>
     {/each}
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .debug-chat {
     position: fixed;
     bottom: 40px;

@@ -110,7 +110,7 @@
   </div>
 {/if}
 
-<style>
+<style lang="scss">
   .item {
     width: 20px;
     height: 20px;

@@ -25,29 +25,31 @@
   </button>
   <!-- QUEUED -->
   <h2>Queued</h2>
-  <hr />
   {#each $queuedActions as action (action.actionId)}
     <div><span class="description">{action.systemId}</span> {action.actionId}</div>
   {/each}
   <!-- ACTIVE -->
   <h2>Active</h2>
-  <hr />
   {#each $activeActions as action (action.actionId)}
     <div><span class="description">{action.systemId}</span> {action.actionId} {action.tx}</div>
   {/each}
 
   <!-- PROCESSED -->
   <h2>Processed</h2>
-  <hr />
   {#each $processedActions as action (action.actionId)}
     <div><span class="description">{action.systemId}</span> {action.actionId} {action.tx}</div>
   {/each}
 </div>
 
-<style>
+<style lang="scss">
   .description {
     background: white;
     color: black;
     padding: 2px;
+  }
+
+  h2 {
+    font-size: 14px;
+    text-decoration: underline;
   }
 </style>

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { cores, baseEntities, resources, substanceBlocks, items } from "../../modules/entities";
+  import { cores, baseEntities, resources, substanceBlocks, items } from "../../../modules/entities";
   import DebugEntityItem from "./DebugEntityItem.svelte";
-  import { EntityType } from "../types";
+  import { EntityType } from "../../types";
 </script>
 
 <div class="ui-debug-log">

@@ -8,9 +8,8 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .ui-clock {
-    border: 1px solid white;
     background-color: var(--background);
     padding: var(--padding-button);
   }

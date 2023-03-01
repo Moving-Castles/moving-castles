@@ -8,6 +8,7 @@
   import type { Entity } from "../../modules/entities";
   import { Activity } from "../../modules/entities";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { idToName, idToAvatar } from "../../utils/name";
 
   export let itemId: string;
   export let item: Entity;
@@ -28,7 +29,10 @@
   };
 
   if (item.core) {
-    setInfo("*", itemId === $playerAddress ? "Core (you)" : "Core: " + item.energy + " energy");
+    setInfo(
+      "*",
+      itemId === $playerAddress ? idToName(itemId) + " (you)" : idToName(itemId) + ": " + item.energy + " energy"
+    );
   } else if (item.matter) {
     setInfo("S", "Substance block");
   } else if (item.abilityMove) {
@@ -80,6 +84,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
   class="item"
+  class:self={itemId === $playerAddress}
   class:burning={item.burnBlock > $blockNumber}
   class:burnt={item.burnBlock <= $blockNumber}
   bind:this={markerEl}
@@ -101,6 +106,8 @@
     {:else}
       {item.matter}
     {/if}
+  {:else if item.core}
+    <img class="core-avatar" src={idToAvatar(itemId)} alt="core" />
   {:else}
     {info.symbol}
   {/if}
@@ -137,19 +144,29 @@
   </div>
 {/if}
 
-<style>
+<style lang="scss">
   .item {
-    height: 50px;
-    width: 50px;
+    height: 100px;
+    width: 100px;
     overflow: hidden;
     margin-right: 5px;
     margin-bottom: 5px;
-    font-size: 22px;
+    font-size: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: black;
     cursor: pointer;
+  }
+
+  .self {
+    border: 1px solid white;
+  }
+
+  .core-avatar {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
   }
 
   .item:hover {

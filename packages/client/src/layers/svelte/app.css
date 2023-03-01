@@ -1,4 +1,4 @@
-/* @import url("../../public/jetbrains/style.css"); */
+@import url("../../public/fonts/style.css");
 
 :root {
   /* Colors */
@@ -27,7 +27,7 @@
   --row-gap: 2rem;
   --taskbar-height: 30px;
   --titlebar-height: 30px;
-
+  /* "DMTLLVIPWebTrial-Regular", */
   /* Fonts */
   --font-family: Courier, monospaced;
   --font-size: 12px;

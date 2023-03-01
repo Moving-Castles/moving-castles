@@ -43,7 +43,7 @@
   <div><button on:click={close}>CLOSE</button></div>
 </div>
 
-<style>
+<style lang="scss">
   .tile-interact {
     z-index: 1000000;
     padding: 40px;

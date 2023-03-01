@@ -2,10 +2,8 @@
   import { onMount } from "svelte";
   import { bootGame } from "./boot";
   import UIContainer from "./components/UI/UIContainer.svelte";
-  import UIMenu from "./components/UI/UIMenu.svelte";
   import { createComponentSystem, createLoadingStateSystem } from "./systems";
   import { network as networkStore, blockNumber } from "./modules/network";
-  import { playerCore } from "./modules/player";
   import { initActionSequencer } from "./modules/actionSequencer";
 
   onMount(async () => {
@@ -31,9 +29,6 @@
   });
 </script>
 
-{#if $playerCore}
-  <UIMenu />
-{/if}
 <main>
   <UIContainer />
 </main>

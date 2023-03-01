@@ -54,47 +54,41 @@ function reverseString(str: string): string {
   else return reverseString(str.substr(1)) + str.charAt(0);
 }
 
-export function seedToName(seed: number) {
-  if (!seed) return "";
-  const seedAsString = reverseString(Math.abs(seed).toString());
+export function idToAvatar(id: string) {
+  return !id ? "" : "img/avatars/" + String(parseInt(id) % 11) + ".png";
+}
 
-  const firstNameIndex = Number(seedAsString[0] + seedAsString[1]) || 0;
+export function idToName(id: string) {
+  if (!id) return "";
+
+  id = reverseString(id);
+
+  const firstNameIndex = Number(id[0] + id[1]) || 0;
   const firstName = firstNameList[firstNameIndex % firstNameList.length];
 
-  const middleNameIndex = Number(seedAsString[2] + seedAsString[3]) || 0;
+  const middleNameIndex = Number(id[2] + id[3]) || 0;
   const middleName = middleNameList[middleNameIndex % middleNameList.length];
 
-  const lastNameIndex = Number(seedAsString[4] + seedAsString[5]) || 0;
-  const lastName = lastNameList[lastNameIndex % lastNameList.length];
-
-  return firstName + " " + middleName + " " + lastName;
+  return firstName + " " + middleName
 }
 
-export function seedToMask(seed: number) {
-  if (!seed) return 0;
-  const seedAsString = reverseString(Math.abs(seed).toString());
-  return (Number(seedAsString[4] + seedAsString[5]) || 0) % 4;
-}
 
-export function seedToMaskTileOverlay(seed: number) {
-  const index = seedToMask(seed);
-  return `mask-${index}`;
-}
-
-const fireFirstNames = [
-  "The Fire of",
+const castleFirstNames = [
+  "The Castle of",
   "The Star of",
   "The Blaze of",
-  "The Great Recyler of",
+  "The Great Recycler of",
   "The Semaphor of",
   "The Calling of",
   "The Warmth of",
   "The Light of",
   "The Comforter of",
   "The Sign of",
+  "The Tower of",
+  "The Vessel of",
 ];
 
-const fireSecondNames = [
+const castleSecondNames = [
   "Tereris",
   "Juffo",
   "Justyz",
@@ -117,15 +111,17 @@ const fireSecondNames = [
   "Bolka",
 ];
 
-export function seedToFireName(seed: number) {
-  if (!seed) return "";
-  const seedAsString = reverseString(Math.abs(seed).toString());
+export function seedToCastleName(id: string) {
+  if (!id) return "";
 
-  const firstNameIndex = Number(seedAsString[0]) || 0;
-  const firstName = fireFirstNames[firstNameIndex % fireFirstNames.length];
+  let numId = parseInt(id);
+  let stringId = numId.toString();
 
-  const secondNameIndex = Number(seedAsString[1] + seedAsString[2]) || 0;
-  const secondName = fireSecondNames[secondNameIndex % fireSecondNames.length];
+  const firstNameIndex = Number(stringId[0]) || 0;
+  const firstName = castleFirstNames[firstNameIndex % castleFirstNames.length];
+
+  const secondNameIndex = Number(stringId[6]) || 0;
+  const secondName = castleSecondNames[secondNameIndex % castleSecondNames.length];
 
   return firstName + " " + secondName;
 }

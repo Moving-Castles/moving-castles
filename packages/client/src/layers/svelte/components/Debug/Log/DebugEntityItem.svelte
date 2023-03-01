@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Entity, Activity } from "../../modules/entities";
-  import { entities, baseEntities } from "../../modules/entities";
-  import { playerAddress, playerCore } from "../../modules/player";
-  import { shortenAddress, addressToColor } from "../../utils/ui";
-  import { EntityType } from "../types";
-  import { network } from "../../modules/network";
+  import type { Entity, Activity } from "../../../modules/entities";
+  import { entities, baseEntities } from "../../../modules/entities";
+  import { playerAddress, playerCore } from "../../../modules/player";
+  import { shortenAddress, addressToColor } from "../../../utils/ui";
+  import { EntityType } from "../../types";
+  import { network } from "../../../modules/network";
 
   export let entityId: string;
   export let entity: Entity;
@@ -191,7 +191,7 @@
   {/if}
 </div>
 
-<style>
+<style lang="scss">
   .debug-entity-item {
     padding: 10px;
     background: lightgrey;

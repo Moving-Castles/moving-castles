@@ -2,39 +2,44 @@
   import { uiState } from "./index";
   import { ready } from "../../modules/network";
   import { playerCore } from "../../modules/player";
-  import UITaskBar from "./UITaskBar.svelte";
-  import UIComponent from "./UIComponent.svelte";
+  // component2 <= !!!
+  import UIComponent from "./UIComponent2.svelte";
   import UISpawn from "./UISpawn.svelte";
   import UILoading from "./UILoading.svelte";
+  import Map from "../Map/Map.svelte";
+  import UIPane from "./UIPane.svelte";
+  import { castleExtended } from "./index";
 </script>
 
 <!-- The UI layer -->
-<div class="ui-container">
-  {#if !$playerCore}
-    <span />
-  {:else}
-    <UITaskBar />
-  {/if}
-  <div class="ui-container-inner">
-    {#if !$ready}
-      <UIComponent id="ui-loading" options={{ fluid: true, bare: true, span: true }} area="mm">
+<div class="ui-container" class:extended={$castleExtended}>
+  {#if !$ready}
+    <div class="ui-container-inner">
+      <UIComponent id="ui-loading">
         <UILoading />
       </UIComponent>
-    {:else if !$playerCore}
-      <UIComponent id="ui-spawn" options={{ fluid: true, bare: true, span: true }} area="mm">
+    </div>
+  {:else if !$playerCore}
+    <div class="ui-container-inner">
+      <UIComponent id="ui-spawn">
         <UISpawn />
       </UIComponent>
-    {:else}
-      {#each Object.values($uiState).filter((i) => !i.options?.center) as { id, active, title, options, grid, component } (id)}
-        <UIComponent {id} {active} {title} {options} {grid}>
-          <svelte:component this={component} />
-        </UIComponent>
-      {/each}
-    {/if}
-  </div>
+    </div>
+  {:else}
+    <div class="ui-container-inner-map">
+      <UIComponent id="map" active={true} title="Map">
+        <Map />
+      </UIComponent>
+    </div>
+    <div class="ui-container-inner-pane">
+      <UIComponent id="pane" active={true} title="Pane">
+        <UIPane />
+      </UIComponent>
+    </div>
+  {/if}
 </div>
 
-<style>
+<style lang="scss">
   .ui-container {
     position: fixed;
     left: 0;
@@ -42,67 +47,36 @@
     width: 100vw;
     height: 100vh;
     color: var(--foreground);
-    padding: 24px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: min-content 93%;
     box-sizing: border-box;
-    align-items: stretch;
-    gap: var(--row-gap);
+    display: flex;
   }
 
-  .ui-container.no-padding {
-    padding: 0;
+  .ui-container-inner {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: orangered;
   }
 
-  .ui-container-center {
-    grid-column: 1 / 2;
-    grid-row: 1 / span 3;
-    z-index: -1;
+  .ui-container-inner-pane {
+    width: 40vw;
+    height: 100vh;
+    background: blue;
   }
 
-  .mobile .ui-container-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-column: 1 / 2;
-    grid-row: 2 / span 1;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: repeat(9, minmax(0, 1fr));
-    grid-template-areas:
-      "tl tm tr"
-      "tl tm tr"
-      "tl tm tr"
-      "ml mm mr"
-      "ml mm mr"
-      "ml mm mr"
-      "bl bm br"
-      "bl bm br"
-      "bl bm br";
-    align-items: start;
-    column-gap: var(--col-gap);
-    row-gap: var(--row-gap);
+  .ui-container-inner-map {
+    width: 60vw;
+    height: 100vh;
+    background: red;
   }
 
-  @media screen and (min-width: 640px) {
-    .ui-container-inner {
-      display: grid;
-      grid-column: 1 / 2;
-      grid-row: 2 / span 1;
-      grid-template-columns: 300px 1fr 300px;
-      grid-template-rows: repeat(9, minmax(0, 1fr));
-      grid-template-areas:
-        "tl tm tr"
-        "tl tm tr"
-        "tl tm tr"
-        "ml mm mr"
-        "ml mm mr"
-        "ml mm mr"
-        "bl bm br"
-        "bl bm br"
-        "bl bm br";
-      align-items: start;
-    }
+  .extended .ui-container-inner-pane {
+    width: 100vw;
+  }
+
+  .extended .ui-container-inner-map {
+    display: none;
   }
 </style>
