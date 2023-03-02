@@ -47,7 +47,11 @@ library LibInventory {
    * @param _entity holder of the inventory
    * @param _item item to add
    */
-  function addToInventory(IUint256Component _components, uint256 _entity, uint256 _item) internal {
+  function addToInventory(
+    IUint256Component _components,
+    uint256 _entity,
+    uint256 _item
+  ) internal {
     PortableComponent portableComponent = PortableComponent(getAddressById(_components, PortableComponentID));
     CarriedByComponent carriedByComponent = CarriedByComponent(getAddressById(_components, CarriedByComponentID));
     CarryingCapacityComponent carryingCapacityComponent = CarryingCapacityComponent(
@@ -82,7 +86,11 @@ library LibInventory {
    * @param _entity holder of the inventory
    * @param _size size of inventory
    */
-  function setCarryingCapacity(IUint256Component _components, uint256 _entity, uint32 _size) internal {
+  function setCarryingCapacity(
+    IUint256Component _components,
+    uint256 _entity,
+    uint32 _size
+  ) internal {
     CarryingCapacityComponent carryingCapacityComponent = CarryingCapacityComponent(
       getAddressById(_components, CarryingCapacityComponentID)
     );
@@ -110,7 +118,7 @@ library LibInventory {
    */
   function makePortable(IUint256Component _components, uint256 _entity) internal {
     PortableComponent portableComponent = PortableComponent(getAddressById(_components, PortableComponentID));
-    return portableComponent.set(_entity);
+    portableComponent.set(_entity);
   }
 
   /**

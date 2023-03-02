@@ -47,6 +47,7 @@ export type Entity = {
   abilityPlay?: boolean;
   abilityBurn?: boolean;
   burnBlock?: number;
+  loot?: boolean;
 };
 
 export type Core = {
@@ -90,6 +91,7 @@ export type Item = {
   abilityPlay?: boolean;
   abilityBurn?: boolean;
   untraversable?: boolean;
+  loot?: boolean;
 };
 
 export type Untraversable = {
@@ -107,6 +109,7 @@ export type FreePortable = {
   abilityExtract?: boolean;
   abilityPlay?: boolean;
   abilityBurn?: boolean;
+  loot?: boolean;
 };
 
 // - - - -

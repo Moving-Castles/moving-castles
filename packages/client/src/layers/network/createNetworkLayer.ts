@@ -24,6 +24,7 @@ import {
   defineUntraversableComponent,
   defineCommitComponent,
   defineBurnBlockComponent,
+  defineLootComponent
 } from "./components";
 import { SystemAbis } from "contracts/types/SystemAbis.mjs";
 import { getNetworkConfig } from "./config";
@@ -58,6 +59,7 @@ export async function createNetworkLayer(config: GameConfig) {
     AbilityBurn: defineAbilityBurnComponent(world),
     Untraversable: defineUntraversableComponent(world),
     Commit: defineCommitComponent(world),
+    Loot: defineLootComponent(world)
   };
 
   // --- SETUP ----------------------------------------------------------------------

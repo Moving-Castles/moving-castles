@@ -42,6 +42,8 @@
     setInfo("B", "Ability: Burn");
   } else if (item.untraversable) {
     setInfo("X", "Untraversable");
+  } else if (item.loot) {
+    setInfo("?", "Loot box");
   }
 
   function pickUp() {

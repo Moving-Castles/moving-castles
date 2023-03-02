@@ -32,6 +32,7 @@ import { AbilityPlayComponent, ID as AbilityPlayComponentID } from "../component
 import { AbilityBurnComponent, ID as AbilityBurnComponentID } from "../components/AbilityBurnComponent.sol";
 import { CommitComponent, ID as CommitComponentID } from "../components/CommitComponent.sol";
 import { BurnBlockComponent, ID as BurnBlockComponentID } from "../components/BurnBlockComponent.sol";
+import { LootComponent, ID as LootComponentID } from "../components/LootComponent.sol";
 
 contract MudTest is DSTest {
   Cheats internal immutable vm = Cheats(HEVM_ADDRESS);
@@ -61,6 +62,12 @@ contract MudTest is DSTest {
   UntraversableComponent untraversableComponent;
   CommitComponent commitComponent;
   BurnBlockComponent burnBlockComponent;
+  LootComponent lootComponent;
+  AbilityMoveComponent abilityMoveComponent;
+  AbilityExtractComponent abilityExtractComponent;
+  AbilityConsumeComponent abilityConsumeComponent;
+  AbilityPlayComponent abilityPlayComponent;
+  AbilityBurnComponent abilityBurnComponent;
 
   function component(uint256 id) public view returns (address) {
     return getAddressById(components, id);
@@ -92,6 +99,12 @@ contract MudTest is DSTest {
     untraversableComponent = UntraversableComponent(getAddressById(components, UntraversableComponentID));
     commitComponent = CommitComponent(getAddressById(components, CommitComponentID));
     burnBlockComponent = BurnBlockComponent(getAddressById(components, BurnBlockComponentID));
+    lootComponent = LootComponent(getAddressById(components, LootComponentID));
+    abilityMoveComponent = AbilityMoveComponent(getAddressById(components, AbilityMoveComponentID));
+    abilityExtractComponent = AbilityExtractComponent(getAddressById(components, AbilityExtractComponentID));
+    abilityConsumeComponent = AbilityConsumeComponent(getAddressById(components, AbilityConsumeComponentID));
+    abilityPlayComponent = AbilityPlayComponent(getAddressById(components, AbilityPlayComponentID));
+    abilityBurnComponent = AbilityBurnComponent(getAddressById(components, AbilityBurnComponentID));
 
     gameConfig = LibConfig.getGameConfig(components);
   }

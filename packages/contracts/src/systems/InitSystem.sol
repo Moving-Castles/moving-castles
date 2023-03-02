@@ -5,8 +5,10 @@ import { IWorld } from "solecs/interfaces/IWorld.sol";
 
 import { LibConfig } from "../libraries/LibConfig.sol";
 import { LibMap } from "../libraries/LibMap.sol";
+import { LibMove } from "../libraries/LibMove.sol";
 import { LibAbility } from "../libraries/LibAbility.sol";
 import { LibInventory } from "../libraries/LibInventory.sol";
+import { LibLoot } from "../libraries/LibLoot.sol";
 
 import { Coord } from "../components/PositionComponent.sol";
 import { GameConfig } from "../components/GameConfigComponent.sol";
@@ -70,6 +72,24 @@ contract InitSystem is System {
     LibAbility.giveAbility(components, abilityBurnItem2, AbilityBurnComponentID);
     LibInventory.makePortable(components, abilityBurnItem2);
     LibInventory.addToInventory(components, burnCache2, abilityBurnItem2);
+
+    // create loot box 1
+    uint256 lootBox = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox);
+    LibLoot.makeLoot(components, lootBox);
+    LibMove.setPosition(components, lootBox, Coord(4, 7));
+
+    // create loot box 2
+    uint256 lootBox2 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox2);
+    LibLoot.makeLoot(components, lootBox2);
+    LibMove.setPosition(components, lootBox2, Coord(4, 7));
+
+    // create loot box 3
+    uint256 lootBox3 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox3);
+    LibLoot.makeLoot(components, lootBox3);
+    LibMove.setPosition(components, lootBox3, Coord(4, 7));
   }
 
   function executeTyped() public returns (bytes memory) {

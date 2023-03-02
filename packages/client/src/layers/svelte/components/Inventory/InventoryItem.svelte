@@ -47,6 +47,8 @@
     setInfo("B", "Ability: Burn");
   } else if (item.untraversable) {
     setInfo("X", "Untraversable");
+  } else if (item.loot) {
+    setInfo("?", "Loot box");
   }
 
   function drop() {
@@ -59,6 +61,10 @@
 
   function burn() {
     addToSequencer("system.Burn", [itemId]);
+  }
+
+  function open() {
+    addToSequencer("system.Open", [itemId]);
   }
 
   function play() {
@@ -127,6 +133,10 @@
 
     {#if item.abilityPlay}
       <button on:click={play}>{$playerCore.commit === Activity.Play ? "STOP" : "play"}</button>
+    {/if}
+
+    {#if item.loot}
+      <button on:click={open}>Open</button>
     {/if}
 
     {#if item.matter}
