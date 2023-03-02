@@ -16,6 +16,7 @@ import { LootComponent, ID as LootComponentID } from "../components/LootComponen
 import { CarriedByComponent, ID as CarriedByComponentID } from "../components/CarriedByComponent.sol";
 import { PortableComponent, ID as PortableComponentID } from "../components/PortableComponent.sol";
 import { MatterComponent, ID as MatterComponentID } from "../components/MatterComponent.sol";
+import { GoalComponent, ID as GoalComponentID } from "../components/GoalComponent.sol";
 
 import { ID as AbilityConsumeComponentID } from "../components/AbilityConsumeComponent.sol";
 import { ID as AbilityMoveComponentID } from "../components/AbilityMoveComponent.sol";
@@ -63,6 +64,7 @@ library LibLoot {
     CarriedByComponent carriedByComponent = CarriedByComponent(getAddressById(_components, CarriedByComponentID));
     PortableComponent portableComponent = PortableComponent(getAddressById(_components, PortableComponentID));
     MatterComponent matterComponent = MatterComponent(getAddressById(_components, MatterComponentID));
+    GoalComponent goalComponent = GoalComponent(getAddressById(_components, GoalComponentID));
 
     uint256 baseEntity = carriedByComponent.getValue(_entity);
 
@@ -103,8 +105,13 @@ library LibLoot {
       LibAbility.giveAbility(_components, resultEntity, AbilityBurnComponentID);
     } else if (randomNumber == 5) {
       // @todo: Special
-      // Substanceblock
-      matterComponent.set(resultEntity, 10);
+      if (goalComponent.getEntities().length == 0) {
+        // Special
+        goalComponent.set(resultEntity);
+      } else {
+        // Substanceblock
+        matterComponent.set(resultEntity, 10);
+      }
     } else if (randomNumber == 6) {
       // Substanceblock
       matterComponent.set(resultEntity, 10);

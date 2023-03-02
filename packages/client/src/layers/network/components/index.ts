@@ -18,3 +18,4 @@ export { defineUntraversableComponent } from "./UntraversableComponent";
 export { defineCommitComponent } from "./CommitComponent";
 export { defineBurnBlockComponent } from "./BurnBlockComponent";
 export { defineLootComponent } from "./LootComponent";
+export { defineGoalComponent } from "./GoalComponent";

@@ -19,7 +19,8 @@
     "AbilityBurnComponent",
     "UntraversableComponent",
     "BurnBlockComponent",
-    "LootComponent"
+    "LootComponent",
+    "GoalComponent"
   ],
   "systems": [
     {
@@ -182,7 +183,8 @@
         "AbilityConsumeComponent",
         "AbilityExtractComponent",
         "AbilityBurnComponent",
-        "AbilityPlayComponent"
+        "AbilityPlayComponent",
+        "GoalComponent"
       ]
     }
   ]

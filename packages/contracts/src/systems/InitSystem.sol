@@ -90,6 +90,24 @@ contract InitSystem is System {
     LibInventory.makePortable(components, lootBox3);
     LibLoot.makeLoot(components, lootBox3);
     LibMove.setPosition(components, lootBox3, Coord(4, 7));
+
+    // create loot box 4
+    uint256 lootBox4 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox4);
+    LibLoot.makeLoot(components, lootBox4);
+    LibMove.setPosition(components, lootBox4, Coord(4, 7));
+
+    // create loot box 5
+    uint256 lootBox5 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox5);
+    LibLoot.makeLoot(components, lootBox5);
+    LibMove.setPosition(components, lootBox5, Coord(4, 7));
+
+    // create loot box 6
+    uint256 lootBox6 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox6);
+    LibLoot.makeLoot(components, lootBox6);
+    LibMove.setPosition(components, lootBox6, Coord(4, 7));
   }
 
   function executeTyped() public returns (bytes memory) {

@@ -44,6 +44,8 @@
     setInfo("X", "Untraversable");
   } else if (item.loot) {
     setInfo("?", "Loot box");
+  } else if (item.goal) {
+    setInfo("🎏", "Goal");
   }
 
   function pickUp() {
