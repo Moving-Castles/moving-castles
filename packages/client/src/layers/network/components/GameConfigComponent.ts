@@ -20,6 +20,8 @@ export function defineGameConfigComponent(world: World) {
       moveCooldown: Type.Number,
       extractCooldown: Type.Number,
       burnTime: Type.Number,
+      openCost: Type.Number,
+      harvestCost: Type.Number,
     },
     {
       id: "GameConfig",

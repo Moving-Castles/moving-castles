@@ -19,3 +19,4 @@ export { defineCommitComponent } from "./CommitComponent";
 export { defineBurnBlockComponent } from "./BurnBlockComponent";
 export { defineLootComponent } from "./LootComponent";
 export { defineGoalComponent } from "./GoalComponent";
+export { definePointComponent } from "./PointComponent";

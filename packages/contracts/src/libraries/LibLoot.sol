@@ -77,7 +77,7 @@ library LibLoot {
     uint256 resultEntity = _world.getUniqueEntityId();
     portableComponent.set(resultEntity);
 
-    uint256 randomNumber = LibUtils.random(resultEntity, block.timestamp) % 9;
+    uint256 randomNumber = LibUtils.random(resultEntity, block.timestamp) % 10;
 
     // 0    =>  10%	  => 	Move
     // 1    =>  10%   =>	Consume
@@ -104,10 +104,9 @@ library LibLoot {
       // Burn
       LibAbility.giveAbility(_components, resultEntity, AbilityBurnComponentID);
     } else if (randomNumber == 5) {
-      // @todo: Special
       if (goalComponent.getEntities().length == 0) {
-        // Special
-        goalComponent.set(resultEntity);
+        // Goal
+        goalComponent.set(resultEntity, block.number);
       } else {
         // Substanceblock
         matterComponent.set(resultEntity, 10);

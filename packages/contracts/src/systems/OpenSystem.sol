@@ -7,6 +7,9 @@ import { getAddressById, addressToEntity } from "solecs/utils.sol";
 import { LibCore } from "../libraries/LibCore.sol";
 import { LibLoot } from "../libraries/LibLoot.sol";
 import { LibInventory } from "../libraries/LibInventory.sol";
+import { LibConfig } from "../libraries/LibConfig.sol";
+
+import { GameConfig } from "../components/GameConfigComponent.sol";
 
 uint256 constant ID = uint256(keccak256("system.Open"));
 
@@ -17,10 +20,12 @@ contract OpenSystem is System {
     uint256 _lootEntity = abi.decode(arguments, (uint256));
     uint256 coreEntity = addressToEntity(msg.sender);
 
+    GameConfig memory gameConfig = LibConfig.getGameConfig(components);
+
     require(LibCore.isSpawned(components, coreEntity), "OpenSystem: entity does not exist");
     require(LibCore.isReady(components, coreEntity), "OpenSystem: entity is in cooldown");
     require(!LibCore.isCommitted(components, coreEntity), "OpenSystem: entity is committed");
-    // @todo: check energy (?)
+    require(LibCore.checkEnergy(components, coreEntity, gameConfig.openCost), "OpenSystem: not enough energy");
 
     uint256 baseEntity = LibInventory.getCarriedBy(components, coreEntity);
 
@@ -30,7 +35,7 @@ contract OpenSystem is System {
 
     LibLoot.openLoot(world, components, _lootEntity);
 
-    // @todo: decrease energy (?)
+    LibCore.decreaseEnergy(components, coreEntity, gameConfig.openCost);
   }
 
   function executeTyped(uint256 _lootEntity) public returns (bytes memory) {

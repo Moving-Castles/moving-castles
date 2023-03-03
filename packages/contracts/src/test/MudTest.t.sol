@@ -33,6 +33,8 @@ import { AbilityBurnComponent, ID as AbilityBurnComponentID } from "../component
 import { CommitComponent, ID as CommitComponentID } from "../components/CommitComponent.sol";
 import { BurnBlockComponent, ID as BurnBlockComponentID } from "../components/BurnBlockComponent.sol";
 import { LootComponent, ID as LootComponentID } from "../components/LootComponent.sol";
+import { PointComponent, ID as PointComponentID } from "../components/PointComponent.sol";
+import { GoalComponent, ID as GoalComponentID } from "../components/GoalComponent.sol";
 
 contract MudTest is DSTest {
   Cheats internal immutable vm = Cheats(HEVM_ADDRESS);
@@ -68,6 +70,8 @@ contract MudTest is DSTest {
   AbilityConsumeComponent abilityConsumeComponent;
   AbilityPlayComponent abilityPlayComponent;
   AbilityBurnComponent abilityBurnComponent;
+  PointComponent pointComponent;
+  GoalComponent goalComponent;
 
   function component(uint256 id) public view returns (address) {
     return getAddressById(components, id);
@@ -105,6 +109,8 @@ contract MudTest is DSTest {
     abilityConsumeComponent = AbilityConsumeComponent(getAddressById(components, AbilityConsumeComponentID));
     abilityPlayComponent = AbilityPlayComponent(getAddressById(components, AbilityPlayComponentID));
     abilityBurnComponent = AbilityBurnComponent(getAddressById(components, AbilityBurnComponentID));
+    pointComponent = PointComponent(getAddressById(components, PointComponentID));
+    goalComponent = GoalComponent(getAddressById(components, GoalComponentID));
 
     gameConfig = LibConfig.getGameConfig(components);
   }

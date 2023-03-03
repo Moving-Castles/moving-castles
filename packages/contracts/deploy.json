@@ -20,7 +20,8 @@
     "UntraversableComponent",
     "BurnBlockComponent",
     "LootComponent",
-    "GoalComponent"
+    "GoalComponent",
+    "PointComponent"
   ],
   "systems": [
     {
@@ -55,7 +56,8 @@
         "UntraversableComponent",
         "MatterComponent",
         "CommitComponent",
-        "AbilityBurnComponent"
+        "AbilityBurnComponent",
+        "PointComponent"
       ]
     },
     {
@@ -185,6 +187,23 @@
         "AbilityBurnComponent",
         "AbilityPlayComponent",
         "GoalComponent"
+      ]
+    },
+    {
+      "name": "HarvestSystem",
+      "writeAccess": [
+        "GameConfigComponent",
+        "CoreComponent",
+        "EnergyComponent",
+        "ReadyBlockComponent",
+        "CarriedByComponent",
+        "PortableComponent",
+        "CarryingCapacityComponent",
+        "CommitComponent",
+        "LootComponent",
+        "MatterComponent",
+        "GoalComponent",
+        "PointComponent"
       ]
     }
   ]

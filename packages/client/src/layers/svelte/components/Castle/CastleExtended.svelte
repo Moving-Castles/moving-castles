@@ -11,6 +11,10 @@
     addToSequencer("system.Play");
   }
 
+  function harvest() {
+    addToSequencer("system.Harvest");
+  }
+
   function extendCastle() {
     castleExtended.set(false);
   }
@@ -35,6 +39,7 @@
       <div class="extend">
         <button on:click={extendCastle}>compact castle view</button>
       </div>
+      <div><button on:click={harvest}>HARVEST</button></div>
     </div>
 
     <!-- <div class="right" style={"background:" + addressToColor($playerCore.carriedBy) + ";"}> -->

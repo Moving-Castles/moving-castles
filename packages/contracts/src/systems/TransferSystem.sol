@@ -9,6 +9,7 @@ import { LibCore } from "../libraries/LibCore.sol";
 import { LibMap } from "../libraries/LibMap.sol";
 import { LibInventory } from "../libraries/LibInventory.sol";
 import { LibConfig } from "../libraries/LibConfig.sol";
+import { LibGoal } from "../libraries/LibGoal.sol";
 
 import { GameConfig } from "../components/GameConfigComponent.sol";
 import { Coord } from "../components/PositionComponent.sol";
@@ -37,6 +38,11 @@ contract TransferSystem is System {
     require(LibMap.isAdjacent(baseEntityPosition, targetBaseEntityPosition), "TransferSystem: not adjacent");
 
     LibInventory.addToInventory(components, _targetBaseEntity, _portableEntity);
+
+    // @todo: If item is goal, reset the timer
+    // if (LibGoal.isGoal(components, _portableEntity)) {
+    //   LibGoal.setGoalValue(components, block.number);
+    // }
 
     LibCore.decreaseEnergy(components, coreEntity, gameConfig.transferCost);
 

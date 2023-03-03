@@ -30,6 +30,7 @@ contract SpawnSystemTest is MudTest {
     assertTrue(coreComponent.getValue(addressToEntity(alice)));
     assertTrue(portableComponent.getValue(addressToEntity(alice)));
     assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy);
+    assertEq(pointComponent.getValue(addressToEntity(alice)), 0);
     assertEq(creationBlockComponent.getValue(addressToEntity(alice)), 1);
     assertEq(readyBlockComponent.getValue(addressToEntity(alice)), 1);
     assertTrue(carriedByComponent.has(addressToEntity(alice)));
@@ -75,7 +76,7 @@ contract SpawnSystemTest is MudTest {
     // Get base entity
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
 
-    // Should have 6 items in inventory:
+    // Should have 4 items in inventory:
     // - Core
     // - AbilityMoveItem
     // - AbilityConsumeItem

@@ -33,7 +33,6 @@
   {#each $activeActions as action (action.actionId)}
     <div><span class="description">{action.systemId}</span> {action.actionId} {action.tx}</div>
   {/each}
-
   <!-- PROCESSED -->
   <h2>Processed</h2>
   {#each $processedActions as action (action.actionId)}

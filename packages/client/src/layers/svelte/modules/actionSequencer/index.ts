@@ -72,10 +72,12 @@ export function initActionSequencer() {
    */
 
   blockNumber.subscribe(async (newBlock) => {
-    // Execute next if:
-    // - sequencer is running
-    // - there are no active action
-    // - queue is not empty
+    /*
+      * Execute next if:
+      * - sequencer is running
+      * - there are no active action
+      * - queue is not empty
+      */
     if (
       get(sequencerState) === SequencerState.Running &&
       get(activeActions).length === 0 &&
@@ -120,8 +122,8 @@ async function execute(newBlock: number) {
     });
   } catch (e) {
     window.alert(e);
-    // Remove action from queue list
-    queuedActions.update((queuedActions) => queuedActions.slice(1));
+    // Clear active list
+    activeActions.update(() => []);
     // Add action to processed list
     processedActions.update((processedActions) => [action, ...processedActions]);
   }

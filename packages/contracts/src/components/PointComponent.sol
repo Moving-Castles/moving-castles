@@ -2,8 +2,8 @@
 pragma solidity >=0.8.17;
 import "std-contracts/components/Uint256Component.sol";
 
-uint256 constant ID = uint256(keccak256("component.Goal"));
+uint256 constant ID = uint256(keccak256("component.Point"));
 
-contract GoalComponent is Uint256Component {
+contract PointComponent is Uint256Component {
   constructor(address world) Uint256Component(world, ID) {}
 }

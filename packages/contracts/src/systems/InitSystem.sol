@@ -39,7 +39,9 @@ contract InitSystem is System {
       burnCost: 10,
       moveCooldown: 1,
       extractCooldown: 1,
-      burnTime: 10
+      burnTime: 10,
+      openCost: 0,
+      harvestCost: 50
     });
     LibConfig.setGameConfig(components, gameConfig);
 

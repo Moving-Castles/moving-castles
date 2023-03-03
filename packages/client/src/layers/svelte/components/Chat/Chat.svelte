@@ -17,13 +17,13 @@
   const socket = new WebSocket("wss://eda-relay.cygnet-service.com");
 
   // Connection opened
-  socket.addEventListener("open", (event) => {
-    console.log("Connected");
-  });
+  // socket.addEventListener("open", (event) => {
+  //   console.log("Connected");
+  // });
 
   // Listen for messages
   socket.addEventListener("message", (event) => {
-    console.log("Message from server ", event.data);
+    // console.log("Message from server ", event.data);
     event.data.text().then((txt: string) => {
       let msgObj = JSON.parse(txt);
       if (msgObj.channel === $playerCore.carriedBy) {
@@ -51,7 +51,6 @@
       type="text"
       bind:value={textInput}
       on:keydown={(e) => {
-        console.log(e.key);
         if (e.key === "Enter") {
           sendMessage();
         }

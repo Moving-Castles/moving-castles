@@ -116,6 +116,9 @@
     {/if}
   {:else if item.core}
     <img class="core-avatar" src={idToAvatar(itemId)} alt="core" />
+  {:else if item.goal}
+    {info.symbol}
+    {$blockNumber - parseInt(item.goal)}
   {:else}
     {info.symbol}
   {/if}

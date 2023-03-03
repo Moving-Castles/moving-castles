@@ -12,6 +12,7 @@
     </div> -->
     <div class="core-item"><strong>{idToName($playerAddress)}</strong></div>
     <div class="core-item">Energy: {$playerCore.energy}</div>
+    <div class="core-item">Point: {parseInt($playerCore.point)}</div>
     <div class="core-item">
       <img class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
     </div>

@@ -11,6 +11,10 @@
     addToSequencer("system.Play");
   }
 
+  function harvest() {
+    addToSequencer("system.Harvest");
+  }
+
   function extendCastle() {
     castleExtended.set(true);
   }
@@ -23,6 +27,7 @@
       CASTLE:<strong> {seedToCastleName($playerCore.carriedBy)}</strong>
     </div>
     <div class="play">
+      <div><button on:click={harvest}>HARVEST</button></div>
       {#if $playerCore.commit === Activity.Play}
         <div>...P.l.A.y.I.n.G...</div>
         <div><button on:click={play}>STOP</button></div>

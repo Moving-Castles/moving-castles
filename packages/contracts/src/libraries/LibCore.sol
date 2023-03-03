@@ -18,6 +18,7 @@ import { EnergyComponent, ID as EnergyComponentID } from "../components/EnergyCo
 import { PortableComponent, ID as PortableComponentID } from "../components/PortableComponent.sol";
 import { CarriedByComponent, ID as CarriedByComponentID } from "../components/CarriedByComponent.sol";
 import { CommitComponent, ID as CommitComponentID } from "../components/CommitComponent.sol";
+import { PointComponent, ID as PointComponentID } from "../components/PointComponent.sol";
 
 import { Activity } from "../utils/constants.sol";
 
@@ -32,6 +33,7 @@ library LibCore {
     CoreComponent coreComponent = CoreComponent(getAddressById(_components, CoreComponentID));
     ReadyBlockComponent readyBlockComponent = ReadyBlockComponent(getAddressById(_components, ReadyBlockComponentID));
     EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
+    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
     PortableComponent portableComponent = PortableComponent(getAddressById(_components, PortableComponentID));
     CreationBlockComponent creationBlockComponent = CreationBlockComponent(
       getAddressById(_components, CreationBlockComponentID)
@@ -43,6 +45,7 @@ library LibCore {
     creationBlockComponent.set(_coreEntity, block.number);
     readyBlockComponent.set(_coreEntity, block.number);
     energyComponent.set(_coreEntity, gameConfig.initialEnergy);
+    pointComponent.set(_coreEntity, 0);
     portableComponent.set(_coreEntity);
   }
 
@@ -65,7 +68,11 @@ library LibCore {
    * @param _entity Entity
    * @param _period How many block to add
    */
-  function setReadyBlock(IUint256Component _components, uint256 _entity, uint256 _period) internal {
+  function setReadyBlock(
+    IUint256Component _components,
+    uint256 _entity,
+    uint256 _period
+  ) internal {
     ReadyBlockComponent readyBlockComponent = ReadyBlockComponent(getAddressById(_components, ReadyBlockComponentID));
     readyBlockComponent.set(_entity, block.number + _period);
   }
@@ -109,7 +116,11 @@ library LibCore {
    * @param _amount Amount to decrease by
    * @return bool False if the core does not have enough energy
    */
-  function decreaseEnergy(IUint256Component _components, uint256 _coreEntity, uint32 _amount) internal returns (bool) {
+  function decreaseEnergy(
+    IUint256Component _components,
+    uint256 _coreEntity,
+    uint32 _amount
+  ) internal returns (bool) {
     EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
     uint32 currentEnergy = energyComponent.getValue(_coreEntity);
     if (currentEnergy < _amount) return false;
@@ -124,7 +135,11 @@ library LibCore {
    * @param _coreEntity Core entity
    * @param _amount Amount to increase by
    */
-  function increaseEnergy(IUint256Component _components, uint256 _coreEntity, uint32 _amount) internal {
+  function increaseEnergy(
+    IUint256Component _components,
+    uint256 _coreEntity,
+    uint32 _amount
+  ) internal {
     EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
     uint32 currentEnergy = energyComponent.getValue(_coreEntity);
     energyComponent.set(_coreEntity, currentEnergy + _amount);
@@ -137,7 +152,11 @@ library LibCore {
    * @param _coreEntity Core entity
    * @param _activity Activity
    */
-  function commit(IUint256Component _components, uint256 _coreEntity, Activity _activity) internal {
+  function commit(
+    IUint256Component _components,
+    uint256 _coreEntity,
+    Activity _activity
+  ) internal {
     CommitComponent commitComponent = CommitComponent(getAddressById(_components, CommitComponentID));
     commitComponent.set(_coreEntity, uint32(_activity));
   }
@@ -163,5 +182,85 @@ library LibCore {
   function isCommitted(IUint256Component _components, uint256 _coreEntity) internal view returns (bool) {
     CommitComponent commitComponent = CommitComponent(getAddressById(_components, CommitComponentID));
     return commitComponent.has(_coreEntity);
+  }
+
+  /**
+   * Check point
+   *
+   * @param _components World components
+   * @param _coreEntity Core entity
+   * @param _amount Amount to check against
+   * @return bool False if the core does not have enough energy
+   */
+  function checkPoint(
+    IUint256Component _components,
+    uint256 _coreEntity,
+    uint256 _amount
+  ) internal view returns (bool) {
+    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
+    uint256 currentPoint = pointComponent.getValue(_coreEntity);
+    if (currentPoint < _amount) return false;
+    return true;
+  }
+
+  /**
+   * Decrease point
+   *
+   * @param _components World components
+   * @param _coreEntity Core entity
+   * @param _amount Amount to decrease by
+   * @return bool False if the core does not have enough energy
+   */
+  function decreasePoint(
+    IUint256Component _components,
+    uint256 _coreEntity,
+    uint256 _amount
+  ) internal returns (bool) {
+    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
+    uint256 currentPoint = pointComponent.getValue(_coreEntity);
+    if (currentPoint < _amount) return false;
+    pointComponent.set(_coreEntity, currentPoint - _amount);
+    return true;
+  }
+
+  /**
+   * Increase point
+   *
+   * @param _components World components
+   * @param _coreEntity Core entity
+   * @param _amount Amount to increase by
+   */
+  function increasePoint(
+    IUint256Component _components,
+    uint256 _coreEntity,
+    uint256 _amount
+  ) internal {
+    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
+    uint256 currentPoint = pointComponent.getValue(_coreEntity);
+    pointComponent.set(_coreEntity, currentPoint + _amount);
+  }
+
+  // uint256[] memory cores = LibCore.getCoresByBaseEntity(components, baseEntity);
+
+  /**
+   * Get cores by base entity
+   *
+   * @param _components world components
+   * @param _baseEntity base entity
+   * @return array cores in inventory of base entity
+   */
+  function getCoresByBaseEntity(IUint256Component _components, uint256 _baseEntity)
+    internal
+    view
+    returns (uint256[] memory)
+  {
+    CarriedByComponent carriedByComponent = CarriedByComponent(getAddressById(_components, CarriedByComponentID));
+    CoreComponent coreComponent = CoreComponent(getAddressById(_components, CoreComponentID));
+
+    QueryFragment[] memory fragments = new QueryFragment[](2);
+    fragments[0] = QueryFragment(QueryType.HasValue, carriedByComponent, abi.encode(_baseEntity));
+    fragments[1] = QueryFragment(QueryType.Has, coreComponent, abi.encode(1));
+
+    return LibQuery.query(fragments);
   }
 }

@@ -11,6 +11,7 @@ import { LibMove } from "../libraries/LibMove.sol";
 import { LibMap } from "../libraries/LibMove.sol";
 import { LibAbility } from "../libraries/LibAbility.sol";
 import { LibResource } from "../libraries/LibResource.sol";
+import { LibUtils } from "../libraries/LibUtils.sol";
 
 import { GameConfig } from "../components/GameConfigComponent.sol";
 import { Coord } from "../components/PositionComponent.sol";
@@ -50,17 +51,61 @@ contract SpawnSystem is System {
     LibInventory.makePortable(components, AbilityMoveItem);
     LibInventory.addToInventory(components, baseEntity, AbilityMoveItem);
 
+    // Place an item allowing Extract in inventory
+    uint256 AbilityExtractItem = world.getUniqueEntityId();
+    LibAbility.giveAbility(components, AbilityExtractItem, AbilityExtractComponentID);
+    LibInventory.makePortable(components, AbilityExtractItem);
+    LibInventory.addToInventory(components, baseEntity, AbilityExtractItem);
+
     // Place an item allowing Consume in inventory
     uint256 AbilityConsumeItem = world.getUniqueEntityId();
     LibAbility.giveAbility(components, AbilityConsumeItem, AbilityConsumeComponentID);
     LibInventory.makePortable(components, AbilityConsumeItem);
     LibInventory.addToInventory(components, baseEntity, AbilityConsumeItem);
 
-    // Place an item allowing Extract in inventory
-    uint256 AbilityExtractItem = world.getUniqueEntityId();
-    LibAbility.giveAbility(components, AbilityExtractItem, AbilityExtractComponentID);
-    LibInventory.makePortable(components, AbilityExtractItem);
-    LibInventory.addToInventory(components, baseEntity, AbilityExtractItem);
+    // uint256 randomNumber = LibUtils.random(coreEntity, block.timestamp) % 3;
+
+    // 0  =>  [Move, Extract]
+    // 1  =>  [Extract, Consume]
+    // 2  =>  [Consume, Move]
+
+    // if (randomNumber == 0) {
+    //   // Place an item allowing Move in inventory
+    //   uint256 AbilityMoveItem = world.getUniqueEntityId();
+    //   LibAbility.giveAbility(components, AbilityMoveItem, AbilityMoveComponentID);
+    //   LibInventory.makePortable(components, AbilityMoveItem);
+    //   LibInventory.addToInventory(components, baseEntity, AbilityMoveItem);
+
+    //   // Place an item allowing Extract in inventory
+    //   uint256 AbilityExtractItem = world.getUniqueEntityId();
+    //   LibAbility.giveAbility(components, AbilityExtractItem, AbilityExtractComponentID);
+    //   LibInventory.makePortable(components, AbilityExtractItem);
+    //   LibInventory.addToInventory(components, baseEntity, AbilityExtractItem);
+    // } else if (randomNumber == 1) {
+    //   // Place an item allowing Extract in inventory
+    //   uint256 AbilityExtractItem = world.getUniqueEntityId();
+    //   LibAbility.giveAbility(components, AbilityExtractItem, AbilityExtractComponentID);
+    //   LibInventory.makePortable(components, AbilityExtractItem);
+    //   LibInventory.addToInventory(components, baseEntity, AbilityExtractItem);
+
+    //   // Place an item allowing Consume in inventory
+    //   uint256 AbilityConsumeItem = world.getUniqueEntityId();
+    //   LibAbility.giveAbility(components, AbilityConsumeItem, AbilityConsumeComponentID);
+    //   LibInventory.makePortable(components, AbilityConsumeItem);
+    //   LibInventory.addToInventory(components, baseEntity, AbilityConsumeItem);
+    // } else if (randomNumber == 2) {
+    //   // Place an item allowing Consume in inventory
+    //   uint256 AbilityConsumeItem = world.getUniqueEntityId();
+    //   LibAbility.giveAbility(components, AbilityConsumeItem, AbilityConsumeComponentID);
+    //   LibInventory.makePortable(components, AbilityConsumeItem);
+    //   LibInventory.addToInventory(components, baseEntity, AbilityConsumeItem);
+
+    //   // Place an item allowing Move in inventory
+    //   uint256 AbilityMoveItem = world.getUniqueEntityId();
+    //   LibAbility.giveAbility(components, AbilityMoveItem, AbilityMoveComponentID);
+    //   LibInventory.makePortable(components, AbilityMoveItem);
+    //   LibInventory.addToInventory(components, baseEntity, AbilityMoveItem);
+    // }
   }
 
   function executeTyped() public returns (bytes memory) {
