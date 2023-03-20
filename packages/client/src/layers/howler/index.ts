@@ -7,6 +7,16 @@ import { userSettings } from "../svelte/components/UI";
 export const music = writable(new Howl({ src: [""] }));
 export const fx = writable(new Howl({ src: [""] }));
 
+// const AUDIO_EVENTS = {
+//   MOVE_INIT: 
+// }
+
+
+// export function triggerSound(audioEventId: string) {
+
+//   playSound(...AUDIO_EVENTS[audioEventId]);
+// }
+
 export function playSound(id: string, category: string, loop = false, fade = false) {
   const settings = get(userSettings);
 

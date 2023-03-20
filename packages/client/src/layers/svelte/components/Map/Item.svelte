@@ -26,26 +26,28 @@
     info.description = description;
   };
 
-  if (item.core) {
-    setInfo("*", itemId === $playerAddress ? "Core (you)" : "Core: " + item.energy + " energy");
-  } else if (item.matter) {
-    setInfo("S", "Substance block");
-  } else if (item.abilityMove) {
-    setInfo("M", "Ability: Move");
-  } else if (item.abilityConsume) {
-    setInfo("C", "Ability: Consume");
-  } else if (item.abilityExtract) {
-    setInfo("E", "Ability: Extract");
-  } else if (item.abilityPlay) {
-    setInfo("P", "Ability: Play");
-  } else if (item.abilityBurn) {
-    setInfo("B", "Ability: Burn");
-  } else if (item.untraversable) {
-    setInfo("X", "Untraversable");
-  } else if (item.loot) {
-    setInfo("?", "Loot box");
-  } else if (item.goal) {
-    setInfo("🎏", "Goal");
+  $: {
+    if (item.core) {
+      setInfo("*", itemId === $playerAddress ? "Core (you)" : "Core: " + item.energy + " energy");
+    } else if (item.matter) {
+      setInfo("S", "Substance block");
+    } else if (item.abilityMove) {
+      setInfo("M", "Ability: Move");
+    } else if (item.abilityConsume) {
+      setInfo("C", "Ability: Consume");
+    } else if (item.abilityExtract) {
+      setInfo("E", "Ability: Extract");
+    } else if (item.abilityPlay) {
+      setInfo("P", "Ability: Play");
+    } else if (item.abilityBurn) {
+      setInfo("B", "Ability: Burn");
+    } else if (item.untraversable) {
+      setInfo("X", "Untraversable");
+    } else if (item.loot) {
+      setInfo("?", "Loot box");
+    } else if (item.goal) {
+      setInfo("🎏", "Goal");
+    }
   }
 
   function pickUp() {
@@ -123,29 +125,37 @@
     align-items: center;
     color: black;
     font-size: 12px;
-  }
 
-  .free {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    cursor: pointer;
-    z-index: 10000;
-    cursor: grab;
-    font-size: 12px;
-  }
+    &.free {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+      cursor: pointer;
+      z-index: 10000;
+      cursor: grab;
+      font-size: 12px;
+    }
 
-  .dialog {
-    padding: 10px;
-    text-align: center;
-  }
+    &.burning {
+      animation: color-change 2s ease-in-out infinite;
+    }
 
-  .description {
-    font-weight: bold;
-    margin-bottom: 10px;
+    &.burnt {
+      background: rgb(34, 34, 34) !important;
+    }
+
+    .dialog {
+      padding: 10px;
+      text-align: center;
+
+      .description {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+    }
   }
 
   /* Define the keyframes */
@@ -159,13 +169,5 @@
     100% {
       background: red;
     }
-  }
-
-  .item.burning {
-    animation: color-change 2s ease-in-out infinite;
-  }
-
-  .item.burnt {
-    background: rgb(34, 34, 34) !important;
   }
 </style>

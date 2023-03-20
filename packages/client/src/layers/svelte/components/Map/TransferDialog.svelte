@@ -39,14 +39,14 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     font-size: 16px;
-  }
 
-  .inventory {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    .inventory {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+    }
   }
 </style>

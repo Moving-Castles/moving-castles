@@ -1,6 +1,9 @@
 import type { SystemTypes } from "contracts/types/SystemTypes";
 import { writable, get } from "svelte/store";
 import { network, blockNumber } from "../network";
+import { playerCore } from "../player";
+import { gameConfig } from "../entities";
+import { playSound } from "../../../howler";
 
 // --- TYPES -----------------------------------------------------------------
 
@@ -30,6 +33,9 @@ export type Action = {
   tx?: string;
   timestamp?: number;
   params?: any[];
+  requirements: {
+    energy: number;
+  };
 };
 
 // --- STORES -----------------------------------------------------------------
@@ -41,13 +47,43 @@ export const processedActions = writable([] as Action[]);
 
 // --- API -----------------------------------------------------------------
 
+export function getEnergyCost(systemId: keyof SystemTypes) {
+  const config = get(gameConfig);
+  switch (systemId) {
+    case "system.Move":
+      return config.moveCost;
+    case "system.Extract":
+      return config.extractCost;
+    case "system.PickUp":
+      return config.pickUpCost;
+    case "system.Drop":
+      return config.dropCost;
+    case "system.Transfer":
+      return config.transferCost;
+    case "system.Play":
+      return config.playCost;
+    case "system.Burn":
+      return config.burnCost;
+    case "system.Open":
+      return config.openCost;
+    case "system.Harvest":
+      return config.harvestCost;
+    default:
+      return 0;
+  }
+}
+
 export function addToSequencer(systemId: keyof SystemTypes, params: any[] = []) {
+  playSound("selectTwo", "ui")
   queuedActions.update((queuedActions) => {
     const newAction = {
       actionId: self.crypto.randomUUID(),
       state: QueuedActionState.Queued,
       systemId: systemId,
       params: params,
+      requirements: {
+        energy: getEnergyCost(systemId)
+      }
     };
     return [...queuedActions, newAction];
   });
@@ -83,7 +119,7 @@ export function initActionSequencer() {
       get(activeActions).length === 0 &&
       get(queuedActions).length > 0
     ) {
-      execute(newBlock);
+      execute();
     }
   });
 
@@ -99,16 +135,23 @@ export function initActionSequencer() {
         activeActions.update((activeActions) => activeActions.filter((a) => a.tx !== action?.tx));
         // Add action to processed list
         processedActions.update((processedActions) => [action, ...processedActions]);
+        playSound("selectFour", "ui")
       });
     }
   }
 }
 
-async function execute(newBlock: number) {
+async function execute() {
   const action = get(queuedActions)[0];
   try {
     // Remove action from queue list
     queuedActions.update((queuedActions) => queuedActions.slice(1));
+    // Check if player has enough energy
+    if (get(playerCore).energy < action.requirements.energy) {
+      window.alert('Not enough energy to execute action: ' + String(action.systemId) + '. Requires ' + action.requirements.energy + ' energy.')
+      playSound("error", "ui")
+      return;
+    }
     // Add action to active list
     activeActions.update((activeActions) => [action, ...activeActions]);
     // @todo: fix types
@@ -118,9 +161,11 @@ async function execute(newBlock: number) {
     activeActions.update((activeActions) => {
       activeActions[0].tx = tx.hash;
       activeActions[0].timestamp = Date.now();
+      playSound("selectOne", "ui")
       return activeActions;
     });
   } catch (e) {
+    playSound("error", "ui")
     window.alert(e);
     // Clear active list
     activeActions.update(() => []);

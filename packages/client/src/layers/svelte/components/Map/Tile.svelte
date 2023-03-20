@@ -1,5 +1,6 @@
 <script lang="ts">
   import { baseEntities, freePortables, resources } from "../../modules/entities";
+  import type { Resource } from "../../modules/entities";
 
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
@@ -10,9 +11,7 @@
   export let tile: any;
 
   let matter = 100;
-  let resource = Object.values($resources).find(
-    (r) => r.position?.x === tile.coordinates.x && r.position?.y === tile.coordinates.y
-  );
+  let resource: Resource | undefined;
 
   $: resource = Object.values($resources).find(
     (r) => r.position?.x === tile.coordinates.x && r.position?.y === tile.coordinates.y
@@ -59,28 +58,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-image: url("/img/map.png"); */
     background-size: contain;
-  }
 
-  .tile:hover {
-    background-color: rgb(60, 60, 60);
-  }
+    &:hover {
+      background-color: rgb(60, 60, 60);
+    }
 
-  .coords {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
+    .coords {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
 
-  .matter {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 10px;
-  }
+    .matter {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 10px;
 
-  .empty {
-    color: red;
+      &.empty {
+        color: red;
+      }
+    }
   }
 </style>

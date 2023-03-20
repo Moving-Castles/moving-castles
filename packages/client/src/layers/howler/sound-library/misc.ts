@@ -17,4 +17,8 @@ export const misc: SoundAssets = {
     src: "./sounds/misc/death.mp3",
     volume: 1,
   },
+  friendly: {
+    src: "./sounds/misc/friendly.mp3",
+    volume: 1,
+  },
 };

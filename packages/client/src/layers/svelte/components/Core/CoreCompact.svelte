@@ -26,14 +26,13 @@
     justify-content: flex-end;
     font-size: 16px;
     padding-top: 3px;
-  }
 
-  .core-avatar {
-    height: 40px;
-    width: 40px;
-  }
-
-  .core-item {
-    margin-right: 20px;
+    .core-item {
+      margin-right: 20px;
+      .core-avatar {
+        height: 40px;
+        width: 40px;
+      }
+    }
   }
 </style>

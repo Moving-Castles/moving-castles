@@ -37,17 +37,20 @@
     height: 50px;
     width: 100%;
     border-bottom: 1px solid white;
+    overflow: hidden;
   }
 
   .castle {
     height: calc(100vh - 250px);
     width: 100%;
+    overflow: scroll;
   }
 
   .actions {
     height: 200px;
     width: 100%;
     border-top: 1px solid white;
+    overflow: scroll;
   }
 
   .extended .castle {

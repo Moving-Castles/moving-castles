@@ -38,7 +38,7 @@
   }
 </script>
 
-<div class="debug-chat">
+<div class="ui-chat">
   chat:
   {#if channelId}
     <span style={"background:" + addressToColor(channelId) + ";"}>{seedToCastleName(channelId)}</span>
@@ -69,7 +69,7 @@
 </div>
 
 <style lang="scss">
-  .debug-chat {
+  .ui-chat {
     position: fixed;
     bottom: 40px;
     left: 40px;

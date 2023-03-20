@@ -57,7 +57,8 @@
         "MatterComponent",
         "CommitComponent",
         "AbilityBurnComponent",
-        "PointComponent"
+        "PointComponent",
+        "LootComponent"
       ]
     },
     {

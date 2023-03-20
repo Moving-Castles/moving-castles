@@ -78,9 +78,12 @@ contract SpawnSystemTest is MudTest {
 
     // Should have 4 items in inventory:
     // - Core
-    // - AbilityMoveItem
-    // - AbilityConsumeItem
-    // - AbilityExtractItem
+    // - Loot box
+    // - Loot box
+    // - Loot box
+    // x AbilityMoveItem
+    // x AbilityConsumeItem
+    // x AbilityExtractItem
     // x AbilityPlayItem
     // x AbilityBurnItem
     uint256[] memory inventory = LibInventory.getInventory(components, baseEntity);
@@ -98,13 +101,13 @@ contract SpawnSystemTest is MudTest {
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
 
     // Should be able to move
-    assertEq(LibAbility.checkInventoryForAbility(components, baseEntity, AbilityMoveComponentID), 1);
+    //assertEq(LibAbility.checkInventoryForAbility(components, baseEntity, AbilityMoveComponentID), 1);
 
     // Should be able to consume
-    assertEq(LibAbility.checkInventoryForAbility(components, baseEntity, AbilityConsumeComponentID), 1);
+    //assertEq(LibAbility.checkInventoryForAbility(components, baseEntity, AbilityConsumeComponentID), 1);
 
     // Should be able to extract
-    assertEq(LibAbility.checkInventoryForAbility(components, baseEntity, AbilityExtractComponentID), 1);
+    //assertEq(LibAbility.checkInventoryForAbility(components, baseEntity, AbilityExtractComponentID), 1);
 
     // Should be able to play
     // assertEq(LibAbility.checkInventoryForAbility(components, baseEntity, AbilityPlayComponentID), 1);

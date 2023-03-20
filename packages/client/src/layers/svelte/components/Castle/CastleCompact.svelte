@@ -11,10 +11,6 @@
     addToSequencer("system.Play");
   }
 
-  function harvest() {
-    addToSequencer("system.Harvest");
-  }
-
   function extendCastle() {
     castleExtended.set(true);
   }
@@ -27,7 +23,6 @@
       CASTLE:<strong> {seedToCastleName($playerCore.carriedBy)}</strong>
     </div>
     <div class="play">
-      <div><button on:click={harvest}>HARVEST</button></div>
       {#if $playerCore.commit === Activity.Play}
         <div>...P.l.A.y.I.n.G...</div>
         <div><button on:click={play}>STOP</button></div>
@@ -44,30 +39,28 @@
 </div>
 
 <style lang="scss">
-  .play {
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
-  .header {
-    font-size: 18px;
-    font-weight: 1000;
-    font-stretch: 151%;
-    font-variation-settings: "size" 60;
-    margin-bottom: 30px;
-
-    .pfp {
-      display: inline-block;
-      height: 40px;
-      width: 40px;
-      position: relative;
-      top: 15px;
-      border-radius: 50%;
-    }
-  }
-
   .castle-compact {
     padding: 10px;
+
+    .play {
+      font-size: 18px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .header {
+      font-size: 18px;
+      font-weight: 1000;
+      margin-bottom: 30px;
+
+      .pfp {
+        display: inline-block;
+        height: 40px;
+        width: 40px;
+        position: relative;
+        top: 15px;
+        border-radius: 50%;
+      }
+    }
   }
 </style>

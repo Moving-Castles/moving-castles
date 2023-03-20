@@ -45,8 +45,6 @@
 
     if (playerEl && playerEl.parentElement) {
       let playerTileEl = playerEl.parentElement;
-      console.log(playerTileEl);
-      console.log(playerTileEl.offsetLeft, playerTileEl.offsetTop);
       playerTileEl.scrollIntoView({ block: "center", inline: "center" });
     }
   }
@@ -69,7 +67,7 @@
   <DebugChat channelId={$playerCore.carriedBy} />
 {/if}
 
-<div class="ui-debug-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
+<div class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
   <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div>
 
   <div
@@ -94,31 +92,31 @@
 </div>
 
 <style lang="scss">
-  .center-map-button {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-  }
-
-  .ui-debug-map {
+  .ui-map {
     height: 100%;
     width: 100%;
     overflow: auto;
     padding: 0;
-  }
 
-  .void {
-    filter: grayscale(1);
-    opacity: 0.2;
-  }
+    &.void {
+      filter: grayscale(1);
+      opacity: 0.2;
+    }
 
-  .map-container {
-    box-sizing: border-box;
-    width: 3003px;
-    height: 3003px;
-    background: rgb(100, 100, 100);
-    border: 1px solid white;
-    position: relative;
+    .center-map-button {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+
+    .map-container {
+      box-sizing: border-box;
+      width: 3003px;
+      height: 3003px;
+      background: rgb(100, 100, 100);
+      border: 1px solid white;
+      position: relative;
+    }
   }
 </style>

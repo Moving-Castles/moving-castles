@@ -12,10 +12,10 @@
   .ui-clock {
     background-color: var(--background);
     padding: var(--padding-button);
-  }
 
-  .ch-4 {
-    display: inline-block;
-    min-width: 4ch;
+    .ch-4 {
+      display: inline-block;
+      min-width: 4ch;
+    }
   }
 </style>

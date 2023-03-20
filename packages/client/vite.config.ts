@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [svelte()],
   publicDir: "./src/public",
   optimizeDeps: {
+    esbuildOptions: {
+      target: "es2020",
+    },
     exclude: ["@latticexyz/network", "@latticexyz/noise"],
     include: [
       "proxy-deep",

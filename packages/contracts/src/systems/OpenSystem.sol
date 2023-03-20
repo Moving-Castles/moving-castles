@@ -33,7 +33,7 @@ contract OpenSystem is System {
 
     require(LibLoot.isLoot(components, _lootEntity), "OpenSystem: not loot");
 
-    LibLoot.openLoot(world, components, _lootEntity);
+    LibLoot.openLoot(components, _lootEntity);
 
     LibCore.decreaseEnergy(components, coreEntity, gameConfig.openCost);
   }

@@ -10,7 +10,7 @@
   }
 </script>
 
-<div class="ui-debug-log">
+<div class="core-extended">
   {#if $playerCore}
     <div class="control">
       <span style={"color:" + addressToColor($playerAddress) + ";"}>

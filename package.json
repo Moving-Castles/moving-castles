@@ -29,14 +29,14 @@
     "unlink:mud": "for i in node_modules/@latticexyz/*; do yarn unlink @latticexyz/$(basename $i); done && yarn install --force"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.4.3",
-    "@commitlint/config-conventional": "^17.4.3",
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^8.34.0",
-    "lerna": "^6.4.1",
+    "eslint": "^8.36.0",
+    "lerna": "^6.5.1",
     "lint-staged": ">=13",
     "prettier": "^2.8.4",
     "run-pty": "^4.0.3"

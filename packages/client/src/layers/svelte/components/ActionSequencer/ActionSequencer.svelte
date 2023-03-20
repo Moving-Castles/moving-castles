@@ -6,20 +6,21 @@
     sequencerState,
     SequencerState,
   } from "../../modules/actionSequencer";
-  import type { Action } from "../../modules/actionSequencer";
-  import { shortenAddress } from "../../utils/ui";
+  import { playSound } from "../../../howler";
 
   function toggleSequencer() {
     sequencerState.set($sequencerState);
     if ($sequencerState === SequencerState.Running) {
+      playSound("eventBad", "ui");
       sequencerState.set(SequencerState.Paused);
     } else {
+      playSound("eventGood", "ui");
       sequencerState.set(SequencerState.Running);
     }
   }
 </script>
 
-<div class="ui-transactions">
+<div class="ui-action-sequencer">
   <button on:click={toggleSequencer}>
     {$sequencerState === SequencerState.Running ? "stop" : "start"}
   </button>

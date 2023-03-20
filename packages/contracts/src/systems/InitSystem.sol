@@ -110,6 +110,36 @@ contract InitSystem is System {
     LibInventory.makePortable(components, lootBox6);
     LibLoot.makeLoot(components, lootBox6);
     LibMove.setPosition(components, lootBox6, Coord(4, 7));
+
+    // create loot box 7
+    uint256 lootBox7 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox7);
+    LibLoot.makeLoot(components, lootBox7);
+    LibMove.setPosition(components, lootBox7, Coord(6, 6));
+
+    // create loot box 8
+    uint256 lootBox8 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox8);
+    LibLoot.makeLoot(components, lootBox8);
+    LibMove.setPosition(components, lootBox8, Coord(6, 6));
+
+    // create loot box 9
+    uint256 lootBox9 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox9);
+    LibLoot.makeLoot(components, lootBox9);
+    LibMove.setPosition(components, lootBox9, Coord(6, 6));
+
+    // create loot box 10
+    uint256 lootBox10 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox10);
+    LibLoot.makeLoot(components, lootBox10);
+    LibMove.setPosition(components, lootBox10, Coord(2, 4));
+
+    // create loot box 11
+    uint256 lootBox11 = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox11);
+    LibLoot.makeLoot(components, lootBox11);
+    LibMove.setPosition(components, lootBox11, Coord(2, 4));
   }
 
   function executeTyped() public returns (bytes memory) {

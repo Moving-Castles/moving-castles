@@ -49,6 +49,13 @@ function toTitleCase(str: string) {
   });
 }
 
+// export function hashStrings(str1, str2) {
+//   const hash = crypto.createHash('sha256');
+//   hash.update(str1);
+//   hash.update(str2);
+//   return hash.digest('hex');
+// }
+
 function reverseString(str: string): string {
   if (str === "") return "";
   else return reverseString(str.substr(1)) + str.charAt(0);

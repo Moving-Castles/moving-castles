@@ -62,7 +62,7 @@ export type Core = {
   readyBlock: number;
   energy: number;
   carriedBy: string;
-  point?: number;
+  point: number;
 };
 
 export type BaseEntity = {

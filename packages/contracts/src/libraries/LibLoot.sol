@@ -51,74 +51,81 @@ library LibLoot {
   /**
    * Open loot
    *
-   * @param _world world
    * @param _components world components
    * @param _entity entity to open
    */
-  function openLoot(
-    IWorld _world,
-    IUint256Component _components,
-    uint256 _entity
-  ) internal returns (bool) {
+  function openLoot(IUint256Component _components, uint256 _entity) internal returns (bool) {
     LootComponent lootComponent = LootComponent(getAddressById(_components, LootComponentID));
     CarriedByComponent carriedByComponent = CarriedByComponent(getAddressById(_components, CarriedByComponentID));
     PortableComponent portableComponent = PortableComponent(getAddressById(_components, PortableComponentID));
     MatterComponent matterComponent = MatterComponent(getAddressById(_components, MatterComponentID));
     GoalComponent goalComponent = GoalComponent(getAddressById(_components, GoalComponentID));
 
-    uint256 baseEntity = carriedByComponent.getValue(_entity);
-
-    // Remove loot Component
+    // Remove loot Component from entity
     lootComponent.remove(_entity);
-    portableComponent.remove(_entity);
-    carriedByComponent.remove(_entity);
 
-    // Create new item
-    uint256 resultEntity = _world.getUniqueEntityId();
-    portableComponent.set(resultEntity);
-
-    uint256 randomNumber = LibUtils.random(resultEntity, block.timestamp) % 10;
+    uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 7;
 
     // 0    =>  10%	  => 	Move
     // 1    =>  10%   =>	Consume
     // 2    =>  10%   =>	Extract
     // 3    =>  10%   =>	Play
     // 4    =>  10%	  =>	Burn
-    // 5    =>  10%	  =>	Special (only once, otherwise SubstanceBlock)
+    // 5    =>  10%	  =>	Goal (only once, otherwise SubstanceBlock)
     // 6    =>  10%	  =>	SubstanceBlock
-    // 7-9  =>  30%	  => 	Empty
+    // XXX 7-9  =>  30%	  => 	Empty
 
+    // 0: Move
     if (randomNumber == 0) {
-      // Move
-      LibAbility.giveAbility(_components, resultEntity, AbilityMoveComponentID);
-    } else if (randomNumber == 1) {
-      // Consume
-      LibAbility.giveAbility(_components, resultEntity, AbilityConsumeComponentID);
-    } else if (randomNumber == 2) {
-      // Extract
-      LibAbility.giveAbility(_components, resultEntity, AbilityExtractComponentID);
-    } else if (randomNumber == 3) {
-      // Play
-      LibAbility.giveAbility(_components, resultEntity, AbilityPlayComponentID);
-    } else if (randomNumber == 4) {
-      // Burn
-      LibAbility.giveAbility(_components, resultEntity, AbilityBurnComponentID);
-    } else if (randomNumber == 5) {
-      if (goalComponent.getEntities().length == 0) {
-        // Goal
-        goalComponent.set(resultEntity, block.number);
-      } else {
-        // Substanceblock
-        matterComponent.set(resultEntity, 10);
-      }
-    } else if (randomNumber == 6) {
-      // Substanceblock
-      matterComponent.set(resultEntity, 10);
-    } else {
-      return false;
+      LibAbility.giveAbility(_components, _entity, AbilityMoveComponentID);
+      return true;
     }
 
-    LibInventory.addToInventory(_components, baseEntity, resultEntity);
-    return true;
+    // 1: Consume
+    if (randomNumber == 1) {
+      LibAbility.giveAbility(_components, _entity, AbilityConsumeComponentID);
+      return true;
+    }
+
+    // 2: Extract
+    if (randomNumber == 2) {
+      LibAbility.giveAbility(_components, _entity, AbilityExtractComponentID);
+      return true;
+    }
+
+    // 3: Play
+    if (randomNumber == 3) {
+      LibAbility.giveAbility(_components, _entity, AbilityPlayComponentID);
+      return true;
+    }
+
+    // 4: Burn
+    if (randomNumber == 4) {
+      LibAbility.giveAbility(_components, _entity, AbilityBurnComponentID);
+      return true;
+    }
+
+    // 5: Goal or SubstanceBlock
+    if (randomNumber == 5) {
+      if (goalComponent.getEntities().length == 0) {
+        // Goal
+        goalComponent.set(_entity, block.number);
+      } else {
+        // Substanceblock
+        matterComponent.set(_entity, 10);
+      }
+      return true;
+    }
+
+    // 6: Substanceblock
+    if (randomNumber == 6) {
+      matterComponent.set(_entity, 10);
+      return true;
+    }
+
+    // 7-9: Empty
+    portableComponent.remove(_entity);
+    carriedByComponent.remove(_entity);
+    return false;
   }
 }

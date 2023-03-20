@@ -1,13 +1,14 @@
 <script lang="ts">
   import { entities, baseEntities } from "../../modules/entities";
   import type { Entity } from "../../modules/entities";
-  import InventoryItem from "./InventoryItem.svelte";
+  import Item from "../Items/ItemSelector.svelte";
   import EmptySlot from "./EmptySlot.svelte";
 
   export let baseEntityId: string;
   export let targetBaseEntityId = "";
   export let showCapacity = false;
   export let showEmptySlots = false;
+  export let showCores = true;
 
   let inventoryItems: [string, Entity][] = [];
   $: inventoryItems = Object.entries($entities).filter(([itemId, item]) => item.carriedBy === baseEntityId);
@@ -26,7 +27,11 @@
 
 <div class="inventory">
   {#each inventoryItems as [itemId, item] (itemId)}
-    <InventoryItem {itemId} {item} {targetBaseEntityId} />
+    {#if item.core && !showCores}
+      <span />
+    {:else}
+      <Item {itemId} {item} />
+    {/if}
   {/each}
   {#if showEmptySlots}
     {#each Array(emptySlotNumber) as _, i (i)}
@@ -40,6 +45,7 @@
     display: flex;
     flex-wrap: wrap;
   }
+
   .inventory-item {
     height: 50px;
     width: 50px;

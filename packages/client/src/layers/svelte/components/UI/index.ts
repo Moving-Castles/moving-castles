@@ -6,6 +6,7 @@ import { writable } from "svelte/store";
 // UI
 export const menuVisible = writable(false);
 export const castleExtended = writable(false);
+export const spawnStage = writable(1);
 
 // Transition speeds
 export const speed = writable(100);

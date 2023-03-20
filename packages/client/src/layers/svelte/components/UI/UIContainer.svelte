@@ -1,40 +1,58 @@
 <script lang="ts">
-  import { uiState } from "./index";
+  import { onMount } from "svelte";
+  import { entities } from "../../modules/entities";
   import { ready } from "../../modules/network";
-  import { playerCore } from "../../modules/player";
-  // component2 <= !!!
-  import UIComponent from "./UIComponent2.svelte";
-  import UISpawn from "./UISpawn.svelte";
-  import UILoading from "./UILoading.svelte";
+  import { playerBaseEntity, playerCore } from "../../modules/player";
+  import { uiState, castleExtended, spawnStage } from "./index";
+  // ...
+  import UIComponent from "./../SpawnSequence/LoadingScreen.svelte";
   import Map from "../Map/Map.svelte";
   import UIPane from "./UIPane.svelte";
-  import { castleExtended } from "./index";
+  import Leaderboard from "../Leaderboard/Leaderboard.svelte";
+  // ---
+  import LoadingScreen from "../SpawnSequence/LoadingScreen.svelte";
+  import SpawnStart from "../SpawnSequence/SpawnStart.svelte";
+  import SpawnCore from "../SpawnSequence/SpawnCore.svelte";
+  import SpawnEnergy from "../SpawnSequence/SpawnEnergy.svelte";
+  import SpawnBody from "../SpawnSequence/SpawnBody.svelte";
+  import SpawnWorld from "../SpawnSequence/SpawnWorld.svelte";
+
+  onMount(async () => {
+    if ($playerCore && $playerBaseEntity) {
+      spawnStage.set(100);
+    }
+  });
 </script>
 
-<!-- The UI layer -->
+{#if $spawnStage == 100 && Object.values($entities).find((e) => e.goal)}
+  <div class="leaderboard">
+    <Leaderboard />
+  </div>
+{/if}
+
 <div class="ui-container" class:extended={$castleExtended}>
-  {#if !$ready}
-    <div class="ui-container-inner">
-      <UIComponent id="ui-loading">
-        <UILoading />
-      </UIComponent>
-    </div>
-  {:else if !$playerCore}
-    <div class="ui-container-inner">
-      <UIComponent id="ui-spawn">
-        <UISpawn />
-      </UIComponent>
-    </div>
-  {:else}
+  {#if $playerCore && $playerBaseEntity && $spawnStage == 100}
     <div class="ui-container-inner-map">
-      <UIComponent id="map" active={true} title="Map">
-        <Map />
-      </UIComponent>
+      <Map />
     </div>
     <div class="ui-container-inner-pane">
-      <UIComponent id="pane" active={true} title="Pane">
-        <UIPane />
-      </UIComponent>
+      <UIPane />
+    </div>
+  {:else}
+    <div class="ui-container-inner">
+      {#if $spawnStage === 1}
+        <LoadingScreen />
+      {:else if $spawnStage === 2}
+        <SpawnStart />
+      {:else if $spawnStage === 3}
+        <SpawnCore />
+      {:else if $spawnStage === 4}
+        <SpawnEnergy />
+      {:else if $spawnStage === 5}
+        <SpawnBody />
+      {:else if $spawnStage === 6}
+        <SpawnWorld />
+      {/if}
     </div>
   {/if}
 </div>
@@ -78,5 +96,14 @@
 
   .extended .ui-container-inner-map {
     display: none;
+  }
+
+  .leaderboard {
+    position: fixed;
+    top: 10px;
+    right: calc(40vw + 10px);
+    padding: 10px;
+    background: red;
+    z-index: 100;
   }
 </style>
