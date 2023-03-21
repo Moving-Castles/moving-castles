@@ -1,7 +1,6 @@
 import type { SystemTypes } from "contracts/types/SystemTypes";
 import type { GameConfig } from "./config";
 import { createWorld } from "@latticexyz/recs";
-import { setupDevSystems } from "./setup";
 import { createActionSystem, setupMUDNetwork } from "@latticexyz/std-client";
 import { createFaucetService } from "@latticexyz/network";
 import {
@@ -18,12 +17,9 @@ import {
   defineCoreComponent,
   defineAbilityMoveComponent,
   defineAbilityConsumeComponent,
-  // defineAbilityExtractComponent,
   defineAbilityPlayComponent,
-  // defineAbilityBurnComponent,
   defineUntraversableComponent,
   defineCommitComponent,
-  // defineBurnBlockComponent,
   defineLootComponent,
   defineGoalComponent,
   definePointComponent
@@ -112,7 +108,6 @@ export async function createNetworkLayer(config: GameConfig) {
     actions,
     systemCallStreams,
     api: { spawn },
-    dev: setupDevSystems(world, encoders, systems),
   };
 
   return context;

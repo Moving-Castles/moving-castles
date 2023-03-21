@@ -1,8 +1,7 @@
 import { defineComponentSystem } from "@latticexyz/recs";
 import type { NetworkLayer } from "../../network";
 import { entities, indexToID } from "../modules/entities";
-
-const toCamelCase = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+import { toCamelCase } from "../utils/misc";
 
 export function createComponentSystem(network: NetworkLayer, componentKey: string) {
   const { world, components } = network;
@@ -25,6 +24,7 @@ export function createComponentSystem(network: NetworkLayer, componentKey: strin
       // Create an empty entity if it does not exist
       if (value[entityID] === undefined) value[entityID] = {};
 
+      // @todo: fix types
       if (newValue === undefined) {
         delete value[entityID][propertyName];
       } else {

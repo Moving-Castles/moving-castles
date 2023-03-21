@@ -20,13 +20,6 @@
     close();
   }
 
-  function extract() {
-    // if (isSame || isAdjacent) {
-    addToSequencer("system.Extract", [selectedTileCoords]);
-    // }
-    close();
-  }
-
   function close() {
     dispatch("close", {});
   }
@@ -36,9 +29,6 @@
   <div class="text">x:{selectedTileCoords.x},y:{selectedTileCoords.y}</div>
   {#if $playerAbilities.includes("abilityMove")}
     <div><button on:click={move}>MOVE</button></div>
-  {/if}
-  {#if $playerAbilities.includes("abilityExtract")}
-    <div><button on:click={extract}>EXTRACT</button></div>
   {/if}
   <div><button on:click={close}>CLOSE</button></div>
 </div>

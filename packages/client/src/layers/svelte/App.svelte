@@ -7,11 +7,17 @@
   import { initActionSequencer } from "./modules/actionSequencer";
 
   onMount(async () => {
+    // App mounted. Start initializing...
     const layers = await bootGame();
 
     networkStore.set(layers.network);
 
-    // Create systems to listen to component changes
+    // For convenience, we store the block number in a svelte store
+    layers.network.network.blockNumber$.subscribe((x) => blockNumber.set(x));
+
+    initActionSequencer();
+
+    // Create systems to listen to all component changes
     for (const componentKey of Object.keys(layers.network.components)) {
       if (componentKey === "LoadingState") {
         createLoadingStateSystem(layers.network);
@@ -19,13 +25,6 @@
         createComponentSystem(layers.network, componentKey);
       }
     }
-
-    // Initialize the action sequencer
-    initActionSequencer();
-
-    layers.network.network.blockNumber$.subscribe((x) => {
-      blockNumber.set(x);
-    });
   });
 </script>
 

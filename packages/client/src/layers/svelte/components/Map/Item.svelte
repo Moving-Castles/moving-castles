@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css";
-  import { addressToColor } from "../../utils/ui";
+  import { addressToColor } from "../../utils/misc";
   import type { Entity } from "../../modules/entities";
   import { blockNumber } from "../../modules/network";
   import { playerAddress, playerAbilities } from "../../modules/player";

@@ -1,3 +1,9 @@
+/*
+ *  The action sequencer is responsible for sending transactions 
+ *  to the blockchain, one at a time.
+ *
+ */
+
 import type { SystemTypes } from "contracts/types/SystemTypes";
 import { writable, get } from "svelte/store";
 import { network, blockNumber } from "../network";
@@ -12,30 +18,15 @@ export enum SequencerState {
   Paused,
 }
 
-export enum QueuedActionState {
-  Queued,
-}
-
-export enum ActiveActionState {
-  Sent,
-}
-
-export enum ProcessedActionState {
-  Executed,
-  Confirmed,
-  Failed,
-}
-
 export type Action = {
   actionId: string;
   systemId: keyof SystemTypes;
-  state?: QueuedActionState | ActiveActionState | ProcessedActionState;
-  tx?: string;
-  timestamp?: number;
-  params?: any[];
   requirements: {
     energy: number;
   };
+  tx?: string;
+  timestamp?: number;
+  params?: any[];
 };
 
 // --- STORES -----------------------------------------------------------------
@@ -74,7 +65,6 @@ export function addToSequencer(systemId: keyof SystemTypes, params: any[] = []) 
   queuedActions.update((queuedActions) => {
     const newAction = {
       actionId: self.crypto.randomUUID(),
-      state: QueuedActionState.Queued,
       systemId: systemId,
       params: params,
       requirements: {
@@ -144,6 +134,7 @@ async function execute() {
     queuedActions.update((queuedActions) => queuedActions.slice(1));
     // Check if player has enough energy
     if (get(playerCore).energy < action.requirements.energy) {
+      // @todo: handle lack of energy better
       window.alert('Not enough energy to execute action: ' + String(action.systemId) + '. Requires ' + action.requirements.energy + ' energy.')
       playSound("error", "ui")
       return;
@@ -152,7 +143,7 @@ async function execute() {
     activeActions.update((activeActions) => [action, ...activeActions]);
     // @todo: fix types
     const tx = await get(network).systems[action.systemId].executeTyped(...action.params);
-    // Add tx hash and timestamp
+    // Transaction sent. Add tx hash and timestamp to action.
     activeActions.update((activeActions) => {
       activeActions[0].tx = tx.hash;
       activeActions[0].timestamp = Date.now();
@@ -161,6 +152,7 @@ async function execute() {
     });
   } catch (e) {
     playSound("error", "ui")
+    // @todo: handle error better
     window.alert(e);
     // Clear active list
     activeActions.update(() => []);

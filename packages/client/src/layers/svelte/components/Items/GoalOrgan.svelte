@@ -58,7 +58,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="organ goal" bind:this={markerEl} on:mouseenter={mouseenter}>
   {info.symbol}
-  {$blockNumber - parseInt(item.goal)}
+  {$blockNumber - parseInt(String(item.goal || ""))}
 </div>
 
 {#if showDialog}

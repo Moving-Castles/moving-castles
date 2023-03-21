@@ -1,25 +1,21 @@
-// --- FUNCTIONS -----------------------------------------------------------------
+export const toCamelCase = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 
-/**
- * Calculate the player's energy
- * @param $player
- * @param $blockNumber
- * @returns
- */
-export function calculateEnergy($player: Player, $blockNumber: number) {
-  if (parseInt(String($player.death)) <= $blockNumber) {
-    return 0;
-  }
-  // actualEnergy = deathBlock - currentBlock
-  return parseInt(String($player.death)) - $blockNumber;
+export function shortenAddress(s: string) {
+  return s ? s.slice(0, 8) + "..." + s.slice(-8) : "";
 }
 
-export function calculateHeartbeats(player: Player, blockNumber: number) {
-  const energy = calculateEnergy(player, blockNumber);
-  const lifespan = parseInt(String(player.death)) - parseInt(String(player.birth));
-  if (energy < 1) {
-    return lifespan;
-  } else {
-    return lifespan + (blockNumber - parseInt(String(player.death)));
-  }
+export function addressToColor(address: string): string {
+  if (!address || address.length < 6) return "#FF0000";
+  // Take the last 6 characters of the hash
+  address = address.slice(-6);
+  // Prefix with '#' to create a valid hex color code
+  return "#" + address;
 }
+
+export function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export const DEV = false;

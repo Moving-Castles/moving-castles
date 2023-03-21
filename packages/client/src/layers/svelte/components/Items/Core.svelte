@@ -2,15 +2,15 @@
   import { onMount, onDestroy } from "svelte";
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css";
-  import { addressToColor } from "../../utils/ui";
-  import type { Entity } from "../../modules/entities";
+  import { addressToColor } from "../../utils/misc";
+  import type { Core } from "../../modules/entities";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import { playerAddress } from "../../modules/player";
   import { idToName, idToAvatar } from "../../utils/name";
 
   export let itemId: string;
-  export let item: Entity;
+  export let item: Core;
   export let showDialog: boolean;
 
   let markerEl: HTMLElement;

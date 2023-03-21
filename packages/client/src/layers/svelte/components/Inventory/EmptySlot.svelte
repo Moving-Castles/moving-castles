@@ -1,7 +1,3 @@
-<script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-</script>
-
 <div class="empty-slot" />
 
 <style lang="scss">

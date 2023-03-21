@@ -1,6 +1,6 @@
 <script lang="ts">
   import { playerCore } from "../../modules/player";
-  import { shortenAddress, addressToColor } from "../../utils/ui";
+  import { shortenAddress, addressToColor } from "../../utils/misc";
 
   import Inventory from "../Inventory/Inventory.svelte";
 

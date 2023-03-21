@@ -1,6 +1,6 @@
 <script lang="ts">
   import { playerAddress, playerCore } from "../../modules/player";
-  import { shortenAddress, addressToColor } from "../../utils/ui";
+  import { shortenAddress, addressToColor } from "../../utils/misc";
   import { idToName, seedToCastleName } from "../../utils/name";
   export let channelId: string;
 

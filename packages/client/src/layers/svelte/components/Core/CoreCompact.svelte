@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { Activity } from "../../modules/entities";
-  import { playerCore, playerBaseEntity, playerAddress } from "../../modules/player";
-  import { shortenAddress, addressToColor } from "../../utils/ui";
+  import { playerCore, playerAddress } from "../../modules/player";
   import { idToName, idToAvatar } from "../../utils/name";
 </script>
 
@@ -12,7 +10,7 @@
     </div> -->
     <div class="core-item"><strong>{idToName($playerAddress)}</strong></div>
     <div class="core-item">Energy: {$playerCore.energy}</div>
-    <div class="core-item">Point: {parseInt($playerCore.point)}</div>
+    <div class="core-item">Point: {parseInt(String($playerCore.point))}</div>
     <div class="core-item">
       <img class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
     </div>

@@ -3,7 +3,7 @@
   import { chebyshev } from "../../utils/space";
   import { items, baseEntities } from "../../modules/entities";
   import { playerCore } from "../../modules/player";
-  import { addressToColor } from "../../utils/ui";
+  import { addressToColor } from "../../utils/misc";
 
   import Item from "./Item.svelte";
   import Transfer from "./TransferDialog.svelte";
@@ -24,10 +24,12 @@
     .some((c) => c.commit === Activity.Play);
 
   $: isPlayer = baseEntityId === $playerCore.carriedBy;
+
   $: isSame =
     $playerCore.carriedBy && $baseEntities[$playerCore.carriedBy]
       ? chebyshev($baseEntities[$playerCore.carriedBy].position, baseEntity.position) === 0
       : false;
+
   $: isAdjacent =
     $playerCore.carriedBy && $baseEntities[$playerCore.carriedBy]
       ? chebyshev($baseEntities[$playerCore.carriedBy].position, baseEntity.position) === 1

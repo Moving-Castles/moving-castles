@@ -1,13 +1,7 @@
 <script lang="ts">
-  import { Activity } from "../../modules/entities";
-  import { playerCore, playerBaseEntity, playerAddress } from "../../modules/player";
-  import { shortenAddress, addressToColor } from "../../utils/ui";
-  import Inventory from "../Inventory/Inventory.svelte";
+  import { playerCore, playerAddress } from "../../modules/player";
+  import { shortenAddress, addressToColor } from "../../utils/misc";
   import { addToSequencer } from "../../modules/actionSequencer";
-
-  function play() {
-    addToSequencer("system.Play");
-  }
 </script>
 
 <div class="core-extended">

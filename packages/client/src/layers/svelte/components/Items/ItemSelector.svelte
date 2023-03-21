@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Entity } from "../../modules/entities";
+  import { ItemType } from "./types";
   import Core from "./Core.svelte";
   import MoveOrgan from "./MoveOrgan.svelte";
   import ConsumeOrgan from "./ConsumeOrgan.svelte";
@@ -11,16 +12,6 @@
   export let itemId: string;
   export let item: Entity;
   export let showDialog = true;
-
-  enum ItemType {
-    Core,
-    MoveOrgan,
-    ConsumeOrgan,
-    PlayOrgan,
-    LootBox,
-    Untraversable,
-    GoalOrgan,
-  }
 
   let type: ItemType;
 
