@@ -7,21 +7,17 @@
     "EnergyComponent",
     "CreationBlockComponent",
     "ReadyBlockComponent",
-    "MatterComponent",
     "PortableComponent",
     "CarryingCapacityComponent",
     "CarriedByComponent",
-    "SubstanceComponent",
     "AbilityMoveComponent",
     "AbilityConsumeComponent",
-    "AbilityExtractComponent",
     "AbilityPlayComponent",
-    "AbilityBurnComponent",
     "UntraversableComponent",
-    "BurnBlockComponent",
     "LootComponent",
     "GoalComponent",
-    "PointComponent"
+    "PointComponent",
+    "MatterComponent"
   ],
   "systems": [
     {
@@ -51,12 +47,9 @@
         "CarriedByComponent",
         "AbilityMoveComponent",
         "AbilityConsumeComponent",
-        "AbilityExtractComponent",
         "AbilityPlayComponent",
         "UntraversableComponent",
-        "MatterComponent",
         "CommitComponent",
-        "AbilityBurnComponent",
         "PointComponent",
         "LootComponent"
       ]
@@ -72,22 +65,6 @@
         "CarriedByComponent",
         "AbilityMoveComponent",
         "UntraversableComponent"
-      ]
-    },
-    {
-      "name": "ExtractSystem",
-      "writeAccess": [
-        "GameConfigComponent",
-        "CoreComponent",
-        "PositionComponent",
-        "EnergyComponent",
-        "ReadyBlockComponent",
-        "CarriedByComponent",
-        "PortableComponent",
-        "CarryingCapacityComponent",
-        "SubstanceComponent",
-        "MatterComponent",
-        "AbilityExtractComponent"
       ]
     },
     {
@@ -139,9 +116,8 @@
         "CarriedByComponent",
         "PortableComponent",
         "CarryingCapacityComponent",
-        "SubstanceComponent",
-        "MatterComponent",
-        "AbilityConsumeComponent"
+        "AbilityConsumeComponent",
+        "MatterComponent"
       ]
     },
     {
@@ -157,19 +133,6 @@
       ]
     },
     {
-      "name": "BurnSystem",
-      "writeAccess": [
-        "GameConfigComponent",
-        "CoreComponent",
-        "EnergyComponent",
-        "ReadyBlockComponent",
-        "CarriedByComponent",
-        "AbilityBurnComponent",
-        "CommitComponent",
-        "BurnBlockComponent"
-      ]
-    },
-    {
       "name": "OpenSystem",
       "writeAccess": [
         "GameConfigComponent",
@@ -181,13 +144,11 @@
         "CarryingCapacityComponent",
         "CommitComponent",
         "LootComponent",
-        "MatterComponent",
         "AbilityMoveComponent",
         "AbilityConsumeComponent",
-        "AbilityExtractComponent",
-        "AbilityBurnComponent",
         "AbilityPlayComponent",
-        "GoalComponent"
+        "GoalComponent",
+        "MatterComponent"
       ]
     },
     {
@@ -202,7 +163,6 @@
         "CarryingCapacityComponent",
         "CommitComponent",
         "LootComponent",
-        "MatterComponent",
         "GoalComponent",
         "PointComponent"
       ]

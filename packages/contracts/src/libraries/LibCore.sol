@@ -68,11 +68,7 @@ library LibCore {
    * @param _entity Entity
    * @param _period How many block to add
    */
-  function setReadyBlock(
-    IUint256Component _components,
-    uint256 _entity,
-    uint256 _period
-  ) internal {
+  function setReadyBlock(IUint256Component _components, uint256 _entity, uint256 _period) internal {
     ReadyBlockComponent readyBlockComponent = ReadyBlockComponent(getAddressById(_components, ReadyBlockComponentID));
     readyBlockComponent.set(_entity, block.number + _period);
   }
@@ -116,11 +112,7 @@ library LibCore {
    * @param _amount Amount to decrease by
    * @return bool False if the core does not have enough energy
    */
-  function decreaseEnergy(
-    IUint256Component _components,
-    uint256 _coreEntity,
-    uint32 _amount
-  ) internal returns (bool) {
+  function decreaseEnergy(IUint256Component _components, uint256 _coreEntity, uint32 _amount) internal returns (bool) {
     EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
     uint32 currentEnergy = energyComponent.getValue(_coreEntity);
     if (currentEnergy < _amount) return false;
@@ -135,11 +127,7 @@ library LibCore {
    * @param _coreEntity Core entity
    * @param _amount Amount to increase by
    */
-  function increaseEnergy(
-    IUint256Component _components,
-    uint256 _coreEntity,
-    uint32 _amount
-  ) internal {
+  function increaseEnergy(IUint256Component _components, uint256 _coreEntity, uint32 _amount) internal {
     EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
     uint32 currentEnergy = energyComponent.getValue(_coreEntity);
     energyComponent.set(_coreEntity, currentEnergy + _amount);
@@ -152,11 +140,7 @@ library LibCore {
    * @param _coreEntity Core entity
    * @param _activity Activity
    */
-  function commit(
-    IUint256Component _components,
-    uint256 _coreEntity,
-    Activity _activity
-  ) internal {
+  function commit(IUint256Component _components, uint256 _coreEntity, Activity _activity) internal {
     CommitComponent commitComponent = CommitComponent(getAddressById(_components, CommitComponentID));
     commitComponent.set(_coreEntity, uint32(_activity));
   }
@@ -211,11 +195,7 @@ library LibCore {
    * @param _amount Amount to decrease by
    * @return bool False if the core does not have enough energy
    */
-  function decreasePoint(
-    IUint256Component _components,
-    uint256 _coreEntity,
-    uint256 _amount
-  ) internal returns (bool) {
+  function decreasePoint(IUint256Component _components, uint256 _coreEntity, uint256 _amount) internal returns (bool) {
     PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
     uint256 currentPoint = pointComponent.getValue(_coreEntity);
     if (currentPoint < _amount) return false;
@@ -230,11 +210,7 @@ library LibCore {
    * @param _coreEntity Core entity
    * @param _amount Amount to increase by
    */
-  function increasePoint(
-    IUint256Component _components,
-    uint256 _coreEntity,
-    uint256 _amount
-  ) internal {
+  function increasePoint(IUint256Component _components, uint256 _coreEntity, uint256 _amount) internal {
     PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
     uint256 currentPoint = pointComponent.getValue(_coreEntity);
     pointComponent.set(_coreEntity, currentPoint + _amount);
@@ -249,11 +225,10 @@ library LibCore {
    * @param _baseEntity base entity
    * @return array cores in inventory of base entity
    */
-  function getCoresByBaseEntity(IUint256Component _components, uint256 _baseEntity)
-    internal
-    view
-    returns (uint256[] memory)
-  {
+  function getCoresByBaseEntity(
+    IUint256Component _components,
+    uint256 _baseEntity
+  ) internal view returns (uint256[] memory) {
     CarriedByComponent carriedByComponent = CarriedByComponent(getAddressById(_components, CarriedByComponentID));
     CoreComponent coreComponent = CoreComponent(getAddressById(_components, CoreComponentID));
 

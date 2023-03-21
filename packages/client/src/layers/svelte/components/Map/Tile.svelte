@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { baseEntities, freePortables, resources } from "../../modules/entities";
-  import type { Resource } from "../../modules/entities";
+  import { baseEntities, freePortables } from "../../modules/entities";
+  // import type { Resource } from "../../modules/entities";
 
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
@@ -10,14 +10,14 @@
 
   export let tile: any;
 
-  let matter = 100;
-  let resource: Resource | undefined;
+  // let matter = 100;
+  // let resource: Resource | undefined;
 
-  $: resource = Object.values($resources).find(
-    (r) => r.position?.x === tile.coordinates.x && r.position?.y === tile.coordinates.y
-  );
+  // $: resource = Object.values($resources).find(
+  //   (r) => r.position?.x === tile.coordinates.x && r.position?.y === tile.coordinates.y
+  // );
 
-  $: matter = resource ? resource.matter : 100;
+  // $: matter = resource ? resource.matter : 100;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -30,7 +30,7 @@
   }}
 >
   <div class="coords">{tile.coordinates.x}:{tile.coordinates.y}</div>
-  <div class="matter" class:empty={matter === 0}>{matter}</div>
+  <!-- <div class="matter" class:empty={matter === 0}>{matter}</div> -->
 
   <!-- BASE ENTITIES -->
   {#each Object.entries($baseEntities) as [baseEntityId, baseEntity] (baseEntityId)}
@@ -70,15 +70,15 @@
       right: 10px;
     }
 
-    .matter {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 10px;
+    // .matter {
+    //   position: absolute;
+    //   top: 10px;
+    //   left: 10px;
+    //   font-size: 10px;
 
-      &.empty {
-        color: red;
-      }
-    }
+    //   &.empty {
+    //     color: red;
+    //   }
+    // }
   }
 </style>

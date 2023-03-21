@@ -11,9 +11,7 @@ import { Directions } from "../../utils/space";
 export enum Activities {
   Idle,
   Moving,
-  Gathering,
   Eating,
-  Burning,
   Playing,
   Dead,
 }
@@ -22,12 +20,8 @@ export function categoryToActivity(category: string) {
   switch (category) {
     case "move":
       return Activities.Moving;
-    case "gather":
-      return Activities.Gathering;
     case "consume":
       return Activities.Eating;
-    case "burn":
-      return Activities.Burning;
     case "play":
       return Activities.Playing;
     case "dead":
@@ -41,12 +35,8 @@ export function activityToVerb(activity: Activities) {
   switch (activity) {
     case Activities.Moving:
       return "walking";
-    case Activities.Gathering:
-      return "gathering";
     case Activities.Eating:
       return "eating";
-    case Activities.Burning:
-      return "making a fire";
     case Activities.Playing:
       return "playing";
     case Activities.Dead:
@@ -147,7 +137,7 @@ export const multiCore = derived([cores, playerCore], ([$cores, $playerCore]) =>
   Object.values($cores).filter((e) => e.carriedBy == $playerCore.carriedBy).length > 1 ? true : false
 );
 
-const ABILITY_LIST = ["abilityMove", "abilityExtract", "abilityConsume", "abilityPlay", "abilityBurn"];
+const ABILITY_LIST = ["abilityMove", "abilityConsume", "abilityPlay"];
 
 export const playerAbilities = derived([entities, playerCore], ([$entities, $playerCore]) => {
   const abilities: string[] = [];

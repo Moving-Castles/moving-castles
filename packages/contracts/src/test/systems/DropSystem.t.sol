@@ -11,9 +11,7 @@ import { SpawnSystem, ID as SpawnSystemID } from "../../systems/SpawnSystem.sol"
 
 import { Coord } from "../../components/PositionComponent.sol";
 
-import { LibResource } from "../../libraries/LibResource.sol";
 import { LibInventory } from "../../libraries/LibInventory.sol";
-import { LibSubstanceBlock } from "../../libraries/LibSubstanceBlock.sol";
 
 contract DropSystemTest is MudTest {
   function testDrop() public {

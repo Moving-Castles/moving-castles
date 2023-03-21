@@ -35,12 +35,12 @@
       setInfo("M", "Ability: Move");
     } else if (item.abilityConsume) {
       setInfo("C", "Ability: Consume");
-    } else if (item.abilityExtract) {
-      setInfo("E", "Ability: Extract");
+      // } else if (item.abilityExtract) {
+      //   setInfo("E", "Ability: Extract");
     } else if (item.abilityPlay) {
       setInfo("P", "Ability: Play");
-    } else if (item.abilityBurn) {
-      setInfo("B", "Ability: Burn");
+      // } else if (item.abilityBurn) {
+      //   setInfo("B", "Ability: Burn");
     } else if (item.untraversable) {
       setInfo("X", "Untraversable");
     } else if (item.loot) {
@@ -54,9 +54,9 @@
     addToSequencer("system.PickUp", [itemId]);
   }
 
-  function burn() {
-    addToSequencer("system.Burn", [itemId]);
-  }
+  // function burn() {
+  //   addToSequencer("system.Burn", [itemId]);
+  // }
 
   onMount(async () => {
     if (free) {

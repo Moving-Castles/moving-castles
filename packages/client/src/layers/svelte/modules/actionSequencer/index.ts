@@ -52,8 +52,6 @@ export function getEnergyCost(systemId: keyof SystemTypes) {
   switch (systemId) {
     case "system.Move":
       return config.moveCost;
-    case "system.Extract":
-      return config.extractCost;
     case "system.PickUp":
       return config.pickUpCost;
     case "system.Drop":
@@ -62,8 +60,6 @@ export function getEnergyCost(systemId: keyof SystemTypes) {
       return config.transferCost;
     case "system.Play":
       return config.playCost;
-    case "system.Burn":
-      return config.burnCost;
     case "system.Open":
       return config.openCost;
     case "system.Harvest":
@@ -155,7 +151,6 @@ async function execute() {
     // Add action to active list
     activeActions.update((activeActions) => [action, ...activeActions]);
     // @todo: fix types
-    // let tx = await get(network).systems["system.Burn"].executeTyped(...action.params);
     const tx = await get(network).systems[action.systemId].executeTyped(...action.params);
     // Add tx hash and timestamp
     activeActions.update((activeActions) => {

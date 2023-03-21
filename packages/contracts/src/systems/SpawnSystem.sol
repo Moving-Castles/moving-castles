@@ -10,7 +10,6 @@ import { LibCore } from "../libraries/LibCore.sol";
 import { LibMove } from "../libraries/LibMove.sol";
 import { LibMap } from "../libraries/LibMove.sol";
 import { LibAbility } from "../libraries/LibAbility.sol";
-import { LibResource } from "../libraries/LibResource.sol";
 import { LibUtils } from "../libraries/LibUtils.sol";
 import { LibLoot } from "../libraries/LibLoot.sol";
 
@@ -19,7 +18,6 @@ import { Coord } from "../components/PositionComponent.sol";
 
 import { ID as AbilityMoveComponentID } from "../components/AbilityMoveComponent.sol";
 import { ID as AbilityConsumeComponentID } from "../components/AbilityConsumeComponent.sol";
-import { ID as AbilityExtractComponentID } from "../components/AbilityExtractComponent.sol";
 
 uint256 constant ID = uint256(keccak256("system.Spawn"));
 
@@ -51,8 +49,6 @@ contract SpawnSystem is System {
     // Find valid spawn position
     Coord memory spawnPosition = LibMap.getSpawnPosition(components);
     LibMove.setPosition(components, baseEntity, spawnPosition);
-    // Remove matter in tile ("converting" it to energy in the core)
-    LibResource.create(components, world.getUniqueEntityId(), spawnPosition, 0);
   }
 
   function executeTyped() public returns (bytes memory) {

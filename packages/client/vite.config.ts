@@ -23,6 +23,7 @@ export default defineConfig({
       "is-observable",
       "nice-grpc-web",
       "@improbable-eng/grpc-web",
+      "threads"
     ],
   },
 });

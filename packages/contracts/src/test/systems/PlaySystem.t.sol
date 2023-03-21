@@ -13,9 +13,6 @@ import { MoveSystem, ID as MoveSystemID } from "../../systems/MoveSystem.sol";
 import { Coord } from "../../components/PositionComponent.sol";
 import { Activity } from "../../utils/constants.sol";
 
-import { LibResource } from "../../libraries/LibResource.sol";
-import { LibSubstanceBlock } from "../../libraries/LibSubstanceBlock.sol";
-
 contract PlaySystemTest is MudTest {
   function testPlay() public {
     setUp();
@@ -55,6 +52,20 @@ contract PlaySystemTest is MudTest {
     assertEq(commitComponent.getValue(addressToEntity(alice)), uint32(Activity.Play));
 
     vm.roll(333);
+
+    // Place an item allowing Move in inventory
+    uint256 abilityMoveItem = world.getUniqueEntityId();
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, abilityMoveItem, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      AbilityMoveComponentID,
+      abilityMoveItem,
+      abi.encode(1)
+    );
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarriedByComponentID,
+      abilityMoveItem,
+      abi.encode(baseEntity)
+    );
 
     Coord memory targetPosition = Coord(
       initialPosition.x < gameConfig.worldWidth - 2 ? initialPosition.x + 1 : initialPosition.x - 1,

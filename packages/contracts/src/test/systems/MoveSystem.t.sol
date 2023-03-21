@@ -26,6 +26,20 @@ contract MoveSystemTest is MudTest {
     assertTrue(carriedByComponent.has(addressToEntity(alice)));
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
 
+    // Place an item allowing Move in inventory
+    uint256 abilityMoveItem = world.getUniqueEntityId();
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, abilityMoveItem, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      AbilityMoveComponentID,
+      abilityMoveItem,
+      abi.encode(1)
+    );
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarriedByComponentID,
+      abilityMoveItem,
+      abi.encode(baseEntity)
+    );
+
     Coord memory initialPosition = positionComponent.getValue(baseEntity);
 
     vm.roll(2);
@@ -65,6 +79,20 @@ contract MoveSystemTest is MudTest {
     vm.roll(2);
 
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
+
+    // Place an item allowing Move in inventory
+    uint256 abilityMoveItem = world.getUniqueEntityId();
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, abilityMoveItem, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      AbilityMoveComponentID,
+      abilityMoveItem,
+      abi.encode(1)
+    );
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarriedByComponentID,
+      abilityMoveItem,
+      abi.encode(baseEntity)
+    );
 
     Coord memory initialPosition = positionComponent.getValue(baseEntity);
 
@@ -118,6 +146,20 @@ contract MoveSystemTest is MudTest {
 
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
 
+    // Place an item allowing Move in inventory
+    uint256 abilityMoveItem = world.getUniqueEntityId();
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, abilityMoveItem, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      AbilityMoveComponentID,
+      abilityMoveItem,
+      abi.encode(1)
+    );
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarriedByComponentID,
+      abilityMoveItem,
+      abi.encode(baseEntity)
+    );
+
     Coord memory initialPosition = positionComponent.getValue(baseEntity);
 
     MoveSystem(system(MoveSystemID)).executeTyped(
@@ -161,7 +203,7 @@ contract MoveSystemTest is MudTest {
       initialPosition.y
     );
 
-    // Give baseEntity two more movement organs for a total of three
+    // Give baseEntity two more movement organs for a total of two
     uint256 m1 = world.getUniqueEntityId();
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, m1, abi.encode(1));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityMoveComponentID, m1, abi.encode(1));
@@ -179,8 +221,8 @@ contract MoveSystemTest is MudTest {
     vm.stopPrank();
 
     // Energy should be:
-    // gameConfig.initialEnergy - (gameConfig.moveCost - (2 * (3 - 1)))
-    // 3 => number of movement organs
-    assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy - (gameConfig.moveCost - 4));
+    // gameConfig.initialEnergy - (gameConfig.moveCost - (2 * (2 - 1)))
+    // 2 => number of movement organs
+    assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy - (gameConfig.moveCost - 2));
   }
 }

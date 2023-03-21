@@ -26,12 +26,9 @@ import { CarriedByComponent, ID as CarriedByComponentID } from "../components/Ca
 import { MatterComponent, ID as MatterComponentID } from "../components/MatterComponent.sol";
 import { UntraversableComponent, ID as UntraversableComponentID } from "../components/UntraversableComponent.sol";
 import { AbilityMoveComponent, ID as AbilityMoveComponentID } from "../components/AbilityMoveComponent.sol";
-import { AbilityExtractComponent, ID as AbilityExtractComponentID } from "../components/AbilityExtractComponent.sol";
 import { AbilityConsumeComponent, ID as AbilityConsumeComponentID } from "../components/AbilityConsumeComponent.sol";
 import { AbilityPlayComponent, ID as AbilityPlayComponentID } from "../components/AbilityPlayComponent.sol";
-import { AbilityBurnComponent, ID as AbilityBurnComponentID } from "../components/AbilityBurnComponent.sol";
 import { CommitComponent, ID as CommitComponentID } from "../components/CommitComponent.sol";
-import { BurnBlockComponent, ID as BurnBlockComponentID } from "../components/BurnBlockComponent.sol";
 import { LootComponent, ID as LootComponentID } from "../components/LootComponent.sol";
 import { PointComponent, ID as PointComponentID } from "../components/PointComponent.sol";
 import { GoalComponent, ID as GoalComponentID } from "../components/GoalComponent.sol";
@@ -63,13 +60,10 @@ contract MudTest is DSTest {
   MatterComponent matterComponent;
   UntraversableComponent untraversableComponent;
   CommitComponent commitComponent;
-  BurnBlockComponent burnBlockComponent;
   LootComponent lootComponent;
   AbilityMoveComponent abilityMoveComponent;
-  AbilityExtractComponent abilityExtractComponent;
   AbilityConsumeComponent abilityConsumeComponent;
   AbilityPlayComponent abilityPlayComponent;
-  AbilityBurnComponent abilityBurnComponent;
   PointComponent pointComponent;
   GoalComponent goalComponent;
 
@@ -102,13 +96,10 @@ contract MudTest is DSTest {
     matterComponent = MatterComponent(getAddressById(components, MatterComponentID));
     untraversableComponent = UntraversableComponent(getAddressById(components, UntraversableComponentID));
     commitComponent = CommitComponent(getAddressById(components, CommitComponentID));
-    burnBlockComponent = BurnBlockComponent(getAddressById(components, BurnBlockComponentID));
     lootComponent = LootComponent(getAddressById(components, LootComponentID));
     abilityMoveComponent = AbilityMoveComponent(getAddressById(components, AbilityMoveComponentID));
-    abilityExtractComponent = AbilityExtractComponent(getAddressById(components, AbilityExtractComponentID));
     abilityConsumeComponent = AbilityConsumeComponent(getAddressById(components, AbilityConsumeComponentID));
     abilityPlayComponent = AbilityPlayComponent(getAddressById(components, AbilityPlayComponentID));
-    abilityBurnComponent = AbilityBurnComponent(getAddressById(components, AbilityBurnComponentID));
     pointComponent = PointComponent(getAddressById(components, PointComponentID));
     goalComponent = GoalComponent(getAddressById(components, GoalComponentID));
 

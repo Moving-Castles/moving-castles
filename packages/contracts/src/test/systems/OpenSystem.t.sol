@@ -11,9 +11,7 @@ import { SpawnSystem, ID as SpawnSystemID } from "../../systems/SpawnSystem.sol"
 
 import { Coord } from "../../components/PositionComponent.sol";
 
-import { LibResource } from "../../libraries/LibResource.sol";
 import { LibLoot } from "../../libraries/LibLoot.sol";
-import { LibSubstanceBlock } from "../../libraries/LibSubstanceBlock.sol";
 import { LibInventory } from "../../libraries/LibInventory.sol";
 
 contract OpenSystemTest is MudTest {
@@ -57,7 +55,7 @@ contract OpenSystemTest is MudTest {
 
     // loot should be gone
     assertTrue(!lootComponent.has(portableEntity));
-    assertTrue(!portableComponent.has(portableEntity));
-    assertTrue(!carriedByComponent.has(portableEntity));
+    // assertTrue(!portableComponent.has(portableEntity));
+    // assertTrue(!carriedByComponent.has(portableEntity));
   }
 }

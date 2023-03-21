@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css";
-  import type { Entity } from "../../modules/entities";
+  import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
 
@@ -27,6 +27,10 @@
 
   function drop() {
     addToSequencer("system.Drop", [itemId]);
+  }
+
+  function consume() {
+    addToSequencer("system.Consume", [itemId]);
   }
 
   const mouseenter = () => {
@@ -56,6 +60,9 @@
 {#if showDialog}
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>
+    {#if $playerAbilities.includes("abilityConsume")}
+      <button on:click={consume}>consume</button>
+    {/if}
     <button on:click={drop}>drop</button>
   </div>
 {/if}

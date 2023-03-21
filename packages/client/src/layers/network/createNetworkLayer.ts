@@ -18,12 +18,12 @@ import {
   defineCoreComponent,
   defineAbilityMoveComponent,
   defineAbilityConsumeComponent,
-  defineAbilityExtractComponent,
+  // defineAbilityExtractComponent,
   defineAbilityPlayComponent,
-  defineAbilityBurnComponent,
+  // defineAbilityBurnComponent,
   defineUntraversableComponent,
   defineCommitComponent,
-  defineBurnBlockComponent,
+  // defineBurnBlockComponent,
   defineLootComponent,
   defineGoalComponent,
   definePointComponent
@@ -49,16 +49,13 @@ export async function createNetworkLayer(config: GameConfig) {
     Matter: defineMatterComponent(world),
     CreationBlock: defineCreationBlockComponent(world),
     ReadyBlock: defineReadyBlockComponent(world),
-    BurnBlock: defineBurnBlockComponent(world),
     Portable: definePortableComponent(world),
     CarryingCapacity: defineCarryingCapacityComponent(world),
     CarriedBy: defineCarriedByComponent(world),
     Core: defineCoreComponent(world),
     AbilityMove: defineAbilityMoveComponent(world),
     AbilityConsume: defineAbilityConsumeComponent(world),
-    AbilityExtract: defineAbilityExtractComponent(world),
     AbilityPlay: defineAbilityPlayComponent(world),
-    AbilityBurn: defineAbilityBurnComponent(world),
     Untraversable: defineUntraversableComponent(world),
     Commit: defineCommitComponent(world),
     Loot: defineLootComponent(world),
@@ -102,76 +99,6 @@ export async function createNetworkLayer(config: GameConfig) {
       window.alert(e);
     }
   }
-
-  // async function addToTxLog(tx: ContractTransaction, description: string) {
-  //   transactions.update((value) => [...value, { hash: tx.hash, description: description }]);
-  //   const receipt: ContractReceipt = await tx.wait();
-  //   receipts.update((value) => [...value, receipt]);
-  // }
-
-  // async function move(targetPosition: Coord) {
-  //   try {
-  //     addToTxLog(await systems["system.Move"].executeTyped(targetPosition), "move");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
-
-  // async function extract(extractionCoordinates: Coord) {
-  //   try {
-  //     addToTxLog(await systems["system.Extract"].executeTyped(extractionCoordinates), "extract");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
-
-  // async function pickUp(portableEntity: string) {
-  //   try {
-  //     addToTxLog(await systems["system.PickUp"].executeTyped(portableEntity), "pickUp");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
-
-  // async function drop(portableEntity: string) {
-  //   try {
-  //     addToTxLog(await systems["system.Drop"].executeTyped(portableEntity), "drop");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
-
-  // async function transfer(portableEntity: string, targetBaseEntity: string) {
-  //   try {
-  //     addToTxLog(await systems["system.Transfer"].executeTyped(portableEntity, targetBaseEntity), "transfer");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
-
-  // async function consume(substanceBlockEntity: string) {
-  //   try {
-  //     addToTxLog(await systems["system.Consume"].executeTyped(substanceBlockEntity), "consume");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
-
-  // async function play() {
-  //   try {
-  //     addToTxLog(await systems["system.Play"].executeTyped(), "play");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
-
-  // async function burn(substanceBlockEntity: string) {
-  //   try {
-  //     addToTxLog(await systems["system.Burn"].executeTyped(substanceBlockEntity), "burn");
-  //   } catch (e) {
-  //     window.alert(e);
-  //   }
-  // }
 
   // --- CONTEXT --------------------------------------------------------------------
   const context = {

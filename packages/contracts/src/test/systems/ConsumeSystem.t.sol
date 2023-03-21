@@ -11,9 +11,6 @@ import { SpawnSystem, ID as SpawnSystemID } from "../../systems/SpawnSystem.sol"
 
 import { Coord } from "../../components/PositionComponent.sol";
 
-import { LibResource } from "../../libraries/LibResource.sol";
-import { LibSubstanceBlock } from "../../libraries/LibSubstanceBlock.sol";
-
 contract ConsumeSystemTest is MudTest {
   function testConsume() public {
     setUp();
@@ -31,32 +28,31 @@ contract ConsumeSystemTest is MudTest {
 
     vm.roll(2);
 
-    // Create a portable entity
-    uint256 portableEntity = world.getUniqueEntityId();
-    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, portableEntity, abi.encode(1));
+    // Give baseEntity a "consume organs"
+    uint256 c1 = world.getUniqueEntityId();
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, c1, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityConsumeComponentID, c1, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(CarriedByComponentID, c1, abi.encode(baseEntity));
 
-    // Give matter
-    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(MatterComponentID, portableEntity, abi.encode(10));
-
-    // Place in inventory
-    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
-      CarriedByComponentID,
-      portableEntity,
-      abi.encode(baseEntity)
-    );
+    // Give baseEntity a "move organs"
+    uint256 m1 = world.getUniqueEntityId();
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, m1, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityMoveComponentID, m1, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(MatterComponentID, m1, abi.encode(10));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(CarriedByComponentID, m1, abi.encode(baseEntity));
 
     // Consume it
     vm.startPrank(alice);
-    consumeSystem.executeTyped(portableEntity);
+    consumeSystem.executeTyped(m1);
     vm.stopPrank();
 
     // Core energy should be INITIAL_ENERGY + 20
     assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy + 20);
 
     // portableEntity should be removed
-    assertTrue(!portableComponent.has(portableEntity));
-    assertTrue(!matterComponent.has(portableEntity));
-    assertTrue(!carriedByComponent.has(portableEntity));
+    assertTrue(!portableComponent.has(m1));
+    assertTrue(!matterComponent.has(m1));
+    assertTrue(!carriedByComponent.has(m1));
   }
 
   function testMultiAbilityConversion() public {
@@ -89,7 +85,7 @@ contract ConsumeSystemTest is MudTest {
       abi.encode(baseEntity)
     );
 
-    // Give baseEntity two more "consume organs" for a total of three
+    // Give baseEntity two more "consume organs" for a total of two
     uint256 c1 = world.getUniqueEntityId();
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, c1, abi.encode(1));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityConsumeComponentID, c1, abi.encode(1));
@@ -108,8 +104,8 @@ contract ConsumeSystemTest is MudTest {
     vm.stopPrank();
 
     // Energy should be:
-    // gameConfig.initialEnergy + (10 * (2 * 3))
+    // gameConfig.initialEnergy + (10 * (2 * 2))
     // 3 => number of consume organs
-    assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy + 60);
+    assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy + 40);
   }
 }

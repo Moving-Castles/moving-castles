@@ -12,7 +12,6 @@ import { LibConfig } from "../libraries/LibConfig.sol";
 import { LibUtils } from "../libraries/LibUtils.sol";
 import { LibMove } from "../libraries/LibMove.sol";
 import { LibInventory } from "../libraries/LibInventory.sol";
-import { LibResource } from "../libraries/LibResource.sol";
 import { LibAbility } from "../libraries/LibAbility.sol";
 
 import { GameConfig } from "../components/GameConfigComponent.sol";
@@ -92,11 +91,8 @@ library LibMap {
     // We try max 20 times...
     for (uint32 i = 0; i < 20; i++) {
       Coord memory spawnPosition = randomCoordinates(_components);
-      // Has to be traversable and not have a resource entity on it
-      if (
-        isUntraversable(_components, spawnPosition) == false &&
-        LibResource.getAtCoordinate(_components, spawnPosition) == 0
-      ) {
+      // Has to be traversable
+      if (isUntraversable(_components, spawnPosition) == false) {
         return spawnPosition;
       }
     }

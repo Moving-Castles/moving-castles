@@ -8,18 +8,13 @@ struct GameConfig {
   int32 worldHeight;
   int32 worldWidth;
   uint32 initialEnergy;
-  uint32 matterPerTile;
   uint32 defaultCarryingCapacity;
   uint32 moveCost;
-  uint32 extractCost;
   uint32 pickUpCost;
   uint32 dropCost;
   uint32 transferCost;
   uint32 playCost;
-  uint32 burnCost;
   uint32 moveCooldown;
-  uint32 extractCooldown;
-  uint32 burnTime;
   uint32 openCost;
   uint32 harvestCost;
 }
@@ -28,8 +23,8 @@ contract GameConfigComponent is BareComponent {
   constructor(address world) BareComponent(world, ID) {}
 
   function getSchema() public pure override returns (string[] memory keys, LibTypes.SchemaValue[] memory values) {
-    keys = new string[](17);
-    values = new LibTypes.SchemaValue[](17);
+    keys = new string[](12);
+    values = new LibTypes.SchemaValue[](12);
 
     keys[0] = "worldHeight";
     values[0] = LibTypes.SchemaValue.INT32;
@@ -40,47 +35,32 @@ contract GameConfigComponent is BareComponent {
     keys[2] = "initialEnergy";
     values[2] = LibTypes.SchemaValue.UINT32;
 
-    keys[3] = "matterPerTile";
+    keys[3] = "defaultCarryingCapacity";
     values[3] = LibTypes.SchemaValue.UINT32;
 
-    keys[4] = "defaultCarryingCapacity";
+    keys[4] = "moveCost";
     values[4] = LibTypes.SchemaValue.UINT32;
 
-    keys[5] = "moveCost";
+    keys[5] = "pickUpCost";
     values[5] = LibTypes.SchemaValue.UINT32;
 
-    keys[6] = "extractCost";
+    keys[6] = "dropCost";
     values[6] = LibTypes.SchemaValue.UINT32;
 
-    keys[7] = "pickUpCost";
+    keys[7] = "transferCost";
     values[7] = LibTypes.SchemaValue.UINT32;
 
-    keys[8] = "dropCost";
+    keys[8] = "playCost";
     values[8] = LibTypes.SchemaValue.UINT32;
 
-    keys[9] = "transferCost";
+    keys[9] = "moveCooldown";
     values[9] = LibTypes.SchemaValue.UINT32;
 
-    keys[10] = "playCost";
+    keys[10] = "openCost";
     values[10] = LibTypes.SchemaValue.UINT32;
 
-    keys[11] = "burnCost";
+    keys[11] = "harvestCost";
     values[11] = LibTypes.SchemaValue.UINT32;
-
-    keys[12] = "moveCooldown";
-    values[12] = LibTypes.SchemaValue.UINT32;
-
-    keys[13] = "extractCooldown";
-    values[13] = LibTypes.SchemaValue.UINT32;
-
-    keys[14] = "burnTime";
-    values[14] = LibTypes.SchemaValue.UINT32;
-
-    keys[15] = "openCost";
-    values[15] = LibTypes.SchemaValue.UINT32;
-
-    keys[16] = "harvestCost";
-    values[16] = LibTypes.SchemaValue.UINT32;
   }
 
   function set(uint256 entity, GameConfig memory gameConfig) public {

@@ -10,13 +10,10 @@ import { Coord } from "../../components/PositionComponent.sol";
 
 import { ID as AbilityMoveComponentID } from "../../components/AbilityMoveComponent.sol";
 import { ID as AbilityConsumeComponentID } from "../../components/AbilityConsumeComponent.sol";
-import { ID as AbilityExtractComponentID } from "../../components/AbilityExtractComponent.sol";
 import { ID as AbilityPlayComponentID } from "../../components/AbilityPlayComponent.sol";
-import { ID as AbilityBurnComponentID } from "../../components/AbilityBurnComponent.sol";
 
 import { LibInventory } from "../../libraries/LibInventory.sol";
 import { LibAbility } from "../../libraries/LibAbility.sol";
-import { LibResource } from "../../libraries/LibResource.sol";
 
 contract SpawnSystemTest is MudTest {
   function testSpawn() public {
@@ -44,11 +41,6 @@ contract SpawnSystemTest is MudTest {
     assertLt(spawnPosition.x, gameConfig.worldWidth);
     assertGt(spawnPosition.y, 0);
     assertLt(spawnPosition.y, gameConfig.worldHeight);
-
-    // Resource entity with matter = 0 should be created on spawn tile
-    uint256 resourceEntity = LibResource.getAtCoordinate(components, spawnPosition);
-    assertGt(resourceEntity, 0);
-    assertEq(matterComponent.getValue(resourceEntity), 0);
 
     // Carrying capacity
     assertEq(carryingCapacityComponent.getValue(baseEntity), gameConfig.defaultCarryingCapacity);

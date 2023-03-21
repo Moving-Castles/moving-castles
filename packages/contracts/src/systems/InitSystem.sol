@@ -13,9 +13,6 @@ import { LibLoot } from "../libraries/LibLoot.sol";
 import { Coord } from "../components/PositionComponent.sol";
 import { GameConfig } from "../components/GameConfigComponent.sol";
 
-import { ID as AbilityPlayComponentID } from "../components/AbilityPlayComponent.sol";
-import { ID as AbilityBurnComponentID } from "../components/AbilityBurnComponent.sol";
-
 uint256 constant ID = uint256(keccak256("system.Init"));
 
 contract InitSystem is System {
@@ -28,18 +25,13 @@ contract InitSystem is System {
       worldHeight: 10,
       worldWidth: 10,
       initialEnergy: 100,
-      matterPerTile: 100,
       defaultCarryingCapacity: 10,
       moveCost: 10,
-      extractCost: 10,
       pickUpCost: 5,
       dropCost: 5,
       transferCost: 5,
       playCost: 50,
-      burnCost: 10,
       moveCooldown: 1,
-      extractCooldown: 1,
-      burnTime: 10,
       openCost: 0,
       harvestCost: 50
     });
@@ -52,28 +44,6 @@ contract InitSystem is System {
     LibMap.createUntraversable(world, components, Coord(4, 5));
     LibMap.createUntraversable(world, components, Coord(4, 6));
     LibMap.createUntraversable(world, components, Coord(4, 9));
-
-    uint256 burnCache1 = LibMap.createUntraversable(world, components, Coord(4, 1));
-    uint256 burnCache2 = LibMap.createUntraversable(world, components, Coord(4, 8));
-    uint256 playCache = LibMap.createUntraversable(world, components, Coord(4, 4));
-
-    // Place an item allowing Play in inventory
-    uint256 abilityPlayItem = world.getUniqueEntityId();
-    LibAbility.giveAbility(components, abilityPlayItem, AbilityPlayComponentID);
-    LibInventory.makePortable(components, abilityPlayItem);
-    LibInventory.addToInventory(components, playCache, abilityPlayItem);
-
-    // Place an item allowing Burn in inventory
-    uint256 abilityBurnItem1 = world.getUniqueEntityId();
-    LibAbility.giveAbility(components, abilityBurnItem1, AbilityBurnComponentID);
-    LibInventory.makePortable(components, abilityBurnItem1);
-    LibInventory.addToInventory(components, burnCache1, abilityBurnItem1);
-
-    // Place an item allowing Burn in inventory
-    uint256 abilityBurnItem2 = world.getUniqueEntityId();
-    LibAbility.giveAbility(components, abilityBurnItem2, AbilityBurnComponentID);
-    LibInventory.makePortable(components, abilityBurnItem2);
-    LibInventory.addToInventory(components, burnCache2, abilityBurnItem2);
 
     // create loot box 1
     uint256 lootBox = world.getUniqueEntityId();
