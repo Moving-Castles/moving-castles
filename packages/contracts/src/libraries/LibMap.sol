@@ -89,13 +89,17 @@ library LibMap {
    */
   function getSpawnPosition(IUint256Component _components) internal view returns (Coord memory) {
     // We try max 20 times...
-    for (uint32 i = 0; i < 20; i++) {
+    uint256 i;
+    do {
       Coord memory spawnPosition = randomCoordinates(_components);
       // Has to be traversable
       if (isUntraversable(_components, spawnPosition) == false) {
         return spawnPosition;
       }
-    }
+      unchecked {
+        i++;
+      }
+    } while (i < 20);
     // @hack: should check conclusively if there is an open spawn position above, and deny spawn if not
     return Coord(2, 4);
   }
@@ -143,7 +147,8 @@ library LibMap {
     fragments[0] = QueryFragment(QueryType.HasValue, positionComponent, abi.encode(_coordinates));
     uint256[] memory results = LibQuery.query(fragments);
 
-    for (uint256 i; i < results.length; i++) {
+    uint256 resultsLength = results.length;
+    for (uint256 i; i < resultsLength; ++i) {
       if (LibAbility.checkInventoryForAbility(_components, results[i], UntraversableComponentID) > 0) return true;
     }
 

@@ -68,8 +68,13 @@ library LibAbility {
   ) internal view returns (uint32) {
     uint256[] memory inventory = LibInventory.getInventory(_components, _baseEntity);
     uint32 count;
-    for (uint256 i; i < inventory.length; i++) {
-      if (checkEntityForAbility(_components, inventory[i], _componentId)) count++;
+    uint256 inventoryLength = inventory.length;
+    for (uint256 i; i < inventoryLength; ++i) {
+      if (checkEntityForAbility(_components, inventory[i], _componentId)) {
+        unchecked {
+          ++count;
+        }
+      }
     }
     return count;
   }
