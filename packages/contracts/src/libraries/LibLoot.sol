@@ -19,6 +19,7 @@ import { GoalComponent, ID as GoalComponentID } from "../components/GoalComponen
 import { ID as AbilityMoveComponentID } from "../components/AbilityMoveComponent.sol";
 import { ID as AbilityConsumeComponentID } from "../components/AbilityConsumeComponent.sol";
 import { ID as AbilityPlayComponentID } from "../components/AbilityPlayComponent.sol";
+import { ID as AbilityChatComponentID } from "../components/AbilityChatComponent.sol";
 
 library LibLoot {
   /**
@@ -61,12 +62,13 @@ library LibLoot {
     // Give organ matter
     matterComponent.set(_entity, 30);
 
-    uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 4;
+    uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 5;
 
-    // 0    =>  10%	  => 	Move
-    // 1    =>  10%   =>	Consume
-    // 2    =>  10%   =>	Play
-    // 3    =>  10%   =>	Goal (only once, otherwise Movek)
+    // 0    =>  20%	  => 	Move
+    // 1    =>  20%   =>	Consume
+    // 2    =>  20%   =>	Play
+    // 3    =>  20%   =>	Chat
+    // 4    =>  20%   =>	Goal (only once, otherwise Movek)
 
     // 0: Move
     if (randomNumber == 0) {
@@ -86,8 +88,14 @@ library LibLoot {
       return true;
     }
 
-    // 3: Goal or Move
+    // 3: Chat
     if (randomNumber == 3) {
+      LibAbility.giveAbility(_components, _entity, AbilityChatComponentID);
+      return true;
+    }
+
+    // 4: Goal or Move
+    if (randomNumber == 4) {
       if (goalComponent.getEntities().length == 0) {
         // Goal
         goalComponent.set(_entity, block.number);

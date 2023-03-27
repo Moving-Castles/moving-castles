@@ -3,6 +3,7 @@ export enum ItemType {
     MoveOrgan,
     ConsumeOrgan,
     PlayOrgan,
+    ChatOrgan,
     LootBox,
     Untraversable,
     GoalOrgan,

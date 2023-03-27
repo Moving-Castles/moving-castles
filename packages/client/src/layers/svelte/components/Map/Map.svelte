@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { Coord } from "@latticexyz/utils";
   import { onMount } from "svelte";
-  import { playerCore, playerBaseEntity, multiCore } from "../../modules/player";
+  import { playerCore, playerBaseEntity, multiCore, playerAbilities } from "../../modules/player";
   import { gameConfig } from "../../modules/entities";
 
   import TileInteract from "./TileInteract.svelte";
-  import DebugChat from "../Chat/Chat.svelte";
+  import Chat from "../Chat/Chat.svelte";
   import Tile from "./Tile.svelte";
 
   let selectedTileCoords: Coord;
@@ -63,8 +63,8 @@
   />
 {/if}
 
-{#if $multiCore}
-  <DebugChat channelId={$playerCore.carriedBy} />
+{#if $multiCore && $playerAbilities.includes("abilityChat")}
+  <Chat channelId={$playerCore.carriedBy} />
 {/if}
 
 <div class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>

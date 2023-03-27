@@ -5,7 +5,7 @@
   import { playerCore } from "../../modules/player";
   import { addressToColor } from "../../utils/misc";
 
-  import Item from "./Item.svelte";
+  import Item from "../Items/ItemSelector.svelte";
   import Transfer from "./TransferDialog.svelte";
   import { popUpEntity } from "../UI";
 
@@ -65,9 +65,9 @@
   >
     <!-- ITEMS -->
     <div class="inventory">
-      {#each Object.entries($items) as [entityId, entity] (entityId)}
-        {#if entity.carriedBy == baseEntityId}
-          <Item itemId={entityId} item={entity} />
+      {#each Object.entries($items) as [itemId, item] (itemId)}
+        {#if item.carriedBy == baseEntityId}
+          <Item {itemId} {item} isOnMap={true} />
         {/if}
       {/each}
     </div>

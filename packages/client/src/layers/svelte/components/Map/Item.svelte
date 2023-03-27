@@ -41,6 +41,8 @@
       setInfo("P", "Ability: Play");
       // } else if (item.abilityBurn) {
       //   setInfo("B", "Ability: Burn");
+    } else if (item.abilityChat) {
+      setInfo("T", "Ability: Talk");
     } else if (item.untraversable) {
       setInfo("X", "Untraversable");
     } else if (item.loot) {

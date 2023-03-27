@@ -13,6 +13,7 @@
     "AbilityMoveComponent",
     "AbilityConsumeComponent",
     "AbilityPlayComponent",
+    "AbilityChatComponent",
     "UntraversableComponent",
     "LootComponent",
     "GoalComponent",
@@ -48,6 +49,7 @@
         "AbilityMoveComponent",
         "AbilityConsumeComponent",
         "AbilityPlayComponent",
+        "AbilityChatComponent",
         "UntraversableComponent",
         "CommitComponent",
         "PointComponent",
@@ -147,6 +149,7 @@
         "AbilityMoveComponent",
         "AbilityConsumeComponent",
         "AbilityPlayComponent",
+        "AbilityChatComponent",
         "GoalComponent",
         "MatterComponent"
       ]

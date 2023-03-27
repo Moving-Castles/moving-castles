@@ -2,10 +2,9 @@
   import { onMount, onDestroy } from "svelte";
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css";
-  import { playerAbilities, playerCore } from "../../modules/player";
+  import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
-  import { Activity } from "../../modules/entities";
 
   export let itemId: string;
   export let showDialog: boolean;
@@ -25,14 +24,10 @@
     info.description = description;
   };
 
-  setInfo("P", "Ability: Play");
+  setInfo("T", "Ability: Talk");
 
   function drop() {
     addToSequencer("system.Drop", [itemId]);
-  }
-
-  function play() {
-    addToSequencer("system.Play");
   }
 
   function consume() {
@@ -70,14 +65,13 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
+<div class="organ chat" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
   {info.symbol}
 </div>
 
 {#if showDialog && !isOnMap}
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>
-    <button on:click={play}>{$playerCore.commit === Activity.Play ? "STOP" : "play"}</button>
     {#if $playerAbilities.includes("abilityConsume")}
       <button on:click={consume}>consume</button>
     {/if}
@@ -96,8 +90,8 @@
     color: black;
     cursor: pointer;
 
-    &.play {
-      background-color: #8ee096;
+    &.chat {
+      background-color: #e08eda;
     }
 
     &:hover {

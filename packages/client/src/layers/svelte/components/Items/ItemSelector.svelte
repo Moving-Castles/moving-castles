@@ -5,6 +5,7 @@
   import MoveOrgan from "./MoveOrgan.svelte";
   import ConsumeOrgan from "./ConsumeOrgan.svelte";
   import PlayOrgan from "./PlayOrgan.svelte";
+  import ChatOrgan from "./ChatOrgan.svelte";
   import LootBox from "./LootBox.svelte";
   import Untraversable from "./Untraversable.svelte";
   import GoalOrgan from "./GoalOrgan.svelte";
@@ -25,6 +26,8 @@
       type = ItemType.ConsumeOrgan;
     } else if (item.abilityPlay) {
       type = ItemType.PlayOrgan;
+    } else if (item.abilityChat) {
+      type = ItemType.ChatOrgan;
     } else if (item.untraversable) {
       type = ItemType.Untraversable;
     } else if (item.loot) {
@@ -44,6 +47,8 @@
     <ConsumeOrgan {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.PlayOrgan}
     <PlayOrgan {itemId} {showDialog} {isOnMap} />
+  {:else if type === ItemType.ChatOrgan}
+    <ChatOrgan {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.LootBox}
     <LootBox {itemId} {isOnMap} />
   {:else if type === ItemType.Untraversable}

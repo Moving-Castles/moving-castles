@@ -23,7 +23,7 @@ export const multiCore = derived([cores, playerCore], ([$cores, $playerCore]) =>
 );
 
 
-const ABILITY_LIST = ["abilityMove", "abilityConsume", "abilityPlay"];
+const ABILITY_LIST = ["abilityMove", "abilityConsume", "abilityPlay", "abilityChat"];
 
 export const playerAbilities = derived([entities, playerCore], ([$entities, $playerCore]) => {
   const abilities: string[] = [];
