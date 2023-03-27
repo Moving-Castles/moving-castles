@@ -62,7 +62,7 @@ function reverseString(str: string): string {
 }
 
 export function idToAvatar(id: string) {
-  return !id ? "" : "img/avatars/" + String(parseInt(id) % 11) + ".png";
+  return !id ? "" : "img/avatars2/" + String(parseInt(id) % 5) + ".jpeg";
 }
 
 export function idToName(id: string) {

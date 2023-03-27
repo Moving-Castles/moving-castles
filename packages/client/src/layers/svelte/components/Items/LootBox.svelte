@@ -4,6 +4,7 @@
   import Spinner from "./Spinner.svelte";
 
   export let itemId: string;
+  export let isOnMap = false;
 
   enum BoxState {
     UNOPENED,
@@ -14,10 +15,20 @@
 
   function open() {
     playSound("eventGood", "ui");
-
     boxState = BoxState.OPENING;
     addToSequencer("system.Open", [itemId]);
   }
+
+  function pickup() {
+    addToSequencer("system.PickUp", [itemId]);
+  }
+  const click = () => {
+    if (isOnMap) {
+      pickup();
+    } else {
+      open();
+    }
+  };
 
   function mouseenter() {
     playSound("cursor", "ui");
@@ -25,9 +36,13 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="loot-box" on:click={open} on:mouseenter={mouseenter}>
+<div class="loot-box" class:map={isOnMap} on:click={click} on:mouseenter={mouseenter}>
   {#if boxState === BoxState.OPENING}
-    <Spinner />
+    <div class="opening-overlay">
+      <div>
+        <Spinner />
+      </div>
+    </div>
   {:else}
     ?
   {/if}
@@ -35,12 +50,9 @@
 
 <style lang="scss">
   .loot-box {
-    height: 100px;
-    width: 100px;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    font-size: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,5 +63,19 @@
     &:hover {
       opacity: 0.9;
     }
+  }
+
+  .opening-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 50vw;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

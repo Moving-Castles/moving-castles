@@ -8,6 +8,7 @@
 
   export let itemId: string;
   export let showDialog: boolean;
+  export let isOnMap = false;
 
   let markerEl: HTMLElement;
   let dialogEl: HTMLElement;
@@ -37,6 +38,16 @@
     playSound("cursor", "ui");
   };
 
+  function pickUp() {
+    addToSequencer("system.PickUp", [itemId]);
+  }
+
+  const click = () => {
+    if (isOnMap) {
+      pickUp();
+    }
+  };
+
   onMount(async () => {
     if (showDialog) {
       toolTip = tippy(markerEl, {
@@ -53,11 +64,12 @@
   });
 </script>
 
-<div class="organ consume" bind:this={markerEl} on:mouseenter={mouseenter}>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="organ consume" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
   {info.symbol}
 </div>
 
-{#if showDialog}
+{#if showDialog && !isOnMap}
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>

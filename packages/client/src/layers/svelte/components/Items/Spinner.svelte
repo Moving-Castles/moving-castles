@@ -6,7 +6,7 @@
   onMount(async () => {
     interval = window.setInterval(() => {
       letter = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
-    }, 100);
+    }, 50);
   });
 
   onDestroy(() => {

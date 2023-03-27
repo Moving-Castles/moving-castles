@@ -12,6 +12,7 @@
   export let itemId: string;
   export let item: Entity;
   export let showDialog = true;
+  export let isOnMap = false;
 
   let type: ItemType;
 
@@ -34,21 +35,21 @@
   }
 </script>
 
-<div class="item">
+<div class="item" class:map={isOnMap}>
   {#if type === ItemType.Core}
     <Core {itemId} {item} {showDialog} />
   {:else if type === ItemType.MoveOrgan}
-    <MoveOrgan {itemId} {showDialog} />
+    <MoveOrgan {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.ConsumeOrgan}
-    <ConsumeOrgan {itemId} {showDialog} />
+    <ConsumeOrgan {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.PlayOrgan}
-    <PlayOrgan {itemId} {showDialog} />
+    <PlayOrgan {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.LootBox}
-    <LootBox {itemId} />
+    <LootBox {itemId} {isOnMap} />
   {:else if type === ItemType.Untraversable}
-    <Untraversable {itemId} {showDialog} />
+    <Untraversable {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.GoalOrgan}
-    <GoalOrgan {itemId} {item} {showDialog} />
+    <GoalOrgan {itemId} {item} {showDialog} {isOnMap} />
   {/if}
 </div>
 
@@ -65,5 +66,11 @@
     align-items: center;
     color: black;
     cursor: pointer;
+
+    &.map {
+      font-size: 12px;
+      height: 40px;
+      width: 40px;
+    }
   }
 </style>

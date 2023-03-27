@@ -10,20 +10,22 @@
 
   let typewriterDone = false;
 
-  const cores = [
-    "0.png",
-    "1.png",
-    "2.png",
-    "3.png",
-    "4.png",
-    "5.png",
-    "6.png",
-    "7.png",
-    "8.png",
-    "9.png",
-    "10.png",
-    "11.png",
-  ];
+  // const cores = [
+  //   "0.png",
+  //   "1.png",
+  //   "2.png",
+  //   "3.png",
+  //   "4.png",
+  //   "5.png",
+  //   "6.png",
+  //   "7.png",
+  //   "8.png",
+  //   "9.png",
+  //   "10.png",
+  //   "11.png",
+  // ];
+
+  const cores = ["0.jpeg", "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg"];
 
   let coreIndex = 0;
   let counter = 0;
@@ -39,7 +41,7 @@
 
 {#if $playerCore && counter > 20}
   <div class="demi3" in:fade>
-    <img src="/img/demi2.png" alt="core" />
+    <img src="/img/demi.jpg" alt="core" />
     <Typewriter
       mode="cascade"
       interval={70}
@@ -64,7 +66,7 @@
       }}>Accept your fate</button
     >
   {:else}
-    <img src={"/img/avatars/" + cores[coreIndex]} alt="core" />
+    <img src={"/img/avatars2/" + cores[coreIndex]} alt="core" />
   {/if}
 </div>
 
@@ -79,6 +81,7 @@
     font-size: 32px;
     flex-direction: column;
     color: black;
+    color: white;
 
     img {
       height: 500px;
@@ -89,8 +92,9 @@
       border: 0;
       font-size: 32px;
       background: transparent;
-      border: 2px solid black;
+      border: 2px solid white;
       color: black;
+      color: white;
       padding: 10px 30px;
       cursor: pointer;
       font-family: var(--font-family);

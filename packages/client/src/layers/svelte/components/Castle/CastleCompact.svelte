@@ -7,6 +7,8 @@
   import { seedToCastleName } from "../../utils/name";
   import { castleExtended } from "../UI";
 
+  export let baseEntityId: string;
+
   function play() {
     addToSequencer("system.Play");
   }
@@ -17,20 +19,18 @@
 </script>
 
 <div class="castle-compact">
-  {#if $playerCore && $playerBaseEntity && $playerBaseEntity.position}
+  {#if baseEntityId}
     <div class="header">
-      <div class="pfp" style={"background:" + addressToColor($playerCore.carriedBy) + ";"} />
-      CASTLE:<strong> {seedToCastleName($playerCore.carriedBy)}</strong>
+      <div class="pfp" style={"background:" + addressToColor(baseEntityId) + ";"} />
+      CASTLE:<strong> {seedToCastleName(baseEntityId)}</strong>
     </div>
-    <div class="play">
+    <!-- <div class="play">
       {#if $playerCore.commit === Activity.Play}
         <div>...P.l.A.y.I.n.G...</div>
         <div><button on:click={play}>STOP</button></div>
       {/if}
-    </div>
-    {#if $playerCore.carriedBy}
-      <Inventory baseEntityId={$playerCore.carriedBy} showCapacity={true} showEmptySlots={true} />
-    {/if}
+    </div> -->
+    <Inventory {baseEntityId} showCapacity={true} showEmptySlots={true} />
 
     <div class="extend">
       <button on:click={extendCastle}>Extend castle view</button>

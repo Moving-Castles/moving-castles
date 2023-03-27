@@ -76,10 +76,9 @@
 
 <style lang="scss">
   .core {
-    height: 100px;
-    width: 100px;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
-    font-size: 42px;
     display: flex;
     justify-content: center;
     align-items: center;

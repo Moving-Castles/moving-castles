@@ -7,6 +7,7 @@
 
   export let itemId: string;
   export let showDialog: boolean;
+  export let isOnMap = false;
 
   let markerEl: HTMLElement;
   let dialogEl: HTMLElement;
@@ -28,6 +29,16 @@
     addToSequencer("system.Drop", [itemId]);
   }
 
+  function pickUp() {
+    addToSequencer("system.PickUp", [itemId]);
+  }
+
+  const click = () => {
+    if (isOnMap) {
+      pickUp();
+    }
+  };
+
   const mouseenter = () => {
     playSound("cursor", "ui");
   };
@@ -47,11 +58,12 @@
   });
 </script>
 
-<div class="untraversable" bind:this={markerEl} on:mouseenter={mouseenter}>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="untraversable" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
   {info.symbol}
 </div>
 
-{#if showDialog}
+{#if showDialog && !isOnMap}
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>
@@ -60,10 +72,9 @@
 
 <style lang="scss">
   .untraversable {
-    height: 100px;
-    width: 100px;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
-    font-size: 42px;
     display: flex;
     justify-content: center;
     align-items: center;

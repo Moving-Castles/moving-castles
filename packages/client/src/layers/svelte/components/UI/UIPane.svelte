@@ -4,28 +4,38 @@
   import CoreCompact from "../Core/CoreCompact.svelte";
   import CastleCompact from "../Castle/CastleCompact.svelte";
   import CastleExtended from "../Castle/CastleExtended.svelte";
-  import { castleExtended } from "../UI";
+  import { castleExtended, popUpEntity } from "../UI";
+  import { quadOut } from "svelte/easing";
+  import { fade, scale, slide, fly } from "svelte/transition";
 </script>
 
-<div class="pane" class:extended={$castleExtended}>
-  <div class="core">
+<div class="pane" class:extended={$castleExtended} in:fly={{ duration: 200, y: 200, easing: quadOut }}>
+  <!-- <div class="core">
     <CoreCompact />
-  </div>
+  </div> -->
 
   <div class="castle">
-    {#if $castleExtended}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <div
+      on:click={() => {
+        popUpEntity.set("");
+      }}
+    >
+      CLOSE
+    </div>
+    <!-- {#if $castleExtended}
       <CastleExtended />
-    {:else}
-      <CastleCompact />
-    {/if}
+    {:else} -->
+    <CastleCompact baseEntityId={$popUpEntity} />
+    <!-- {/if} -->
   </div>
 
-  {#if !$castleExtended}
+  <!-- {#if !$castleExtended}
     <div class="actions">
       <UIBlockCounter />
       <ActionSequencer />
     </div>
-  {/if}
+  {/if} -->
 </div>
 
 <style lang="scss">

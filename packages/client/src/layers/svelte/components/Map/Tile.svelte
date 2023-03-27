@@ -30,23 +30,24 @@
   <!-- FREE ITEMS -->
   {#each Object.entries($freeItems) as [itemId, item] (itemId)}
     {#if item.position?.x == tile.coordinates.x && item.position?.y == tile.coordinates.y}
-      <Item {itemId} {item} />
+      <Item {itemId} {item} isOnMap={true} />
     {/if}
   {/each}
 </div>
 
 <style lang="scss">
   .tile {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
     float: left;
     font-size: 8px;
-    border: 1px solid lightgrey;
+    // border: 1px solid lightgrey;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     background-size: contain;
+    background-image: url("/img/map2.png");
 
     &:hover {
       background-color: rgb(60, 60, 60);

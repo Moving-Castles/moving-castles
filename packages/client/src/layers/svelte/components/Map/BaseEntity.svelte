@@ -7,6 +7,7 @@
 
   import Item from "./Item.svelte";
   import Transfer from "./TransferDialog.svelte";
+  import { popUpEntity } from "../UI";
 
   export let baseEntityId: string;
   export let baseEntity: any;
@@ -48,30 +49,61 @@
   />
 {/if}
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-  class="base-entity"
-  class:untraversable
-  class:playing
-  style={"background:" + addressToColor(baseEntityId) + ";"}
-  class:player={isPlayer}
-  on:click={() => {
-    if (!isPlayer && (isSame || isAdjacent)) {
-      transferActive = true;
-    }
-  }}
->
-  <!-- ITEMS -->
-  <div class="inventory">
-    {#each Object.entries($items) as [entityId, entity] (entityId)}
-      {#if entity.carriedBy == baseEntityId}
-        <Item itemId={entityId} item={entity} />
-      {/if}
-    {/each}
+{#if untraversable}
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div
+    class="base-entity"
+    class:untraversable
+    class:playing
+    style={"background:" + addressToColor(baseEntityId) + ";"}
+    class:player={isPlayer}
+    on:click={() => {
+      if (!isPlayer && (isSame || isAdjacent)) {
+        transferActive = true;
+      }
+    }}
+  >
+    <!-- ITEMS -->
+    <div class="inventory">
+      {#each Object.entries($items) as [entityId, entity] (entityId)}
+        {#if entity.carriedBy == baseEntityId}
+          <Item itemId={entityId} item={entity} />
+        {/if}
+      {/each}
+    </div>
   </div>
-</div>
+{:else}
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div
+    class="base-entity-2"
+    on:click={() => {
+      popUpEntity.set(baseEntityId);
+    }}
+  >
+    <img src="/img/body3.png" alt="body" />
+  </div>
+{/if}
 
 <style lang="scss">
+  .base-entity-2 {
+    aspect-ratio: 1;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    line-height: 0;
+    cursor: pointer;
+    width: fit-content;
+    padding: 10px;
+    height: 350px;
+    width: 350px;
+
+    img {
+      height: 100%;
+    }
+  }
+
   .base-entity {
     aspect-ratio: 1;
     border-radius: 100%;

@@ -4,7 +4,7 @@
 
 <SpawnSlide nextSpawnStage={3} buttonText={"ROLL THE DICE"}>
   <span slot="before">
-    <img src="/img/demi2.png" alt="demiurge" />
+    <img src="/img/demi.jpg" alt="demiurge" />
   </span>
   <span slot="text">
     <p>aaah so you are here to play a game?</p>

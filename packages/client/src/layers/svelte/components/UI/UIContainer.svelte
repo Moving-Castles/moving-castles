@@ -3,7 +3,7 @@
   import { entities } from "../../modules/entities";
   import { ready } from "../../modules/network";
   import { playerBaseEntity, playerCore } from "../../modules/player";
-  import { uiState, castleExtended, spawnStage } from "./index";
+  import { uiState, popUpEntity, castleExtended, spawnStage } from "./index";
   // ...
   import UIComponent from "./../SpawnSequence/LoadingScreen.svelte";
   import Map from "../Map/Map.svelte";
@@ -35,9 +35,11 @@
     <div class="ui-container-inner-map">
       <Map />
     </div>
-    <div class="ui-container-inner-pane">
-      <UIPane />
-    </div>
+    {#if $popUpEntity !== ""}
+      <div class="ui-container-inner-pane">
+        <UIPane />
+      </div>
+    {/if}
   {:else}
     <div class="ui-container-inner">
       {#if $spawnStage === 1}
@@ -65,43 +67,50 @@
     width: 100vw;
     height: 100vh;
     color: var(--foreground);
+    color: white;
     box-sizing: border-box;
     display: flex;
-  }
 
-  .ui-container-inner {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: orangered;
-  }
+    .ui-container-inner {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: black;
+      // background: orangered;
+    }
 
-  .ui-container-inner-pane {
-    width: 40vw;
-    height: 100vh;
-    background: blue;
-  }
+    .ui-container-inner-pane {
+      position: fixed;
+      right: 40px;
+      top: 40px;
+      width: 40vw;
+      height: 80vh;
+      z-index: 10000000;
+    }
 
-  .ui-container-inner-map {
-    width: 60vw;
-    height: 100vh;
-    background: red;
-  }
+    .ui-container-inner-map {
+      width: 100vw;
+      height: 100vh;
+      background: red;
+    }
 
-  .extended .ui-container-inner-pane {
-    width: 100vw;
-  }
+    &.extended {
+      .ui-container-inner-pane {
+        width: 100vw;
+      }
 
-  .extended .ui-container-inner-map {
-    display: none;
+      .ui-container-inner-map {
+        display: none;
+      }
+    }
   }
 
   .leaderboard {
     position: fixed;
     top: 10px;
-    right: calc(40vw + 10px);
+    left: 10px;
     padding: 10px;
     background: red;
     z-index: 100;

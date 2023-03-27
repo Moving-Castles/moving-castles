@@ -73,9 +73,9 @@
   <div
     class="map-container"
     style={"width: " +
-      ($gameConfig.worldWidth * 300 + 3) +
+      ($gameConfig.worldWidth * 400 + 3) +
       "px; height: " +
-      ($gameConfig.worldHeight * 300 + 3) +
+      ($gameConfig.worldHeight * 400 + 3) +
       "px;"}
   >
     <!-- GRID -->
@@ -112,8 +112,6 @@
 
     .map-container {
       box-sizing: border-box;
-      width: 3003px;
-      height: 3003px;
       background: rgb(100, 100, 100);
       border: 1px solid white;
       position: relative;
