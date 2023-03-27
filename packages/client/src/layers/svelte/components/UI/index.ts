@@ -8,6 +8,7 @@ export const menuVisible = writable(false);
 export const castleExtended = writable(false);
 export const popUpEntity = writable("");
 export const spawnStage = writable(1);
+export const isSpawned = writable(false);
 
 // Transition speeds
 export const speed = writable(100);

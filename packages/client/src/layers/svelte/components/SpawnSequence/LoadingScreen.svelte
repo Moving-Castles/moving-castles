@@ -1,6 +1,15 @@
 <script lang="ts">
   import { loadingMessage } from "../../modules/network";
+  import { isSpawned } from "../UI/index";
+  import { playerBaseEntity, playerCore } from "../../modules/player";
+
   import SpawnSlide from "./SpawnSlide.svelte";
+
+  $: {
+    if ($playerCore && $playerBaseEntity) {
+      isSpawned.set(true);
+    }
+  }
 </script>
 
 <div class="loading-message">{$loadingMessage}</div>

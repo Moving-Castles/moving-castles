@@ -1,9 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { entities } from "../../modules/entities";
-  import { ready } from "../../modules/network";
-  import { playerBaseEntity, playerCore } from "../../modules/player";
-  import { uiState, popUpEntity, castleExtended, spawnStage } from "./index";
+  import { popUpEntity, castleExtended, spawnStage, isSpawned } from "./index";
   // ...
   import UIComponent from "./../SpawnSequence/LoadingScreen.svelte";
   import Map from "../Map/Map.svelte";
@@ -16,22 +13,16 @@
   import SpawnEnergy from "../SpawnSequence/SpawnEnergy.svelte";
   import SpawnBody from "../SpawnSequence/SpawnBody.svelte";
   import SpawnWorld from "../SpawnSequence/SpawnWorld.svelte";
-
-  onMount(async () => {
-    if ($playerCore && $playerBaseEntity) {
-      spawnStage.set(100);
-    }
-  });
 </script>
 
-{#if $spawnStage == 100 && Object.values($entities).find((e) => e.goal)}
+{#if $isSpawned && Object.values($entities).find((e) => e.goal)}
   <div class="leaderboard">
     <Leaderboard />
   </div>
 {/if}
 
 <div class="ui-container" class:extended={$castleExtended}>
-  {#if $playerCore && $playerBaseEntity}
+  {#if $isSpawned}
     <div class="ui-container-inner-map">
       <Map />
     </div>

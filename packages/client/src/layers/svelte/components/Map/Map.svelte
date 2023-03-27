@@ -1,22 +1,19 @@
 <script lang="ts">
   import type { Coord } from "@latticexyz/utils";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { playerCore, playerBaseEntity, multiCore } from "../../modules/player";
   import { gameConfig } from "../../modules/entities";
   import { panzoom } from "../../modules/map";
-
-  import TileInteract from "./TileInteract.svelte";
   import DebugChat from "../Chat/Chat.svelte";
   import Tile from "./Tile.svelte";
+  import { playSound } from "../../../howler";
+  import type { GridTile } from "./index";
+  import type { Action } from "../../modules/actionSequencer";
 
-  let selectedTileCoords: Coord;
-  let tileInteractActive = false;
-  interface GridTile {
-    direction: string;
-    coordinates: Coord;
-    perlinFactor: number;
-    resource: number;
-  }
+  import { activeActions, processedActions } from "../../modules/actionSequencer";
+
+  let activeAction: Action;
+  let processedAction: Action;
 
   function initGrid(unit: number) {
     let grid = [] as GridTile[];
@@ -40,27 +37,50 @@
   onMount(() => {
     grid = initGrid($gameConfig.worldWidth);
     centerMapOnPlayer();
-    console.log("mounted");
   });
 
-  function centerMapOnPlayer() {
+  async function centerMapOnPlayer() {
+    await tick();
     let playerEl = document.getElementsByClassName("player")[0];
 
     if (playerEl && playerEl.parentElement) {
       let playerTileEl = playerEl.parentElement;
-      playerTileEl.scrollIntoView({ block: "center", inline: "center" });
+      playerTileEl.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+    }
+  }
+
+  $: {
+    if ($activeActions.length) {
+      activeAction = $activeActions[0];
+    }
+  }
+
+  $: {
+    if ($processedActions.length) {
+      processedAction = $processedActions[0];
+    }
+  }
+
+  $: {
+    if (activeAction) {
+      if (activeAction.systemId.toLowerCase().includes("move")) {
+        centerMapOnPlayer();
+      }
+    }
+  }
+
+  $: {
+    if (processedAction) {
+      console.log(processedAction);
+      if (processedAction.systemId.toLowerCase().includes("move")) {
+        playSound("walking", "activity");
+        centerMapOnPlayer();
+      }
     }
   }
 </script>
 
-{#if tileInteractActive}
-  <TileInteract
-    {selectedTileCoords}
-    on:close={() => {
-      tileInteractActive = false;
-    }}
-  />
-{/if}
+<svelte:window on:resize={centerMapOnPlayer} />
 
 {#if $multiCore}
   <DebugChat channelId={$playerCore.carriedBy} />
@@ -79,13 +99,7 @@
   >
     <!-- GRID -->
     {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
-      <Tile
-        {tile}
-        on:interact={(e) => {
-          selectedTileCoords = e.detail.selectedTileCoords;
-          tileInteractActive = true;
-        }}
-      />
+      <Tile {tile} />
     {/each}
   </div>
 </div>
