@@ -1,22 +1,38 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
+  import { addToSequencer } from "../../modules/actionSequencer";
   import { baseEntities, freeItems } from "../../modules/entities";
+  import { playerCore } from "../../modules/player";
+  import { chebyshev } from "../../utils/space";
   import Item from "../Items/ItemSelector.svelte";
   import BaseEntity from "./BaseEntity.svelte";
 
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+  import type { GridTile } from "./index";
 
-  export let tile: any;
+  export let tile: GridTile;
+  export const isAdjacent = chebyshev($baseEntities[$playerCore.carriedBy].position, tile.coordinates) === 1;
+
+  let pointerover = false;
+  let pointerdown = false;
+  let isPlayer = false;
+
+  const onPointerEnter = () => (pointerover = true);
+  const onPointerLeave = () => (pointerover = false);
+  const onPointerDown = () => {
+    if (isAdjacent) {
+      addToSequencer("system.Move", [tile.coordinates]);
+    }
+  };
+  const onPointerUp = () => (pointerdown = false);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
   class="tile"
-  on:click={(e) => {
-    if (e.target?.classList.contains("tile")) {
-      dispatch("interact", { selectedTileCoords: tile.coordinates });
-    }
-  }}
+  class:adjacent={isAdjacent}
+  on:pointerenter={onPointerEnter}
+  on:pointerleave={onPointerLeave}
+  on:pointerdown|self={onPointerDown}
 >
   <div class="coords">{tile.coordinates.x}:{tile.coordinates.y}</div>
 
@@ -51,6 +67,18 @@
 
     &:hover {
       background-color: rgb(60, 60, 60);
+    }
+
+    &.adjacent {
+      &:hover::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        mix-blend-mode: overlay;
+      }
     }
 
     .coords {

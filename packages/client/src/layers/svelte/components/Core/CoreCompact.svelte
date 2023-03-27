@@ -17,7 +17,7 @@
     {/if}
     <!-- AVATAR -->
     <div class="core-item">
-      <img class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
+      <img draggable="false" class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
     </div>
   {/if}
 </div>

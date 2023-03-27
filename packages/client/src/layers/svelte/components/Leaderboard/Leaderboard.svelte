@@ -9,7 +9,7 @@
 {#each Object.entries($cores) as [key, value]}
   <div class="row">
     <div class="core-item">
-      <img class="core-avatar" src={idToAvatar(key)} alt="core" />
+      <img draggable="false" class="core-avatar" src={idToAvatar(key)} alt="core" />
     </div>
     <div class="core-item"><strong>{idToName(key)}</strong></div>
     <div class="core-item">{parseInt(value.point)}</div>

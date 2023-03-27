@@ -1,21 +1,18 @@
 <script lang="ts">
-  import type { Coord } from "@latticexyz/utils";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { playerCore, playerBaseEntity, multiCore, playerAbilities } from "../../modules/player";
   import { gameConfig } from "../../modules/entities";
-
-  import TileInteract from "./TileInteract.svelte";
+  import { panzoom } from "../../modules/map";
   import Chat from "../Chat/Chat.svelte";
   import Tile from "./Tile.svelte";
+  import { playSound } from "../../../howler";
+  import type { GridTile } from "./index";
+  import type { Action } from "../../modules/actionSequencer";
 
-  let selectedTileCoords: Coord;
-  let tileInteractActive = false;
-  interface GridTile {
-    direction: string;
-    coordinates: Coord;
-    perlinFactor: number;
-    resource: number;
-  }
+  import { activeActions, processedActions } from "../../modules/actionSequencer";
+
+  let activeAction: Action;
+  let processedAction: Action;
 
   function initGrid(unit: number) {
     let grid = [] as GridTile[];
@@ -36,38 +33,59 @@
 
   let grid: GridTile[] = [];
 
-  onMount(async () => {
+  onMount(() => {
     grid = initGrid($gameConfig.worldWidth);
+    centerMapOnPlayer();
   });
 
-  export function centerMapOnPlayer() {
+  async function centerMapOnPlayer() {
+    await tick();
     let playerEl = document.getElementsByClassName("player")[0];
 
     if (playerEl && playerEl.parentElement) {
       let playerTileEl = playerEl.parentElement;
-      playerTileEl.scrollIntoView({ block: "center", inline: "center" });
+      playerTileEl.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
     }
   }
 
-  onMount(async () => {
-    setTimeout(centerMapOnPlayer, 500);
-  });
+  $: {
+    if ($activeActions.length) {
+      activeAction = $activeActions[0];
+    }
+  }
+
+  $: {
+    if ($processedActions.length) {
+      processedAction = $processedActions[0];
+    }
+  }
+
+  $: {
+    if (activeAction) {
+      if (activeAction.systemId.toLowerCase().includes("move")) {
+        centerMapOnPlayer();
+      }
+    }
+  }
+
+  $: {
+    if (processedAction) {
+      console.log(processedAction);
+      if (processedAction.systemId.toLowerCase().includes("move")) {
+        playSound("walking", "activity");
+        centerMapOnPlayer();
+      }
+    }
+  }
 </script>
 
-{#if tileInteractActive}
-  <TileInteract
-    {selectedTileCoords}
-    on:close={() => {
-      tileInteractActive = false;
-    }}
-  />
-{/if}
+<svelte:window on:resize={centerMapOnPlayer} />
 
 {#if $multiCore && $playerAbilities.includes("abilityChat")}
   <Chat channelId={$playerCore.carriedBy} />
 {/if}
 
-<div class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
+<div use:panzoom class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
   <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div>
 
   <div
@@ -79,14 +97,8 @@
       "px;"}
   >
     <!-- GRID -->
-    {#each grid as tile}
-      <Tile
-        {tile}
-        on:interact={(e) => {
-          selectedTileCoords = e.detail.selectedTileCoords;
-          tileInteractActive = true;
-        }}
-      />
+    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
+      <Tile {tile} />
     {/each}
   </div>
 </div>
@@ -105,7 +117,7 @@
 
     .center-map-button {
       position: fixed;
-      top: 10px;
+      top: 100px;
       left: 10px;
       z-index: 1000;
     }

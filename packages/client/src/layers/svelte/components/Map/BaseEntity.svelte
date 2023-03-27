@@ -76,11 +76,12 @@
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
     class="base-entity-2"
+    class:player={isPlayer}
     on:click={() => {
       popUpEntity.set(baseEntityId);
     }}
   >
-    <img src="/img/body3.png" alt="body" />
+    <img draggable="false" src="/img/body3.png" alt="body" />
   </div>
 {/if}
 

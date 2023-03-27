@@ -4,7 +4,7 @@
 
 <SpawnSlide nextSpawnStage={5} buttonText={"OK..."}>
   <span slot="before">
-    <img src="/img/demi.jpg" alt="demiurge" />
+    <img draggable="false" src="/img/demi.jpg" alt="demiurge" />
   </span>
   <span slot="text">
     <p>I will give you 100 energy</p>

@@ -38,7 +38,7 @@
     </div>
 
     <div class="right">
-      <img src="img/test1.png" alt="castle" />
+      <img draggable="false" src="img/test1.png" alt="castle" />
     </div>
   {/if}
 </div>
