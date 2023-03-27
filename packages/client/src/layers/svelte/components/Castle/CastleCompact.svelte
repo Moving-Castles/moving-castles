@@ -31,10 +31,10 @@
       {/if}
     </div> -->
     <Inventory {baseEntityId} showCapacity={true} showEmptySlots={true} />
-
+    <!-- 
     <div class="extend">
       <button on:click={extendCastle}>Extend castle view</button>
-    </div>
+    </div> -->
   {/if}
 </div>
 

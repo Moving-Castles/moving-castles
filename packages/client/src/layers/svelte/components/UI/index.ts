@@ -9,6 +9,8 @@ export const castleExtended = writable(false);
 export const popUpEntity = writable("");
 export const spawnStage = writable(1);
 export const isSpawned = writable(false);
+export const leaderBoardActive = writable(true);
+export const actionSequencerActive = writable(false);
 
 // Transition speeds
 export const speed = writable(100);

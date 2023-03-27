@@ -15,3 +15,9 @@
 </script>
 
 <span class="spinner">{letter}</span>
+
+<style lang="scss">
+  .spinner {
+    user-select: none;
+  }
+</style>

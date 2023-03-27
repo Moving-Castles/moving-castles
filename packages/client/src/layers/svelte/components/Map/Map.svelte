@@ -40,7 +40,7 @@
     grid = initGrid($gameConfig.worldWidth);
   });
 
-  function centerMapOnPlayer() {
+  export function centerMapOnPlayer() {
     let playerEl = document.getElementsByClassName("player")[0];
 
     if (playerEl && playerEl.parentElement) {

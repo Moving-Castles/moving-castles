@@ -1,11 +1,14 @@
 <script lang="ts">
+  import { quadOut } from "svelte/easing";
+  import { fly, scale } from "svelte/transition";
   import { entities } from "../../modules/entities";
-  import { popUpEntity, castleExtended, spawnStage, isSpawned } from "./index";
+  import { popUpEntity, spawnStage, isSpawned, leaderBoardActive, actionSequencerActive } from "./index";
   // ...
-  import UIComponent from "./../SpawnSequence/LoadingScreen.svelte";
   import Map from "../Map/Map.svelte";
   import UIPane from "./UIPane.svelte";
+  import UIBar from "./UIBar.svelte";
   import Leaderboard from "../Leaderboard/Leaderboard.svelte";
+  import ActionSequencer from "../ActionSequencer/ActionSequencer.svelte";
   // ---
   import LoadingScreen from "../SpawnSequence/LoadingScreen.svelte";
   import SpawnStart from "../SpawnSequence/SpawnStart.svelte";
@@ -15,13 +18,23 @@
   import SpawnWorld from "../SpawnSequence/SpawnWorld.svelte";
 </script>
 
-{#if $isSpawned && Object.values($entities).find((e) => e.goal)}
-  <div class="leaderboard">
+{#if $isSpawned && Object.values($entities).find((e) => e.goal) && $leaderBoardActive}
+  <div class="leaderboard" in:scale={{ duration: 100, easing: quadOut }}>
     <Leaderboard />
   </div>
 {/if}
 
-<div class="ui-container" class:extended={$castleExtended}>
+{#if $isSpawned}
+  <UIBar />
+{/if}
+
+{#if $isSpawned && $actionSequencerActive}
+  <div class="action-sequencer" in:scale={{ duration: 100, easing: quadOut }}>
+    <ActionSequencer />
+  </div>
+{/if}
+
+<div class="ui-container">
   {#if $isSpawned}
     <div class="ui-container-inner-map">
       <Map />
@@ -69,13 +82,12 @@
       align-items: center;
       justify-content: center;
       background: black;
-      // background: orangered;
     }
 
     .ui-container-inner-pane {
       position: fixed;
       right: 40px;
-      top: 40px;
+      top: 50px;
       width: 40vw;
       height: 80vh;
       z-index: 10000000;
@@ -100,10 +112,23 @@
 
   .leaderboard {
     position: fixed;
-    top: 10px;
+    top: 50px;
     left: 10px;
     padding: 10px;
     background: red;
     z-index: 100;
+    width: 300px;
+  }
+
+  .action-sequencer {
+    position: fixed;
+    bottom: 20px;
+    left: 10px;
+    padding: 10px;
+    background: red;
+    z-index: 100;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
   }
 </style>

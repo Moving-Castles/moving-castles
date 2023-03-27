@@ -88,22 +88,22 @@
     align-items: center;
     font-size: 32px;
     flex-direction: column;
-    color: black;
+    color: white;
 
     button {
       margin-top: 10px;
       border: 0;
       font-size: 32px;
       background: transparent;
-      border: 2px solid black;
-      color: black;
+      border: 2px solid white;
+      color: white;
       padding: 10px 30px;
       cursor: pointer;
       font-family: var(--font-family);
 
       &:hover {
-        background: black;
-        color: white;
+        background: white;
+        color: black;
       }
     }
   }

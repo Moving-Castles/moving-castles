@@ -7,6 +7,7 @@
     SequencerState,
   } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
+  import { shortenAddress } from "../../utils/misc";
 
   function toggleSequencer() {
     sequencerState.set($sequencerState);
@@ -27,21 +28,40 @@
   <!-- QUEUED -->
   <h2>Queued</h2>
   {#each $queuedActions as action (action.actionId)}
-    <div><span class="description">{action.systemId}</span> {action.actionId}</div>
+    <div class="action">
+      <span class="description">{action.systemId}</span>
+      {action.actionId}
+    </div>
   {/each}
   <!-- ACTIVE -->
   <h2>Active</h2>
   {#each $activeActions as action (action.actionId)}
-    <div><span class="description">{action.systemId}</span> {action.actionId} {action.tx}</div>
+    <div class="action">
+      <span class="description">{action.systemId}</span>
+      {action.actionId}
+      {action.tx}
+    </div>
   {/each}
   <!-- PROCESSED -->
   <h2>Processed</h2>
   {#each $processedActions as action (action.actionId)}
-    <div><span class="description">{action.systemId}</span> {action.actionId} {action.tx}</div>
+    <div class="action">
+      <span class="description">{action.systemId}</span>
+      {shortenAddress(action.actionId)}
+      {shortenAddress(action.tx)}
+    </div>
   {/each}
 </div>
 
 <style lang="scss">
+  .ui-action-sequencer {
+    word-break: break-all;
+
+    .action {
+      margin-bottom: 5px;
+    }
+  }
+
   .description {
     background: white;
     color: black;

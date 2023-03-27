@@ -23,6 +23,7 @@
     addToSequencer("system.PickUp", [itemId]);
   }
   const click = () => {
+    if (boxState === BoxState.OPENING) return;
     if (isOnMap) {
       pickup();
     } else {
@@ -31,6 +32,7 @@
   };
 
   function mouseenter() {
+    if (boxState === BoxState.OPENING) return;
     playSound("cursor", "ui");
   }
 </script>
