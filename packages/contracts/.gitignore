@@ -10,3 +10,4 @@ types/
 broadcast/
 src/libraries/LibDeploy.sol
 src/libraries/test/LibDeploy.sol
+.DS_Store
