@@ -114,10 +114,10 @@ export const panzoom = (element: HTMLElement) => {
   console.log('init')
   mapElement.set(element)
   element.addEventListener('pointerdown', pointerDown)
-  element.addEventListener('wheel', onWheel)
-  element.addEventListener('gesturestart', onGestureStart)
-  element.addEventListener('gesturechange', onGestureChange)
-  element.addEventListener('gestureend', onGestureEnd)
+  // element.addEventListener('wheel', onWheel)
+  // element.addEventListener('gesturestart', onGestureStart)
+  // element.addEventListener('gesturechange', onGestureChange)
+  // element.addEventListener('gestureend', onGestureEnd)
 
   return {
     destroy: () => {
