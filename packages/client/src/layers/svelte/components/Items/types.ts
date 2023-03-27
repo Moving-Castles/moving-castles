@@ -7,4 +7,5 @@ export enum ItemType {
     LootBox,
     Untraversable,
     GoalOrgan,
+    BlankOrgan
 }

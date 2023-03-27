@@ -9,6 +9,7 @@
   import LootBox from "./LootBox.svelte";
   import Untraversable from "./Untraversable.svelte";
   import GoalOrgan from "./GoalOrgan.svelte";
+  import BlankOrgan from "./BlankOrgan.svelte";
 
   export let itemId: string;
   export let item: Entity;
@@ -34,6 +35,8 @@
       type = ItemType.LootBox;
     } else if (item.goal) {
       type = ItemType.GoalOrgan;
+    } else {
+      type = ItemType.BlankOrgan;
     }
   }
 </script>
@@ -55,6 +58,8 @@
     <Untraversable {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.GoalOrgan}
     <GoalOrgan {itemId} {item} {showDialog} {isOnMap} />
+  {:else}
+    <BlankOrgan {itemId} {showDialog} {isOnMap} />
   {/if}
 </div>
 

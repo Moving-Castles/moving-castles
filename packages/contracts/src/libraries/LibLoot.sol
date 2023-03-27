@@ -62,13 +62,14 @@ library LibLoot {
     // Give organ matter
     matterComponent.set(_entity, 30);
 
-    uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 5;
+    uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 8;
 
-    // 0    =>  20%	  => 	Move
-    // 1    =>  20%   =>	Consume
-    // 2    =>  20%   =>	Play
-    // 3    =>  20%   =>	Chat
-    // 4    =>  20%   =>	Goal (only once, otherwise Movek)
+    // 0    =>  12,5%	  => 	Move
+    // 1    =>  12,5%   =>	Consume
+    // 2    =>  12,5%   =>	Play
+    // 3    =>  12,5%   =>	Chat
+    // 4    =>  12,5%   =>	Goal (only once, otherwise blank)
+    // 5–7  =>  37,5%   =>	Blank
 
     // 0: Move
     if (randomNumber == 0) {
@@ -94,15 +95,16 @@ library LibLoot {
       return true;
     }
 
-    // 4: Goal or Move
+    // 4: Goal or Blank
     if (randomNumber == 4) {
       if (goalComponent.getEntities().length == 0) {
         // Goal
         goalComponent.set(_entity, block.number);
-      } else {
-        LibAbility.giveAbility(_components, _entity, AbilityMoveComponentID);
       }
       return true;
     }
+
+    // 5–7: Blank, matter only
+    return true;
   }
 }
