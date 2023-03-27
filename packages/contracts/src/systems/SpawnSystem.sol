@@ -39,10 +39,10 @@ contract SpawnSystem is System {
     LibInventory.addToInventory(components, baseEntity, coreEntity);
 
     // Place three loot boxes in inventory
-    for (uint256 i = 0; i < 3; i++) {
+    for (uint256 i = 0; i < 3; ++i) {
       uint256 lootBox = world.getUniqueEntityId();
       LibInventory.makePortable(components, lootBox);
-      LibLoot.makeLoot(components, lootBox);
+      LibLoot.makeSpawnLoot(components, lootBox);
       LibInventory.addToInventory(components, baseEntity, lootBox);
     }
 

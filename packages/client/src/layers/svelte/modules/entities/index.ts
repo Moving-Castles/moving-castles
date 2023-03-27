@@ -47,7 +47,7 @@ export type Entity = {
   abilityPlay?: boolean;
   abilityChat?: boolean;
   untraversable?: boolean;
-  loot?: boolean;
+  loot?: number;
   goal?: number;
   point?: number;
 };
@@ -79,7 +79,7 @@ export type Item = {
   abilityPlay?: boolean;
   abilityChat?: boolean;
   untraversable?: boolean;
-  loot?: boolean;
+  loot?: number;
   goal?: number;
 };
 

@@ -23,14 +23,25 @@ import { ID as AbilityChatComponentID } from "../components/AbilityChatComponent
 
 library LibLoot {
   /**
-   * Make entity Loot
+   * Make entity normal Loot
    *
    * @param _components world components
    * @param _entity loot entity
    */
-  function makeLoot(IUint256Component _components, uint256 _entity) internal {
+  function makeNormalLoot(IUint256Component _components, uint256 _entity) internal {
     LootComponent lootComponent = LootComponent(getAddressById(_components, LootComponentID));
-    lootComponent.set(_entity);
+    lootComponent.set(_entity, 1);
+  }
+
+  /**
+   * Make entity spawn Loot
+   *
+   * @param _components world components
+   * @param _entity loot entity
+   */
+  function makeSpawnLoot(IUint256Component _components, uint256 _entity) internal {
+    LootComponent lootComponent = LootComponent(getAddressById(_components, LootComponentID));
+    lootComponent.set(_entity, 2);
   }
 
   /**
@@ -56,55 +67,84 @@ library LibLoot {
     MatterComponent matterComponent = MatterComponent(getAddressById(_components, MatterComponentID));
     GoalComponent goalComponent = GoalComponent(getAddressById(_components, GoalComponentID));
 
+    uint32 lootType = lootComponent.getValue(_entity);
+
     // Remove loot Component from entity
     lootComponent.remove(_entity);
 
     // Give organ matter
     matterComponent.set(_entity, 30);
 
-    uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 8;
+    if (lootType == 1) {
+      // Normal type loot
 
-    // 0    =>  12,5%	  => 	Move
-    // 1    =>  12,5%   =>	Consume
-    // 2    =>  12,5%   =>	Play
-    // 3    =>  12,5%   =>	Chat
-    // 4    =>  12,5%   =>	Goal (only once, otherwise blank)
-    // 5–7  =>  37,5%   =>	Blank
+      uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 8;
 
-    // 0: Move
-    if (randomNumber == 0) {
-      LibAbility.giveAbility(_components, _entity, AbilityMoveComponentID);
-      return true;
-    }
+      // 0    =>  12,5%	  => 	Move
+      // 1    =>  12,5%   =>	Consume
+      // 2    =>  12,5%   =>	Play
+      // 3    =>  12,5%   =>	Chat
+      // 4    =>  12,5%   =>	Goal (only once, otherwise blank)
+      // 5–7  =>  37,5%   =>	Blank
 
-    // 1: Consume
-    if (randomNumber == 1) {
-      LibAbility.giveAbility(_components, _entity, AbilityConsumeComponentID);
-      return true;
-    }
-
-    // 2: Play
-    if (randomNumber == 2) {
-      LibAbility.giveAbility(_components, _entity, AbilityPlayComponentID);
-      return true;
-    }
-
-    // 3: Chat
-    if (randomNumber == 3) {
-      LibAbility.giveAbility(_components, _entity, AbilityChatComponentID);
-      return true;
-    }
-
-    // 4: Goal or Blank
-    if (randomNumber == 4) {
-      if (goalComponent.getEntities().length == 0) {
-        // Goal
-        goalComponent.set(_entity, block.number);
+      // 0: Move
+      if (randomNumber == 0) {
+        LibAbility.giveAbility(_components, _entity, AbilityMoveComponentID);
+        return true;
       }
+
+      // 1: Consume
+      if (randomNumber == 1) {
+        LibAbility.giveAbility(_components, _entity, AbilityConsumeComponentID);
+        return true;
+      }
+
+      // 2: Play
+      if (randomNumber == 2) {
+        LibAbility.giveAbility(_components, _entity, AbilityPlayComponentID);
+        return true;
+      }
+
+      // 3: Chat
+      if (randomNumber == 3) {
+        LibAbility.giveAbility(_components, _entity, AbilityChatComponentID);
+        return true;
+      }
+
+      // 4: Goal or Blank
+      if (randomNumber == 4) {
+        if (goalComponent.getEntities().length == 0) {
+          // Goal
+          goalComponent.set(_entity, block.number);
+        }
+        return true;
+      }
+
+      // 5–7: Blank, matter only
+      return true;
+    } else if (lootType == 2) {
+      // Spawn type loot
+
+      uint256 randomNumber = LibUtils.random(_entity, block.timestamp) % 5;
+
+      // 0-1    =>  40%	  => 	Move
+      // 2-3    =>  40%   =>	Consume
+      // 4      =>  20%   =>	Blank
+
+      // 0: Move
+      if (randomNumber == 0 || randomNumber == 1) {
+        LibAbility.giveAbility(_components, _entity, AbilityMoveComponentID);
+        return true;
+      }
+
+      // 1: Consume
+      if (randomNumber == 2 || randomNumber == 3) {
+        LibAbility.giveAbility(_components, _entity, AbilityConsumeComponentID);
+        return true;
+      }
+
+      // 4: Blank, matter only
       return true;
     }
-
-    // 5–7: Blank, matter only
-    return true;
   }
 }

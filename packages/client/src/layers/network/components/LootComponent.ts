@@ -5,7 +5,7 @@ export function defineLootComponent(world: World) {
     return defineComponent(
         world,
         {
-            value: Type.Boolean,
+            value: Type.Number,
         },
         {
             id: "Loot",
