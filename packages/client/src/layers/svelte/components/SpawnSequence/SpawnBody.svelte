@@ -40,7 +40,7 @@
   }}
 >
   <!-- BEFORE -->
-  <img src="/img/body2.png" alt="body" />
+  <img draggable="false" src="/img/body2.png" alt="body" />
 
   {#if skip}
     <!-- SKIP TEXT -->

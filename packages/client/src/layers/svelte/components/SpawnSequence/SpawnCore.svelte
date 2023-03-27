@@ -41,7 +41,7 @@
 
 {#if $playerCore && counter > 20}
   <div class="demi3" in:fade>
-    <img src="/img/demi.jpg" alt="core" />
+    <img draggable="false" src="/img/demi.jpg" alt="core" />
     <Typewriter
       mode="cascade"
       interval={70}
@@ -57,7 +57,7 @@
 
 <div class="spawn-sequence" in:fade>
   {#if $playerCore && counter > 20}
-    <img src={idToAvatar($playerAddress)} alt="core" />
+    <img draggable="false" src={idToAvatar($playerAddress)} alt="core" />
     <div class="core-item"><strong>{idToName($playerAddress)}</strong></div>
     <button
       on:click={() => {
@@ -66,7 +66,7 @@
       }}>Accept your fate</button
     >
   {:else}
-    <img src={"/img/avatars2/" + cores[coreIndex]} alt="core" />
+    <img draggable="false" src={"/img/avatars2/" + cores[coreIndex]} alt="core" />
   {/if}
 </div>
 

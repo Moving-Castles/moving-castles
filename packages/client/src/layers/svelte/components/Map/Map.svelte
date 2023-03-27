@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import { playerCore, playerBaseEntity, multiCore } from "../../modules/player";
   import { gameConfig } from "../../modules/entities";
+  import { panzoom } from "../../modules/map";
 
   import TileInteract from "./TileInteract.svelte";
   import DebugChat from "../Chat/Chat.svelte";
@@ -36,8 +37,10 @@
 
   let grid: GridTile[] = [];
 
-  onMount(async () => {
+  onMount(() => {
     grid = initGrid($gameConfig.worldWidth);
+    centerMapOnPlayer();
+    console.log("mounted");
   });
 
   function centerMapOnPlayer() {
@@ -48,10 +51,6 @@
       playerTileEl.scrollIntoView({ block: "center", inline: "center" });
     }
   }
-
-  onMount(async () => {
-    setTimeout(centerMapOnPlayer, 500);
-  });
 </script>
 
 {#if tileInteractActive}
@@ -67,7 +66,7 @@
   <DebugChat channelId={$playerCore.carriedBy} />
 {/if}
 
-<div class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
+<div use:panzoom class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
   <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div>
 
   <div
@@ -79,7 +78,7 @@
       "px;"}
   >
     <!-- GRID -->
-    {#each grid as tile}
+    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
       <Tile
         {tile}
         on:interact={(e) => {
@@ -105,7 +104,7 @@
 
     .center-map-button {
       position: fixed;
-      top: 10px;
+      top: 100px;
       left: 10px;
       z-index: 1000;
     }

@@ -64,7 +64,7 @@
   bind:this={markerEl}
   on:mouseenter={mouseenter}
 >
-  <img class="core-avatar" src={idToAvatar(itemId)} alt="core" />
+  <img draggable="false" class="core-avatar" src={idToAvatar(itemId)} alt="core" />
 </div>
 
 {#if showDialog}

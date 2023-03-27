@@ -31,7 +31,7 @@
 {/if}
 
 <div class="ui-container" class:extended={$castleExtended}>
-  {#if $playerCore && $playerBaseEntity && $spawnStage == 100}
+  {#if $playerCore && $playerBaseEntity}
     <div class="ui-container-inner-map">
       <Map />
     </div>

@@ -48,6 +48,7 @@
   text-rendering: optimizeLegibility;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  user-select: none;
 }
 
 *::-webkit-scrollbar {

@@ -12,7 +12,7 @@
     <div class="core-item">Energy: {$playerCore.energy}</div>
     <div class="core-item">Point: {parseInt(String($playerCore.point))}</div>
     <div class="core-item">
-      <img class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
+      <img draggable="false" class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
     </div>
   {/if}
 </div>
