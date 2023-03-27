@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { baseEntities, freeItems } from "../../modules/entities";
-  import { playerCore } from "../../modules/player";
+  import { playerCore, playerAbilities } from "../../modules/player";
   import { chebyshev } from "../../utils/space";
   import Item from "../Items/ItemSelector.svelte";
   import BaseEntity from "./BaseEntity.svelte";
@@ -19,7 +19,7 @@
   const onPointerEnter = () => (pointerover = true);
   const onPointerLeave = () => (pointerover = false);
   const onPointerDown = () => {
-    if (isAdjacent) {
+    if (isAdjacent && $playerAbilities.includes("abilityMove")) {
       addToSequencer("system.Move", [tile.coordinates]);
     }
   };
@@ -30,6 +30,7 @@
 <div
   class="tile"
   class:adjacent={isAdjacent}
+  class:canmoveto={$playerAbilities.includes("abilityMove") && isAdjacent}
   on:pointerenter={onPointerEnter}
   on:pointerleave={onPointerLeave}
   on:pointerdown|self={onPointerDown}
@@ -69,7 +70,7 @@
       background-color: rgb(60, 60, 60);
     }
 
-    &.adjacent {
+    &.canmoveto {
       &:hover::after {
         content: "";
         position: absolute;

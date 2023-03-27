@@ -2,6 +2,7 @@
   import type { Coord } from "@latticexyz/utils";
   import { onMount, tick } from "svelte";
   import { playerCore, playerBaseEntity, multiCore } from "../../modules/player";
+  import { blockNumber } from "../../modules/network";
   import { gameConfig } from "../../modules/entities";
   import { panzoom } from "../../modules/map";
   import DebugChat from "../Chat/Chat.svelte";
@@ -33,11 +34,6 @@
   }
 
   let grid: GridTile[] = [];
-
-  onMount(() => {
-    grid = initGrid($gameConfig.worldWidth);
-    centerMapOnPlayer();
-  });
 
   async function centerMapOnPlayer() {
     await tick();
@@ -78,6 +74,11 @@
       }
     }
   }
+
+  onMount(() => {
+    grid = initGrid($gameConfig.worldWidth);
+    centerMapOnPlayer();
+  });
 </script>
 
 <svelte:window on:resize={centerMapOnPlayer} />
@@ -87,7 +88,7 @@
 {/if}
 
 <div use:panzoom class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
-  <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div>
+  <!-- <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div> -->
 
   <div
     class="map-container"
@@ -98,7 +99,7 @@
       "px;"}
   >
     <!-- GRID -->
-    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
+    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}-${$blockNumber}`)}
       <Tile {tile} />
     {/each}
   </div>
