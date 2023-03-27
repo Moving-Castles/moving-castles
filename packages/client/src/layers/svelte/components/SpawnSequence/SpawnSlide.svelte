@@ -2,7 +2,7 @@
   import { fade } from "svelte/transition";
   import { ready } from "../../modules/network";
   import Typewriter from "svelte-typewriter";
-  import { spawnStage } from "../UI";
+  import { spawnStage, isSpawned } from "../UI";
   import { playSound } from "../../../howler";
 
   export let nextSpawnStage: number;
@@ -13,7 +13,11 @@
 
   const next = () => {
     playSound("selectTwo", "ui");
-    spawnStage.set(nextSpawnStage);
+    if (nextSpawnStage === 100) {
+      isSpawned.set(true);
+    } else {
+      spawnStage.set(nextSpawnStage);
+    }
   };
 </script>
 
