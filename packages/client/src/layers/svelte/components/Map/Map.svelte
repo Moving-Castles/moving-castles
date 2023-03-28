@@ -13,6 +13,9 @@
 
   let activeAction: Action;
   let processedAction: Action;
+  let w: number, h: number, containerWidth: number, zoomScale: number;
+  let zoomed = false;
+  let grid: GridTile[] = [];
 
   function initGrid(unit: number) {
     let grid = [] as GridTile[];
@@ -32,15 +35,13 @@
     return grid;
   }
 
-  let grid: GridTile[] = [];
-
-  async function centerMapOnPlayer() {
+  async function centerMapOnPlayer(smooth: boolean = true) {
     await tick();
     let playerEl = document.getElementsByClassName("player")[0];
 
     if (playerEl && playerEl.parentElement) {
       let playerTileEl = playerEl.parentElement;
-      playerTileEl.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+      playerTileEl.scrollIntoView({ block: "center", inline: "center", behavior: smooth ? "smooth" : "auto" });
     }
   }
 
@@ -74,29 +75,39 @@
     }
   }
 
+  $: w - h;
+  $: zoomScale = Math.min(w, h) / containerWidth;
+
+  const toggleZoom = (e) => {
+    if (e.key === "-") {
+      zoomed = true;
+    }
+    if (e.key === "=") {
+      zoomed = false;
+      centerMapOnPlayer(false);
+    }
+  };
+
   onMount(() => {
     grid = initGrid($gameConfig.worldWidth);
-    centerMapOnPlayer();
+    centerMapOnPlayer(false);
   });
 </script>
 
-<svelte:window on:resize={centerMapOnPlayer} />
+<svelte:window on:resize={centerMapOnPlayer} on:keypress={toggleZoom} bind:innerWidth={w} bind:innerHeight={h} />
 
 {#if $multiCore && $playerAbilities.includes("abilityChat")}
   <Chat channelId={$playerCore.carriedBy} />
 {/if}
 
-<div use:panzoom class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
-  <!-- <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div> -->
-
-  <div
-    class="map-container"
-    style={"width: " +
-      ($gameConfig.worldWidth * 400 + 3) +
-      "px; height: " +
-      ($gameConfig.worldHeight * 400 + 3) +
-      "px;"}
-  >
+<div
+  use:panzoom
+  class="ui-map"
+  style="--zoomscale: {zoomScale}; --ww: {$gameConfig.worldWidth * 400 + 3}px;"
+  class:void={!($playerBaseEntity && $playerBaseEntity.position)}
+  class:zoomed
+>
+  <div class="map-container" class:zoomed bind:clientWidth={containerWidth}>
     <!-- GRID -->
     {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
       <Tile {tile} />
@@ -110,6 +121,16 @@
     width: 100%;
     overflow: auto;
     padding: 0;
+
+    &.zoomed {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: var(--ww);
+      height: var(--ww);
+      transform-origin: top left;
+      transform: scale(calc(var(--zoomscale) * 0.85)) translate(-50%, -50%);
+    }
 
     &.void {
       filter: grayscale(1);
@@ -128,6 +149,8 @@
       background: rgb(100, 100, 100);
       border: 1px solid white;
       position: relative;
+      width: var(--ww);
+      height: var(--ww);
     }
   }
 </style>
