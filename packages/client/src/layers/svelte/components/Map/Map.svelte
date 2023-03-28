@@ -23,6 +23,7 @@
           coordinates: { x: x, y: y },
           perlinFactor: 0,
           resource: 100,
+          id: `${x}-${y}`,
         };
         grid = [...grid, newGridTile];
       }
@@ -32,11 +33,6 @@
   }
 
   let grid: GridTile[] = [];
-
-  onMount(() => {
-    grid = initGrid($gameConfig.worldWidth);
-    centerMapOnPlayer();
-  });
 
   async function centerMapOnPlayer() {
     await tick();
@@ -77,6 +73,11 @@
       }
     }
   }
+
+  onMount(() => {
+    grid = initGrid($gameConfig.worldWidth);
+    centerMapOnPlayer();
+  });
 </script>
 
 <svelte:window on:resize={centerMapOnPlayer} />
@@ -86,7 +87,7 @@
 {/if}
 
 <div use:panzoom class="ui-map" class:void={!($playerBaseEntity && $playerBaseEntity.position)}>
-  <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div>
+  <!-- <div class="center-map-button"><button on:click={centerMapOnPlayer}>CENTER</button></div> -->
 
   <div
     class="map-container"

@@ -2,10 +2,12 @@
   import { createEventDispatcher } from "svelte";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { baseEntities, freeItems } from "../../modules/entities";
-  import { playerCore } from "../../modules/player";
+  import { playerCore, playerAbilities } from "../../modules/player";
   import { chebyshev } from "../../utils/space";
+  import { gameConfig } from "../../modules/entities";
   import Item from "../Items/ItemSelector.svelte";
   import BaseEntity from "./BaseEntity.svelte";
+  import { t } from "../Dialogue/index";
 
   import type { GridTile } from "./index";
 
@@ -15,25 +17,36 @@
   let pointerover = false;
   let pointerdown = false;
   let isPlayer = false;
+  let dialogElement: HTMLElement;
 
   const onPointerEnter = () => (pointerover = true);
   const onPointerLeave = () => (pointerover = false);
-  const onPointerDown = () => {
-    if (isAdjacent) {
+  const onPointerDown = () => (pointerdown = true);
+  const onPointerUp = () => (pointerdown = false);
+
+  function move() {
+    if (isAdjacent && $playerAbilities.includes("abilityMove")) {
       addToSequencer("system.Move", [tile.coordinates]);
     }
-  };
-  const onPointerUp = () => (pointerdown = false);
+  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
   class="tile"
   class:adjacent={isAdjacent}
+  class:canmoveto={$playerAbilities.includes("abilityMove") && isAdjacent}
   on:pointerenter={onPointerEnter}
   on:pointerleave={onPointerLeave}
+  on:pointerup={onPointerUp}
   on:pointerdown|self={onPointerDown}
+  use:t={isAdjacent && $playerAbilities.includes("abilityMove")}
 >
+  <div class="dialog">
+    Move here?<br /> Energy costs: {$gameConfig.moveCost}
+    <button on:click={move}>Yes</button>
+  </div>
+
   <div class="coords">{tile.coordinates.x}:{tile.coordinates.y}</div>
 
   <!-- BASE ENTITIES -->
@@ -69,7 +82,7 @@
       background-color: rgb(60, 60, 60);
     }
 
-    &.adjacent {
+    &.canmoveto {
       &:hover::after {
         content: "";
         position: absolute;

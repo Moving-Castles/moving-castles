@@ -6,8 +6,73 @@ const dummy = document.createElement('div')
 export const position: Writable<{ x: number | undefined, y: number | undefined, top: number | undefined, left: number | undefined }> = writable({ top: 0, left: 0, x: 0, y: 0 })
 export const mapElement: Writable<HTMLElement> = writable(dummy)
 
+let rotation = 0;
+let gestureStartRotation = 0;
+let gestureStartScale = 0;
+let posX = 0;
+let posY = 0;
+let scale = 1
+let startX: number;
+let startY: number;
+
+
+const setZoom = () => {
+  // Make sure scale does not dip
+  if (scale < 0) scale = 0.25
+
+  const parent = get(mapElement)
+  const element = parent.querySelector('.map-container')
+  const player = parent.querySelector('.player')
+
+  const t = player?.parentElement?.offsetTop + player?.parentElement?.clientHeight / 2
+  const l = player?.parentElement?.offsetLeft + player?.parentElement?.clientWidth / 2
+
+  const origin = `${(l / element.clientWidth) * 100}% ${(t / element.clientHeight) * 100}%`
+  const transform = `scale(${scale})`
+
+
+  element.style.transformOrigin = origin
+  element.style.transform = transform
+}
+
+const onWheel = (e) => {
+  e.preventDefault();
+
+  if (e.ctrlKey) {
+    scale -= e.deltaY * 0.01
+  } else {
+    posX -= e.deltaX * 2;
+    posY -= e.deltaY * 2;
+  }
+
+  setZoom()
+}
+
+const onGestureStart = (e) => {
+  e.preventDefault();
+  startX = e.pageX - posX;
+  startY = e.pageY - posY;
+  gestureStartRotation = rotation;
+  gestureStartScale = scale;
+}
+
+const onGestureChange = (e) => {
+  e.preventDefault();
+  
+  rotation = gestureStartRotation + e.rotation;
+  scale = gestureStartScale * e.scale;
+
+  posX = e.pageX - startX;
+  posY = e.pageY - startY;
+
+  setZoom();
+}
+
+const onGestureEnd = (e) => {
+  e.preventDefault();
+}
+
 const pointerMove = (e: PointerEvent) => {
-  console.log('move')
   const pos = get(position)
   const el = get(mapElement)
 
@@ -21,14 +86,12 @@ const pointerMove = (e: PointerEvent) => {
 }
 
 const pointerUp = (e: PointerEvent) => {
-  console.log('up')
   document.removeEventListener('pointermove', pointerMove);
   document.removeEventListener('pointerup', pointerUp);
 }
 
 const pointerDown = (e: PointerEvent) => {
   const el = get(mapElement)
-  console.log('down', el)
 
   position.set({
       // The current scroll
@@ -44,9 +107,12 @@ const pointerDown = (e: PointerEvent) => {
 }
 
 export const panzoom = (element: HTMLElement) => {
-  console.log('init')
   mapElement.set(element)
   element.addEventListener('pointerdown', pointerDown)
+  // element.addEventListener('wheel', onWheel)
+  // element.addEventListener('gesturestart', onGestureStart)
+  // element.addEventListener('gesturechange', onGestureChange)
+  // element.addEventListener('gestureend', onGestureEnd)
 
   return {
     destroy: () => {

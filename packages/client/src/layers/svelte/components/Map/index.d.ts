@@ -3,4 +3,5 @@ export interface GridTile {
   coordinates: Coord;
   perlinFactor: number;
   resource: number;
+  id: string
 }
