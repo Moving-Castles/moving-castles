@@ -3,15 +3,12 @@
  * 
  */
 
+import type { Activity } from "../actionUpdater";
 import type { Coord } from "@latticexyz/utils";
 import { writable, get, derived } from "svelte/store";
 import { network } from "../network";
 
 // --- TYPES -----------------------------------------------------------------
-
-export enum Activity {
-  Play,
-}
 
 export type GameConfig = {
   worldHeight: number;
@@ -50,6 +47,7 @@ export type Entity = {
   loot?: number;
   goal?: number;
   point?: number;
+  activity?: Activity
 };
 
 export type Core = {
@@ -61,12 +59,14 @@ export type Core = {
   carriedBy: string;
   point: number;
   commit?: Activity;
+  activity: Activity
 };
 
 export type BaseEntity = {
   position: Coord;
   carryingCapacity: number;
   inventory: string[];
+  activity: Activity
 };
 
 export type Item = {
@@ -81,6 +81,7 @@ export type Item = {
   untraversable?: boolean;
   loot?: number;
   goal?: number;
+  activity: Activity
 };
 
 export type FreeItem = Omit<Item, 'carriedBy'> & {

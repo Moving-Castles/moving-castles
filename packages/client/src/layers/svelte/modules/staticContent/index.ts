@@ -12,6 +12,6 @@ const localStaticContent = {
     castles: []
 }
 
-export function initializeStaticContent() {
+export function initStaticContent() {
     staticContent.set(localStaticContent);
 }

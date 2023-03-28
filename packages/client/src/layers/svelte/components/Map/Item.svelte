@@ -138,17 +138,13 @@
       }
     }
   }
-
-  /* Define the keyframes */
   @keyframes color-change {
     0% {
-      background: red;
+      filter: invert(0);
     }
-    50% {
-      background: orangered;
-    }
+
     100% {
-      background: red;
+      filter: invert(1);
     }
   }
 </style>

@@ -135,6 +135,8 @@ async function execute() {
     queuedActions.update((queuedActions) => queuedActions.slice(1));
     // Check if player has enough energy
     if (get(playerCore).energy < action.requirements.energy) {
+      // Add action to failed list
+      failedActions.update((failedActions) => [action, ...failedActions]);
       // @todo: handle lack of energy better
       window.alert('Not enough energy to execute action: ' + String(action.systemId) + '. Requires ' + action.requirements.energy + ' energy.')
       playSound("error", "ui")
