@@ -38,7 +38,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="loot-box" class:map={isOnMap} on:click={click} on:mouseenter={mouseenter}>
+<div class="loot-box" class:map={isOnMap} on:click|stopPropagation={click} on:mouseenter={mouseenter}>
   {#if boxState === BoxState.OPENING}
     <div class="opening-overlay">
       <div>
@@ -52,8 +52,9 @@
 
 <style lang="scss">
   .loot-box {
+    aspect-ratio: 1;
     height: 100%;
-    width: 100%;
+    // width: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;

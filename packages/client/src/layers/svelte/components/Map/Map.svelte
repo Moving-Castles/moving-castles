@@ -6,12 +6,16 @@
   import Chat from "../Chat/Chat.svelte";
   import Tile from "./Tile.svelte";
   import type { GridTile } from "./index";
+  import type { Action } from "../../modules/actionSequencer";
+  import { v4 as uuid } from "uuid";
 
   import { Activity } from "../../modules/actionUpdater";
 
   let w: number, h: number, containerWidth: number, zoomScale: number;
   let zoomed = false;
   let grid: GridTile[] = [];
+
+  $: key = uuid();
 
   function initGrid(unit: number) {
     let grid = [] as GridTile[];
@@ -79,7 +83,7 @@
 >
   <div class="map-container" class:zoomed bind:clientWidth={containerWidth}>
     <!-- GRID -->
-    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
+    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}-${key}`)}
       <Tile {tile} />
     {/each}
   </div>

@@ -20,7 +20,7 @@
   let isPlayer = false;
   let isSame = false;
   let isAdjacent = false;
-
+  let untraversable = false;
   let playing = false;
 
   $: playing = Object.values($cores)
@@ -39,7 +39,6 @@
       ? chebyshev($baseEntities[$playerCore.carriedBy].position, baseEntity.position) === 1
       : false;
 
-  let untraversable = false;
   $: untraversable = Object.values($items).some((i) => i.carriedBy === baseEntityId && i.untraversable);
 
   $: if (isPlayer) {
@@ -59,7 +58,7 @@
 {#if untraversable}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
-    class="base-entity"
+    class="base-entity grid-item"
     class:untraversable
     class:playing
     style={"background:" + addressToColor(baseEntityId) + ";"}
@@ -82,7 +81,7 @@
 {:else}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
-    class="base-entity-2"
+    class="base-entity-2 grid-item"
     class:player={isPlayer}
     class:active={baseEntity.activity && baseEntity.activity !== Activity.Idle}
     on:click={() => {
@@ -101,20 +100,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 5px;
     line-height: 0;
     cursor: pointer;
-    width: fit-content;
+    object-fit: contain;
     padding: 10px;
-    height: 350px;
-    width: 350px;
+    width: 200px;
+    height: 200px;
 
     &.active {
       animation: color-change 0.2s infinite;
     }
 
     img {
+      width: 100%;
       height: 100%;
+      object-fit: contain;
     }
   }
 
@@ -134,10 +134,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 5px;
     line-height: 0;
     cursor: pointer;
     width: fit-content;
+    height: fit-content;
     padding: 10px;
 
     &.untraversable {
