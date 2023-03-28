@@ -1,9 +1,9 @@
 import type { Writable } from "svelte/store"
 import tippy, {followCursor} from 'tippy.js';
 import { writable } from "svelte/store"
-import type { SingleTarget } from "tippy.js"
+import type { SingleTarget, Tippy } from "tippy.js"
 
-export const dialogue: Writable<string> = writable('')
+export const dialogue: Writable<Tippy | undefined> = writable('')
 
 export const t = function (element: SingleTarget, enable: boolean = true) {
   const d = element.querySelector('.dialog')
@@ -13,20 +13,24 @@ export const t = function (element: SingleTarget, enable: boolean = true) {
     return
   }
 
-  const tooltip = tippy(element, {
+  const tt = tippy(element, {
     content: d,
     inertia: true,
     interactive: true,
     trigger: 'click',
     followCursor: 'initial',
     plugins: [followCursor],
+    onShow(instance) {
+      setTimeout(instance.hide, 5000)
+    },
+  
   })
 
 
   return {
     destroy () {
       // element.removeEventListener('pointerdown', toggle)
-      tooltip.destroy()
+      tt.destroy()
     }
   }
 }

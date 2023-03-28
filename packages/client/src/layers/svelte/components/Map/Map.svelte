@@ -8,6 +8,7 @@
   import { playSound } from "../../../howler";
   import type { GridTile } from "./index";
   import type { Action } from "../../modules/actionSequencer";
+  import { v4 as uuid } from "uuid";
 
   import { activeActions, processedActions } from "../../modules/actionSequencer";
 
@@ -45,6 +46,8 @@
     }
   }
 
+  $: key = uuid();
+
   $: {
     if ($activeActions.length) {
       activeAction = $activeActions[0];
@@ -67,10 +70,10 @@
 
   $: {
     if (processedAction) {
-      console.log(processedAction);
       if (processedAction.systemId.toLowerCase().includes("move")) {
         playSound("walking", "activity");
         centerMapOnPlayer();
+        key = uuid();
       }
     }
   }
@@ -109,7 +112,7 @@
 >
   <div class="map-container" class:zoomed bind:clientWidth={containerWidth}>
     <!-- GRID -->
-    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
+    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}-${key}`)}
       <Tile {tile} />
     {/each}
   </div>

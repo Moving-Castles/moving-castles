@@ -41,7 +41,7 @@
   }
 </script>
 
-<div class="item" class:map={isOnMap}>
+<div class="item grid-item" class:map={isOnMap}>
   {#if type === ItemType.Core}
     <Core {itemId} {item} {showDialog} />
   {:else if type === ItemType.MoveOrgan}
