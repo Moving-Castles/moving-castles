@@ -1,36 +1,38 @@
-import type { Writable } from "svelte/store"
 import tippy, {followCursor} from 'tippy.js';
-import { writable } from "svelte/store"
-import type { SingleTarget, Tippy } from "tippy.js"
+import type { SingleTarget } from "tippy.js"
 
-export const dialogue: Writable<Tippy | undefined> = writable('')
+export const makeOptions = (content: any) => ({
+  content,
+  allowHTML: true,
+  inertia: true,
+  interactive: true,
+  trigger: 'click',
+  followCursor: 'initial',
+  plugins: [followCursor]
+})
 
-export const t = function (element: SingleTarget, enable: boolean = true) {
-  const d = element.querySelector('.dialog')
+type Params = {
+  enable: boolean
+}
 
-  if (!enable) {
-    d.style.display = 'none'
-    return
+export const t = function (element: SingleTarget, params?: Params) {
+  function init (p?: Params) {
+    const d = element.querySelector('.dialog')
+
+    if (d) {
+      tippy(element, makeOptions(d))
+    }
   }
 
-  const tt = tippy(element, {
-    content: d,
-    inertia: true,
-    interactive: true,
-    trigger: 'click',
-    followCursor: 'initial',
-    plugins: [followCursor],
-    onShow(instance) {
-      setTimeout(instance.hide, 5000)
-    },
-  
-  })
-
+  init(params)
 
   return {
+    update (newParams: Params) {
+      // element?._tippy?.destroy()
+      init(newParams)
+    },
     destroy () {
-      // element.removeEventListener('pointerdown', toggle)
-      tt.destroy()
+      element._tippy.destroy()
     }
   }
 }

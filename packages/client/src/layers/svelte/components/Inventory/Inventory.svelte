@@ -40,10 +40,6 @@
       <EmptySlot />
     {/each}
   {/if}
-
-  {#if !itsMe}
-    <div>Trade</div>
-  {/if}
 </div>
 
 <style lang="scss">

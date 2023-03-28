@@ -46,8 +46,9 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div use:t={!isOnMap} class="organ blank" on:click={click} on:mouseenter={mouseenter}>
+<div use:t={{ enable: !isOnMap }} class="organ blank" on:click={click} on:mouseenter={mouseenter}>
   <img src={icon} alt="move" />
+
   <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>

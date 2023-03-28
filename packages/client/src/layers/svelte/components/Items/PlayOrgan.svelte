@@ -51,7 +51,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div use:t={isOnMap} class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
+<div use:t={{ enable: isOnMap }} class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
   {info.symbol}
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>

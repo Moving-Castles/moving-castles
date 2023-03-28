@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { GridTile } from "./index";
 
+  import { onMount, afterUpdate, onDestroy } from "svelte";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { baseEntities, freeItems } from "../../modules/entities";
   import { playerCore, playerAbilities } from "../../modules/player";
@@ -8,11 +9,13 @@
   import { gameConfig } from "../../modules/entities";
   import Item from "../Items/ItemSelector.svelte";
   import BaseEntity from "./BaseEntity.svelte";
-  import { t } from "../Dialogue/index";
+  import { makeOptions } from "../Dialogue/index";
+  import tippy from "tippy.js";
 
   export let tile: GridTile;
 
-  let tileElement: HTMLElement;
+  let element: HTMLElement;
+  let dialog: HTMLElement;
   let tileEntities: [string, BaseEntity][];
 
   $: adjacent = isAdjacent($baseEntities[$playerCore.carriedBy].position, tile.coordinates);
@@ -34,13 +37,30 @@
     if (adjacent && $playerAbilities.includes("abilityMove")) {
       addToSequencer("system.Move", [tile.coordinates]);
     }
-
-    hide();
   }
 
   function hide() {
-    tileElement._tippy.hide();
+    element?._tippy?.hide();
   }
+
+  function init() {
+    tippy(element, makeOptions(dialog));
+  }
+
+  function destroy() {
+    element?._tippy?.destroy();
+  }
+
+  onMount(() => {
+    if (adjacent) init();
+  });
+
+  afterUpdate(() => {
+    destroy();
+    if (adjacent) init();
+  });
+
+  onDestroy(destroy);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -48,14 +68,14 @@
   class="tile"
   class:adjacent
   class:canmoveto={$playerAbilities.includes("abilityMove") && adjacent}
-  bind:this={tileElement}
-  use:t={adjacent && $playerAbilities.includes("abilityMove")}
+  bind:this={element}
 >
-  <div class="dialog">
+  <!-- Don't include in DOM if tooltip should not render -->
+  <div class="dialog" class:hidden={!adjacent} bind:this={dialog}>
     Destination x:{tile.coordinates.x}, y:{tile.coordinates.y}<br /> Costs: {$gameConfig.moveCost} energy
     <br />
-    <button on:click={move}>move</button>
-    <button on:click={hide}>abort</button>
+    <button class="success" on:click={move}>move</button>
+    <button class="cancel" on:click={hide}>abort</button>
   </div>
 
   <div class="coords">{tile.coordinates.x}:{tile.coordinates.y}</div>
@@ -86,6 +106,12 @@
 
     &:hover {
       background-color: rgb(60, 60, 60);
+    }
+
+    .dialog {
+      &.hidden {
+        display: none;
+      }
     }
 
     &.canmoveto {
