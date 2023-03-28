@@ -5,14 +5,10 @@
   import { panzoom } from "../../modules/map";
   import Chat from "../Chat/Chat.svelte";
   import Tile from "./Tile.svelte";
-  import { playSound } from "../../../howler";
   import type { GridTile } from "./index";
-  import type { Action } from "../../modules/actionSequencer";
 
-  import { activeActions, completedActions } from "../../modules/actionSequencer";
+  import { Activity } from "../../modules/actionUpdater";
 
-  let activeAction: Action;
-  let processedAction: Action;
   let w: number, h: number, containerWidth: number, zoomScale: number;
   let zoomed = false;
   let grid: GridTile[] = [];
@@ -45,34 +41,8 @@
     }
   }
 
-  $: {
-    if ($activeActions.length) {
-      activeAction = $activeActions[0];
-    }
-  }
-
-  $: {
-    if ($completedActions.length) {
-      processedAction = $completedActions[0];
-    }
-  }
-
-  $: {
-    if (activeAction) {
-      if (activeAction.systemId.toLowerCase().includes("move")) {
-        centerMapOnPlayer();
-      }
-    }
-  }
-
-  $: {
-    if (processedAction) {
-      console.log(processedAction);
-      if (processedAction.systemId.toLowerCase().includes("move")) {
-        playSound("walking", "activity");
-        centerMapOnPlayer();
-      }
-    }
+  $: if ($playerBaseEntity.activity === Activity.Idle) {
+    centerMapOnPlayer();
   }
 
   $: w - h;
