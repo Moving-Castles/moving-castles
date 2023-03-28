@@ -9,7 +9,7 @@
   import type { GridTile } from "./index";
   import type { Action } from "../../modules/actionSequencer";
 
-  import { activeActions, processedActions } from "../../modules/actionSequencer";
+  import { activeActions, completedActions } from "../../modules/actionSequencer";
 
   let activeAction: Action;
   let processedAction: Action;
@@ -52,8 +52,8 @@
   }
 
   $: {
-    if ($processedActions.length) {
-      processedAction = $processedActions[0];
+    if ($completedActions.length) {
+      processedAction = $completedActions[0];
     }
   }
 

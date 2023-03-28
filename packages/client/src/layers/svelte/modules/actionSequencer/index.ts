@@ -34,7 +34,8 @@ export type Action = {
 export const sequencerState = writable(SequencerState.Running);
 export const queuedActions = writable([] as Action[]);
 export const activeActions = writable([] as Action[]);
-export const processedActions = writable([] as Action[]);
+export const completedActions = writable([] as Action[]);
+export const failedActions = writable([] as Action[]);
 
 // --- API -----------------------------------------------------------------
 
@@ -119,8 +120,8 @@ export function initActionSequencer() {
         if (!action) return;
         // Remove action from active list
         activeActions.update((activeActions) => activeActions.filter((a) => a.tx !== action?.tx));
-        // Add action to processed list
-        processedActions.update((processedActions) => [action, ...processedActions]);
+        // Add action to completed list
+        completedActions.update((completedActions) => [action, ...completedActions]);
         playSound("selectFour", "ui")
       });
     }
@@ -156,7 +157,7 @@ async function execute() {
     window.alert(e);
     // Clear active list
     activeActions.update(() => []);
-    // Add action to processed list
-    processedActions.update((processedActions) => [action, ...processedActions]);
+    // Add action to failed list
+    failedActions.update((failedActions) => [action, ...failedActions]);
   }
 }
