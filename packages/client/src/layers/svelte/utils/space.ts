@@ -38,3 +38,5 @@ export function directionalPathfind(from: Coord, to: Coord) {
 
   return path;
 }
+
+export const isAdjacent = (from: Coord, to: Coord) => chebyshev(from, to) === 1;

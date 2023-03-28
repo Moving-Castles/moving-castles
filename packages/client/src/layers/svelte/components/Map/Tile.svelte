@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import type { GridTile } from "./index";
+
   import { addToSequencer } from "../../modules/actionSequencer";
   import { baseEntities, freeItems } from "../../modules/entities";
   import { playerCore, playerAbilities } from "../../modules/player";
-  import { chebyshev } from "../../utils/space";
+  import { chebyshev, isAdjacent } from "../../utils/space";
   import { gameConfig } from "../../modules/entities";
   import Item from "../Items/ItemSelector.svelte";
   import BaseEntity from "./BaseEntity.svelte";
   import { t } from "../Dialogue/index";
 
-  import type { GridTile } from "./index";
-
   export let tile: GridTile;
-  export const isAdjacent = chebyshev($baseEntities[$playerCore.carriedBy].position, tile.coordinates) === 1;
 
   let tileElement: HTMLElement;
   let tileEntities: [string, BaseEntity][];
+
+  $: adjacent = isAdjacent($baseEntities[$playerCore.carriedBy].position, tile.coordinates);
 
   $: {
     tileEntities = Object.entries($baseEntities).filter(
@@ -31,7 +31,7 @@
   $: totalItemsAndEntities = tileEntities.length + tileFreeItems.length;
 
   function move() {
-    if (isAdjacent && $playerAbilities.includes("abilityMove")) {
+    if (adjacent && $playerAbilities.includes("abilityMove")) {
       addToSequencer("system.Move", [tile.coordinates]);
     }
 
@@ -46,10 +46,10 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
   class="tile"
-  class:adjacent={isAdjacent}
-  class:canmoveto={$playerAbilities.includes("abilityMove") && isAdjacent}
+  class:adjacent
+  class:canmoveto={$playerAbilities.includes("abilityMove") && adjacent}
   bind:this={tileElement}
-  use:t={isAdjacent && $playerAbilities.includes("abilityMove")}
+  use:t={adjacent && $playerAbilities.includes("abilityMove")}
 >
   <div class="dialog">
     Destination x:{tile.coordinates.x}, y:{tile.coordinates.y}<br /> Costs: {$gameConfig.moveCost} energy
