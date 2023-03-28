@@ -5,7 +5,7 @@ import type { SingleTarget } from "tippy.js"
 
 export const dialogue: Writable<string> = writable('')
 
-export const t = function (element: SingleTarget, enable: boolean) {
+export const t = function (element: SingleTarget, enable: boolean = true) {
   const d = element.querySelector('.dialog')
 
   if (!enable) {

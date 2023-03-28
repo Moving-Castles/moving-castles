@@ -1,20 +1,14 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
   import { addressToColor } from "../../utils/misc";
   import type { Entity } from "../../modules/entities";
   import { blockNumber } from "../../modules/network";
   import { playerAddress, playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { t } from "../Dialogue";
 
   export let itemId: string;
   export let item: Entity;
   export let free = false;
-
-  let markerEl: HTMLElement;
-  let dialogEl: HTMLElement;
-  let toolTip: any;
 
   let info = {
     symbol: "",
@@ -57,19 +51,6 @@
   // function burn() {
   //   addToSequencer("system.Burn", [itemId]);
   // }
-
-  onMount(async () => {
-    if (free) {
-      toolTip = tippy(markerEl, {
-        content: dialogEl,
-        interactive: true,
-      });
-    }
-  });
-
-  onDestroy(() => {
-    if (toolTip) toolTip.destroy();
-  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -77,9 +58,9 @@
   class="item"
   class:burning={item.burnBlock > $blockNumber}
   class:burnt={item.burnBlock <= $blockNumber}
-  bind:this={markerEl}
   class:free
   style={item.burnBlock ? "" : "background:" + addressToColor(itemId) + ";"}
+  use:t={free}
 >
   {#if item.matter}
     {#if item.burnBlock}
@@ -94,10 +75,8 @@
   {:else}
     {info.symbol}
   {/if}
-</div>
 
-{#if free}
-  <div class="dialog" bind:this={dialogEl}>
+  <div class="dialog">
     <div class="description">{info.description}</div>
 
     {#if item.burnBlock}
@@ -114,7 +93,7 @@
 
     <button on:click={pickUp}>pickup</button>
   </div>
-{/if}
+</div>
 
 <style lang="scss">
   .item {

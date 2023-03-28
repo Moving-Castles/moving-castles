@@ -1,17 +1,10 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
+  import { t } from "../Dialogue";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
 
   export let itemId: string;
-  export let showDialog: boolean;
   export let isOnMap = false;
-
-  let markerEl: HTMLElement;
-  let dialogEl: HTMLElement;
-  let toolTip: any;
 
   let info = {
     symbol: "",
@@ -42,33 +35,17 @@
   const mouseenter = () => {
     playSound("cursor", "ui");
   };
-
-  onMount(async () => {
-    if (showDialog) {
-      toolTip = tippy(markerEl, {
-        content: dialogEl,
-        interactive: true,
-      });
-    }
-  });
-  onDestroy(() => {
-    if (toolTip) {
-      toolTip.destroy();
-    }
-  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="untraversable" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
+<div use:t class="untraversable" on:click={click} on:mouseenter={mouseenter}>
   {info.symbol}
-</div>
 
-{#if showDialog && !isOnMap}
-  <div class="dialog" bind:this={dialogEl}>
+  <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>
   </div>
-{/if}
+</div>
 
 <style lang="scss">
   .untraversable {

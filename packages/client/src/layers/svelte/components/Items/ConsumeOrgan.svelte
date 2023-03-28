@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
+  import { t } from "../Dialogue";
   import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
@@ -9,10 +7,6 @@
   export let itemId: string;
   export let showDialog: boolean;
   export let isOnMap = false;
-
-  let markerEl: HTMLElement;
-  let dialogEl: HTMLElement;
-  let toolTip: any;
 
   let info = {
     symbol: "",
@@ -47,37 +41,20 @@
       pickUp();
     }
   };
-
-  onMount(async () => {
-    if (showDialog) {
-      toolTip = tippy(markerEl, {
-        content: dialogEl,
-        interactive: true,
-      });
-    }
-  });
-
-  onDestroy(() => {
-    if (toolTip) {
-      toolTip.destroy();
-    }
-  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="organ consume" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
-  {info.symbol}
-</div>
-
-{#if showDialog && !isOnMap}
-  <div class="dialog" bind:this={dialogEl}>
+<div use:t={!isOnMap} class="organ consume" on:click={click} on:mouseenter={mouseenter}>
+  <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>
     {#if $playerAbilities.includes("abilityConsume")}
       <button on:click={consume}>consume</button>
     {/if}
   </div>
-{/if}
+
+  {info.symbol}
+</div>
 
 <style lang="scss">
   .organ {

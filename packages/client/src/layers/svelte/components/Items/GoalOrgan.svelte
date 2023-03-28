@@ -1,20 +1,13 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
   import { blockNumber } from "../../modules/network";
   import type { Entity } from "../../modules/entities";
+  import { t } from "../Dialogue";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
 
   export let itemId: string;
   export let item: Entity;
-  export let showDialog: boolean;
   export let isOnMap = false;
-
-  let markerEl: HTMLElement;
-  let dialogEl: HTMLElement;
-  let toolTip: any;
 
   let info = {
     symbol: "",
@@ -49,36 +42,19 @@
       pickUp();
     }
   };
-
-  onMount(async () => {
-    if (showDialog) {
-      toolTip = tippy(markerEl, {
-        content: dialogEl,
-        interactive: true,
-      });
-    }
-  });
-
-  onDestroy(() => {
-    if (toolTip) {
-      toolTip.destroy();
-    }
-  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="organ goal" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
-  {info.symbol}
-  {$blockNumber - parseInt(String(item.goal || ""))}
-</div>
-
-{#if showDialog && !isOnMap}
-  <div class="dialog" bind:this={dialogEl}>
+<div class="organ goal" use:t on:click={click} on:mouseenter={mouseenter}>
+  <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={harvest}>harvest</button>
     <button on:click={drop}>drop</button>
   </div>
-{/if}
+
+  {info.symbol}
+  {$blockNumber - parseInt(String(item.goal || ""))}
+</div>
 
 <style lang="scss">
   .organ {

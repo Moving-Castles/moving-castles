@@ -1,15 +1,11 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
+  import { t } from "../Dialogue";
   import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import { playerCore } from "../../modules/player";
   import { Activity } from "../../modules/entities";
 
-  export let itemId: string;
-  export let showDialog: boolean;
   export let isOnMap = false;
 
   let markerEl: HTMLElement;
@@ -53,29 +49,11 @@
   const mouseenter = () => {
     playSound("cursor", "ui");
   };
-
-  onMount(async () => {
-    if (showDialog) {
-      toolTip = tippy(markerEl, {
-        content: dialogEl,
-        interactive: true,
-      });
-    }
-  });
-
-  onDestroy(() => {
-    if (toolTip) {
-      toolTip.destroy();
-    }
-  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
+<div use:t={isOnMap} class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
   {info.symbol}
-</div>
-
-{#if showDialog && !isOnMap}
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>
     <button on:click={play}>{$playerCore.commit === Activity.Play ? "STOP" : "play"}</button>
@@ -84,7 +62,7 @@
     {/if}
     <button on:click={drop}>drop</button>
   </div>
-{/if}
+</div>
 
 <style lang="scss">
   .organ {

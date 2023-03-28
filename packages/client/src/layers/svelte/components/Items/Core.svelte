@@ -1,21 +1,14 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
   import { addressToColor } from "../../utils/misc";
   import type { Core } from "../../modules/entities";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import { playerAddress } from "../../modules/player";
   import { idToName, idToAvatar } from "../../utils/name";
+  import { t } from "../Dialogue";
 
   export let itemId: string;
   export let item: Core;
-  export let showDialog: boolean;
-
-  let markerEl: HTMLElement;
-  let dialogEl: HTMLElement;
-  let toolTip: any;
 
   let info = {
     symbol: "",
@@ -39,21 +32,6 @@
   const mouseenter = () => {
     playSound("friendly", "misc");
   };
-
-  onMount(async () => {
-    if (showDialog) {
-      toolTip = tippy(markerEl, {
-        content: dialogEl,
-        interactive: true,
-      });
-    }
-  });
-
-  onDestroy(() => {
-    if (toolTip) {
-      toolTip.destroy();
-    }
-  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -61,18 +39,16 @@
   class="core"
   class:self={itemId === $playerAddress}
   style={"background:" + addressToColor(itemId) + ";"}
-  bind:this={markerEl}
   on:mouseenter={mouseenter}
+  use:t
 >
   <img draggable="false" class="core-avatar" src={idToAvatar(itemId)} alt="core" />
-</div>
 
-{#if showDialog}
-  <div class="dialog" bind:this={dialogEl}>
+  <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>
   </div>
-{/if}
+</div>
 
 <style lang="scss">
   .core {
@@ -84,6 +60,7 @@
     align-items: center;
     color: black;
     cursor: pointer;
+    position: relative;
 
     &:hover {
       opacity: 0.9;
