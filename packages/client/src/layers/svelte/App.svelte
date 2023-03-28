@@ -5,9 +5,13 @@
   import { createComponentSystem, createLoadingStateSystem } from "./systems";
   import { network as networkStore, blockNumber } from "./modules/network";
   import { initActionSequencer } from "./modules/actionSequencer";
+  import { initializeStaticContent } from "./modules/staticContent";
 
   onMount(async () => {
     // App mounted. Start initializing...
+
+    initializeStaticContent();
+
     const layers = await bootGame();
 
     networkStore.set(layers.network);
