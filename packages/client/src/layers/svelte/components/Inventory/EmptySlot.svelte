@@ -2,8 +2,8 @@
 
 <style lang="scss">
   .empty-slot {
-    height: 100px;
-    width: 100px;
+    height: 140px;
+    width: 140px;
     overflow: hidden;
     margin-right: 5px;
     margin-bottom: 5px;

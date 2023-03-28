@@ -2,6 +2,7 @@
   import { t } from "../Dialogue";
   import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
 
   export let itemId: string;
@@ -41,10 +42,13 @@
       pickUp();
     }
   };
+
+  const icon = $staticContent.organs.find((o) => o.name === "consume")?.image;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div use:t={!isOnMap} class="organ consume" on:click={click} on:mouseenter={mouseenter}>
+  <img src={icon} alt="move" />
   <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>
@@ -52,14 +56,12 @@
       <button on:click={consume}>consume</button>
     {/if}
   </div>
-
-  {info.symbol}
 </div>
 
 <style lang="scss">
   .organ {
-    height: 100px;
-    width: 100px;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     font-size: 42px;
     display: flex;
@@ -70,6 +72,11 @@
 
     &.consume {
       background-color: #00ff00;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
     }
 
     &:hover {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
   import { t } from "../Dialogue";
 
@@ -41,12 +42,13 @@
   const mouseenter = () => {
     playSound("cursor", "ui");
   };
+
+  const icon = $staticContent.organs.find((o) => o.name === "move")?.image;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div use:t class="organ move" on:click={click} on:mouseenter={mouseenter}>
-  {info.symbol}
-
+  <img src={icon} alt="move" />
   <div class="dialog">
     <div class="description">{info.description}</div>
     {#if $playerAbilities.includes("abilityConsume")}
@@ -69,6 +71,11 @@
 
     &.move {
       background-color: #8ee096;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
     }
 
     &:hover {

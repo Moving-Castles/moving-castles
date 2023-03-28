@@ -5,7 +5,6 @@
   import EmptySlot from "./EmptySlot.svelte";
 
   export let baseEntityId: string;
-  export let targetBaseEntityId = "";
   export let showCapacity = false;
   export let showEmptySlots = false;
   export let showCores = true;

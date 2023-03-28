@@ -1,18 +1,13 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
+  import { t } from "../Dialogue";
   import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
 
   export let itemId: string;
   export let showDialog: boolean;
   export let isOnMap = false;
-
-  let markerEl: HTMLElement;
-  let dialogEl: HTMLElement;
-  let toolTip: any;
 
   let info = {
     symbol: "",
@@ -47,42 +42,25 @@
       pickUp();
     }
   };
-
-  onMount(async () => {
-    if (showDialog) {
-      toolTip = tippy(markerEl, {
-        content: dialogEl,
-        interactive: true,
-      });
-    }
-  });
-
-  onDestroy(() => {
-    if (toolTip) {
-      toolTip.destroy();
-    }
-  });
+  const icon = $staticContent.organs.find((o) => o.name === "blank")?.image;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="organ blank" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
-  {info.symbol}
-</div>
-
-{#if showDialog && !isOnMap}
-  <div class="dialog" bind:this={dialogEl}>
+<div use:t={!isOnMap} class="organ blank" on:click={click} on:mouseenter={mouseenter}>
+  <img src={icon} alt="move" />
+  <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={drop}>drop</button>
     {#if $playerAbilities.includes("abilityConsume")}
       <button on:click={consume}>consume</button>
     {/if}
   </div>
-{/if}
+</div>
 
 <style lang="scss">
   .organ {
-    height: 100px;
-    width: 100px;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     font-size: 42px;
     display: flex;
@@ -93,6 +71,11 @@
 
     &.blank {
       background-color: rgb(126, 78, 114);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
     }
 
     &:hover {

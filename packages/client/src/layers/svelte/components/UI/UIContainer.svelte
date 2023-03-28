@@ -88,8 +88,8 @@
       position: fixed;
       right: 40px;
       top: 50px;
-      width: 40vw;
-      height: 80vh;
+      width: 460px;
+      height: 90vh;
       z-index: 10000000;
     }
 

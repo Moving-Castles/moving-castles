@@ -1,7 +1,10 @@
 <script lang="ts">
+  import { quadOut } from "svelte/easing";
+  import { scale } from "svelte/transition";
   import { Activity } from "../../modules/actionUpdater";
   import type { Entity } from "../../modules/entities";
   import { ItemType } from "./types";
+  // ...
   import Core from "./Core.svelte";
   import MoveOrgan from "./MoveOrgan.svelte";
   import ConsumeOrgan from "./ConsumeOrgan.svelte";
@@ -42,7 +45,12 @@
   }
 </script>
 
-<div class="item" class:map={isOnMap} class:active={item.activity && item.activity !== Activity.Idle}>
+<div
+  class="item"
+  class:map={isOnMap}
+  class:active={type !== ItemType.LootBox && item.activity && item.activity !== Activity.Idle}
+  transition:scale={{ duration: 100, easing: quadOut }}
+>
   {#if type === ItemType.Core}
     <Core {itemId} {item} {showDialog} />
   {:else if type === ItemType.MoveOrgan}
@@ -66,8 +74,8 @@
 
 <style lang="scss">
   .item {
-    height: 100px;
-    width: 100px;
+    height: 140px;
+    width: 140px;
     overflow: hidden;
     margin-right: 5px;
     margin-bottom: 5px;
@@ -79,13 +87,13 @@
     cursor: pointer;
 
     &.active {
-      animation: color-change 0.1s infinite;
+      animation: color-change 0.2s infinite;
     }
 
     &.map {
       font-size: 12px;
-      height: 40px;
-      width: 40px;
+      height: 50px;
+      width: 50px;
     }
   }
 

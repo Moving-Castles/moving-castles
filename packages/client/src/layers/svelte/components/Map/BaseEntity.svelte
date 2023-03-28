@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { quadOut } from "svelte/easing";
+  import { scale } from "svelte/transition";
   import { Activity } from "../../modules/actionUpdater";
   import { cores } from "../../modules/entities";
   import { chebyshev } from "../../utils/space";
@@ -86,6 +88,7 @@
     on:click={() => {
       popUpEntity.set(baseEntityId);
     }}
+    transition:scale={{ duration: 100, easing: quadOut }}
   >
     <img draggable="false" src="/img/body3.png" alt="body" />
   </div>
@@ -107,7 +110,7 @@
     width: 350px;
 
     &.active {
-      animation: color-change 0.1s infinite;
+      animation: color-change 0.2s infinite;
     }
 
     img {
@@ -149,7 +152,7 @@
     }
 
     &.playing {
-      animation: color-change 0.1s infinite;
+      animation: color-change 0.3s infinite;
     }
 
     .inventory {
@@ -159,16 +162,6 @@
       max-width: 100px;
       flex-wrap: wrap;
       line-height: 0;
-    }
-  }
-
-  @keyframes color-change {
-    0% {
-      background-color: white;
-    }
-
-    100% {
-      background-color: black;
     }
   }
 </style>
