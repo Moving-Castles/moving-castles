@@ -3,7 +3,7 @@
   import { scale } from "svelte/transition";
   import { Activity } from "../../modules/actionUpdater";
   import { cores } from "../../modules/entities";
-  import { chebyshev } from "../../utils/space";
+  import { chebyshev, isAdjacent } from "../../utils/space";
   import { items, baseEntities } from "../../modules/entities";
   import { playerCore } from "../../modules/player";
   import { addressToColor } from "../../utils/misc";
@@ -16,10 +16,8 @@
   export let baseEntity: any;
 
   let transferActive = false;
-
   let isPlayer = false;
   let isSame = false;
-  let isAdjacent = false;
   let untraversable = false;
   let playing = false;
 
@@ -34,10 +32,7 @@
       ? chebyshev($baseEntities[$playerCore.carriedBy].position, baseEntity.position) === 0
       : false;
 
-  $: isAdjacent =
-    $playerCore.carriedBy && $baseEntities[$playerCore.carriedBy]
-      ? chebyshev($baseEntities[$playerCore.carriedBy].position, baseEntity.position) === 1
-      : false;
+  $: adjacent = isAdjacent($baseEntities[$playerCore.carriedBy].position, baseEntity.position);
 
   $: untraversable = Object.values($items).some((i) => i.carriedBy === baseEntityId && i.untraversable);
 
@@ -63,8 +58,8 @@
     class:playing
     style={"background:" + addressToColor(baseEntityId) + ";"}
     class:player={isPlayer}
-    on:click={() => {
-      if (!isPlayer && (isSame || isAdjacent)) {
+    on:click|stopPropagation={() => {
+      if (!isPlayer && (isSame || adjacent)) {
         transferActive = true;
       }
     }}
@@ -84,7 +79,7 @@
     class="base-entity-2 grid-item"
     class:player={isPlayer}
     class:active={baseEntity.activity && baseEntity.activity !== Activity.Idle}
-    on:click={() => {
+    on:click|stopPropagation={() => {
       popUpEntity.set(baseEntityId);
     }}
     transition:scale={{ duration: 100, easing: quadOut }}

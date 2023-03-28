@@ -24,17 +24,8 @@
       <div class="pfp" style={"background:" + addressToColor(baseEntityId) + ";"} />
       CASTLE:<strong> {seedToCastleName(baseEntityId)}</strong>
     </div>
-    <!-- <div class="play">
-      {#if $playerCore.commit === Activity.Play}
-        <div>...P.l.A.y.I.n.G...</div>
-        <div><button on:click={play}>STOP</button></div>
-      {/if}
-    </div> -->
+
     <Inventory {baseEntityId} showCapacity={true} showEmptySlots={true} />
-    <!-- 
-    <div class="extend">
-      <button on:click={extendCastle}>Extend castle view</button>
-    </div> -->
   {/if}
 </div>
 

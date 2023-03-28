@@ -6,8 +6,6 @@
   import Chat from "../Chat/Chat.svelte";
   import Tile from "./Tile.svelte";
   import type { GridTile } from "./index";
-  import type { Action } from "../../modules/actionSequencer";
-  import { v4 as uuid } from "uuid";
 
   import { Activity } from "../../modules/actionUpdater";
 
@@ -15,7 +13,7 @@
   let zoomed = false;
   let grid: GridTile[] = [];
 
-  $: key = uuid();
+  // $: key = uuid();
 
   function initGrid(unit: number) {
     let grid = [] as GridTile[];
@@ -38,6 +36,7 @@
   async function centerMapOnPlayer(smooth: boolean = true) {
     await tick();
     let playerEl = document.getElementsByClassName("player")[0];
+    console.log(playerEl);
 
     if (playerEl && playerEl.parentElement) {
       let playerTileEl = playerEl.parentElement;
@@ -49,7 +48,6 @@
     centerMapOnPlayer();
   }
 
-  $: w - h;
   $: zoomScale = Math.min(w, h) / containerWidth;
 
   const toggleZoom = (e) => {
@@ -65,6 +63,7 @@
   onMount(() => {
     grid = initGrid($gameConfig.worldWidth);
     centerMapOnPlayer(false);
+    console.log("center");
   });
 </script>
 
@@ -83,7 +82,7 @@
 >
   <div class="map-container" class:zoomed bind:clientWidth={containerWidth}>
     <!-- GRID -->
-    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}-${key}`)}
+    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
       <Tile {tile} />
     {/each}
   </div>
