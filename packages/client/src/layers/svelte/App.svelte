@@ -5,9 +5,14 @@
   import { createComponentSystem, createLoadingStateSystem } from "./systems";
   import { network as networkStore, blockNumber } from "./modules/network";
   import { initActionSequencer } from "./modules/actionSequencer";
+  import { initStaticContent } from "./modules/staticContent";
+  import { initActionUpdater } from "./modules/actionUpdater";
 
   onMount(async () => {
     // App mounted. Start initializing...
+
+    initStaticContent();
+
     const layers = await bootGame();
 
     networkStore.set(layers.network);
@@ -16,6 +21,8 @@
     layers.network.network.blockNumber$.subscribe((x) => blockNumber.set(x));
 
     initActionSequencer();
+
+    initActionUpdater();
 
     // Create systems to listen to all component changes
     for (const componentKey of Object.keys(layers.network.components)) {

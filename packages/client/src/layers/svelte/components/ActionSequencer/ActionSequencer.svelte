@@ -2,12 +2,13 @@
   import {
     queuedActions,
     activeActions,
-    processedActions,
+    completedActions,
+    failedActions,
     sequencerState,
     SequencerState,
   } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
-  import { shortenAddress } from "../../utils/misc";
+  import ActionItem from "./ActionItem.svelte";
 
   function toggleSequencer() {
     sequencerState.set($sequencerState);
@@ -28,28 +29,22 @@
   <!-- QUEUED -->
   <h2>Queued</h2>
   {#each $queuedActions as action (action.actionId)}
-    <div class="action">
-      <span class="description">{action.systemId}</span>
-      {action.actionId}
-    </div>
+    <ActionItem {action} />
   {/each}
   <!-- ACTIVE -->
   <h2>Active</h2>
   {#each $activeActions as action (action.actionId)}
-    <div class="action">
-      <span class="description">{action.systemId}</span>
-      {action.actionId}
-      {action.tx}
-    </div>
+    <ActionItem {action} />
+  {/each}
+  <!-- FAILED -->
+  <h2>Failed</h2>
+  {#each $failedActions as action (action.actionId)}
+    <ActionItem {action} />
   {/each}
   <!-- PROCESSED -->
   <h2>Processed</h2>
-  {#each $processedActions as action (action.actionId)}
-    <div class="action">
-      <span class="description">{action.systemId}</span>
-      {shortenAddress(action.actionId)}
-      {shortenAddress(action.tx)}
-    </div>
+  {#each $completedActions as action (action.actionId)}
+    <ActionItem {action} />
   {/each}
 </div>
 
@@ -57,19 +52,9 @@
   .ui-action-sequencer {
     word-break: break-all;
 
-    .action {
-      margin-bottom: 5px;
+    h2 {
+      font-size: 14px;
+      text-decoration: underline;
     }
-  }
-
-  .description {
-    background: white;
-    color: black;
-    padding: 2px;
-  }
-
-  h2 {
-    font-size: 14px;
-    text-decoration: underline;
   }
 </style>

@@ -1,15 +1,15 @@
 <script lang="ts">
   import { t } from "../Dialogue";
-  import { playerAbilities } from "../../modules/player";
+  import { playerAbilities, playerCore } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
-  import { Activity } from "../../modules/entities";
+  import { Activity } from "../../modules/actionUpdater";
 
   export let isOnMap = false;
+  export let itemId: string;
 
   let markerEl: HTMLElement;
   let dialogEl: HTMLElement;
-  let toolTip: any;
 
   let info = {
     symbol: "",

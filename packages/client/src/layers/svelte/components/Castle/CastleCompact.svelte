@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Activity } from "../../modules/entities";
+  import { Activity } from "../../modules/actionUpdater";
   import { playerCore, playerBaseEntity, playerAddress } from "../../modules/player";
   import { shortenAddress, addressToColor } from "../../utils/misc";
   import Inventory from "../Inventory/Inventory.svelte";

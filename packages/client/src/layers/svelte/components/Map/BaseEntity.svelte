@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Activity, cores } from "../../modules/entities";
+  import { Activity } from "../../modules/actionUpdater";
+  import { cores } from "../../modules/entities";
   import { chebyshev } from "../../utils/space";
   import { items, baseEntities } from "../../modules/entities";
   import { playerCore } from "../../modules/player";
@@ -37,6 +38,10 @@
       : false;
 
   $: untraversable = Object.values($items).some((i) => i.carriedBy === baseEntityId && i.untraversable);
+
+  $: if (isPlayer) {
+    console.log("baseEntity.activity", baseEntity.activity);
+  }
 </script>
 
 {#if transferActive}
@@ -76,6 +81,7 @@
   <div
     class="base-entity-2 grid-item"
     class:player={isPlayer}
+    class:active={baseEntity.activity && baseEntity.activity !== Activity.Idle}
     on:click={() => {
       popUpEntity.set(baseEntityId);
     }}
@@ -98,10 +104,24 @@
     width: 200px;
     height: 200px;
 
+    &.active {
+      animation: color-change 0.1s infinite;
+    }
+
     img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
+  }
+
+  @keyframes color-change {
+    0% {
+      filter: invert(0);
+    }
+
+    100% {
+      filter: invert(1);
     }
   }
 

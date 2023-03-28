@@ -7,25 +7,9 @@
   import { playerCore, playerAddress } from "../../modules/player";
   import { idToName, idToAvatar } from "../../utils/name";
   import { playSound } from "../../../howler";
+  import { staticContent } from "../../modules/staticContent";
 
   let typewriterDone = false;
-
-  // const cores = [
-  //   "0.png",
-  //   "1.png",
-  //   "2.png",
-  //   "3.png",
-  //   "4.png",
-  //   "5.png",
-  //   "6.png",
-  //   "7.png",
-  //   "8.png",
-  //   "9.png",
-  //   "10.png",
-  //   "11.png",
-  // ];
-
-  const cores = ["0.jpeg", "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg"];
 
   let coreIndex = 0;
   let counter = 0;
@@ -33,7 +17,7 @@
   onMount(async () => {
     $network.api?.spawn();
     setInterval(() => {
-      coreIndex = coreIndex == cores.length - 1 ? 0 : coreIndex + 1;
+      coreIndex = coreIndex == $staticContent.cores.length - 1 ? 0 : coreIndex + 1;
       counter++;
     }, 100);
   });
@@ -66,7 +50,7 @@
       }}>Accept your fate</button
     >
   {:else}
-    <img draggable="false" src={"/img/avatars2/" + cores[coreIndex]} alt="core" />
+    <img draggable="false" src={"/img/avatars2/" + $staticContent.cores[coreIndex]} alt="core" />
   {/if}
 </div>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { entities } from "../../modules/entities";
-  import { activeActions, queuedActions, processedActions } from "../../modules/actionSequencer";
+  import { activeActions, queuedActions, completedActions, failedActions } from "../../modules/actionSequencer";
   import { leaderBoardActive, actionSequencerActive } from "./index";
   import CoreCompact from "../Core/CoreCompact.svelte";
 
@@ -23,7 +23,7 @@
     {:else if $activeActions.length > 0}
       ACTIVE
     {:else}
-      DONE ({$processedActions.length})
+      COMPLETED ({$completedActions.length}) FAILED ({$failedActions.length})
     {/if}
   </div>
   <!-- Leaderboard -->

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Activity } from "../../modules/actionUpdater";
   import type { Entity } from "../../modules/entities";
   import { ItemType } from "./types";
   import Core from "./Core.svelte";
@@ -41,7 +42,7 @@
   }
 </script>
 
-<div class="item grid-item" class:map={isOnMap}>
+<div class="item" class:map={isOnMap} class:active={item.activity && item.activity !== Activity.Idle}>
   {#if type === ItemType.Core}
     <Core {itemId} {item} {showDialog} />
   {:else if type === ItemType.MoveOrgan}
@@ -77,10 +78,24 @@
     color: black;
     cursor: pointer;
 
+    &.active {
+      animation: color-change 0.1s infinite;
+    }
+
     &.map {
       font-size: 12px;
       height: 40px;
       width: 40px;
+    }
+  }
+
+  @keyframes color-change {
+    0% {
+      filter: invert(0);
+    }
+
+    100% {
+      filter: invert(1);
     }
   }
 </style>
