@@ -25,6 +25,7 @@
           coordinates: { x: x, y: y },
           perlinFactor: 0,
           resource: 100,
+          id: `${x}-${y}`,
         };
         grid = [...grid, newGridTile];
       }
@@ -99,7 +100,7 @@
       "px;"}
   >
     <!-- GRID -->
-    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}-${$blockNumber}`)}
+    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
       <Tile {tile} />
     {/each}
   </div>

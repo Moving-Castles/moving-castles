@@ -30,7 +30,6 @@ const setZoom = () => {
   const origin = `${(l / element.clientWidth) * 100}% ${(t / element.clientHeight) * 100}%`
   const transform = `scale(${scale})`
 
-  console.log(player?.parentElement)
 
   element.style.transformOrigin = origin
   element.style.transform = transform
@@ -74,7 +73,6 @@ const onGestureEnd = (e) => {
 }
 
 const pointerMove = (e: PointerEvent) => {
-  console.log('move')
   const pos = get(position)
   const el = get(mapElement)
 
@@ -88,14 +86,12 @@ const pointerMove = (e: PointerEvent) => {
 }
 
 const pointerUp = (e: PointerEvent) => {
-  console.log('up')
   document.removeEventListener('pointermove', pointerMove);
   document.removeEventListener('pointerup', pointerUp);
 }
 
 const pointerDown = (e: PointerEvent) => {
   const el = get(mapElement)
-  console.log('down', el)
 
   position.set({
       // The current scroll
@@ -111,7 +107,6 @@ const pointerDown = (e: PointerEvent) => {
 }
 
 export const panzoom = (element: HTMLElement) => {
-  console.log('init')
   mapElement.set(element)
   element.addEventListener('pointerdown', pointerDown)
   // element.addEventListener('wheel', onWheel)

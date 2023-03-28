@@ -1,4 +1,5 @@
 @import url("../../public/fonts/style.css");
+@import url("tippy.js/dist/tippy.css");
 
 :root {
   /* Colors */
@@ -80,5 +81,13 @@ html {
 
 .link.active,
 .link:hover {
+  opacity: 1;
+}
+
+.dialog {
+  /* opacity: 0; */
+}
+
+.dialog.open {
   opacity: 1;
 }
