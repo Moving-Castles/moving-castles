@@ -25,7 +25,7 @@
 
 {#if $playerCore && counter > 20}
   <div class="demi3" in:fade>
-    <img draggable="false" src="/img/demi.jpg" alt="core" />
+    <img draggable="false" src="/img/game-master/demi.jpg" alt="core" />
     <Typewriter
       mode="cascade"
       interval={70}
@@ -50,7 +50,7 @@
       }}>Accept your fate</button
     >
   {:else}
-    <img draggable="false" src={"/img/avatars2/" + $staticContent.cores[coreIndex]} alt="core" />
+    <img draggable="false" src={$staticContent.cores[coreIndex]} alt="core" />
   {/if}
 </div>
 

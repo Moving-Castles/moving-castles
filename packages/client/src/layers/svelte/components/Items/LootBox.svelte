@@ -53,7 +53,7 @@
 <style lang="scss">
   .loot-box {
     aspect-ratio: 1;
-    height: 100%;
+    height: 100vw;
     // width: 100%;
     overflow: hidden;
     display: flex;

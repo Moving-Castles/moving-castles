@@ -4,6 +4,7 @@
   import { t } from "../Dialogue";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
+  import { staticContent } from "../../modules/staticContent";
 
   export let itemId: string;
   export let item: Entity;
@@ -42,6 +43,8 @@
       pickUp();
     }
   };
+
+  const icon = $staticContent.organs.find((o) => o.label === "goal")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -51,8 +54,7 @@
     <button on:click={harvest}>harvest</button>
     <button on:click={drop}>drop</button>
   </div>
-
-  {info.symbol}
+  <img src={icon} alt="goal" />
   {$blockNumber - parseInt(String(item.goal || ""))}
 </div>
 
@@ -69,6 +71,11 @@
 
     &.goal {
       background-color: #d1de18;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
     }
 
     &:hover {

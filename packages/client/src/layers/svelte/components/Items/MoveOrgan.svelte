@@ -43,7 +43,7 @@
     playSound("cursor", "ui");
   };
 
-  const icon = $staticContent.organs.find((o) => o.name === "move")?.image;
+  const icon = $staticContent.organs.find((o) => o.label === "move")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -1,3 +1,6 @@
+import { staticContent } from "../modules/staticContent";
+import { get } from "svelte/store";
+
 const firstNameList = [
   "Absolon",
   "Clikette",
@@ -62,7 +65,7 @@ function reverseString(str: string): string {
 }
 
 export function idToAvatar(id: string) {
-  return !id ? "" : "img/avatars2/" + String(parseInt(id) % 5) + ".jpeg";
+  return !id ? "" : get(staticContent).cores[parseInt(id) % 5];
 }
 
 export function idToName(id: string) {

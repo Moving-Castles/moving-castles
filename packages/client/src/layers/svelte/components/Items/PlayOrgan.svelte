@@ -4,6 +4,7 @@
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import { Activity } from "../../modules/actionUpdater";
+  import { staticContent } from "../../modules/staticContent";
 
   export let isOnMap = false;
   export let itemId: string;
@@ -48,11 +49,13 @@
   const mouseenter = () => {
     playSound("cursor", "ui");
   };
+
+  const icon = $staticContent.organs.find((o) => o.label === "play")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div use:t={{ enable: isOnMap }} class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
-  {info.symbol}
+  <img src={icon} alt="play" />
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>
     <button on:click={play}>{$playerCore.commit === Activity.Play ? "STOP" : "play"}</button>
@@ -76,6 +79,11 @@
 
     &.play {
       background-color: #8ee096;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
     }
 
     &:hover {

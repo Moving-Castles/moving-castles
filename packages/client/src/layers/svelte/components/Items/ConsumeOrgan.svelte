@@ -43,7 +43,7 @@
     }
   };
 
-  const icon = $staticContent.organs.find((o) => o.name === "consume")?.image;
+  const icon = $staticContent.organs.find((o) => o.label === "consume")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -5,6 +5,7 @@
   import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
+  import { staticContent } from "../../modules/staticContent";
 
   export let itemId: string;
   export let showDialog: boolean;
@@ -62,11 +63,13 @@
       toolTip.destroy();
     }
   });
+
+  const icon = $staticContent.organs.find((o) => o.label === "chat")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="organ chat" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
-  {info.symbol}
+  <img src={icon} alt="chat" />
 </div>
 
 {#if showDialog && !isOnMap}
@@ -92,6 +95,11 @@
 
     &.chat {
       background-color: #e08eda;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
     }
 
     &:hover {

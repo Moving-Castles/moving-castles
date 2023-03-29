@@ -42,7 +42,7 @@
       pickUp();
     }
   };
-  const icon = $staticContent.organs.find((o) => o.name === "blank")?.image;
+  const icon = $staticContent.organs.find((o) => o.label === "blank")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -91,9 +91,9 @@
     }
 
     &.map {
-      font-size: 12px;
-      height: 50px;
-      width: 50px;
+      font-size: 32px;
+      height: 200px;
+      width: 200px;
     }
   }
 

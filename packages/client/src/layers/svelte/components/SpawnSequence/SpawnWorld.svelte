@@ -7,6 +7,6 @@
     <p>now, you are off to The Wasteland my friend</p>
   </span>
   <span slot="after">
-    <img draggable="false" src="/img/waste.png" alt="wasteland" />
+    <img draggable="false" src="/img/misc/waste.png" alt="wasteland" />
   </span>
 </SpawnSlide>

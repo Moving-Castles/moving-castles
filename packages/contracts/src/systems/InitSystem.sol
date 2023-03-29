@@ -37,33 +37,31 @@ contract InitSystem is System {
     });
     LibConfig.setGameConfig(components, gameConfig);
 
-    // Create initial entities
-    LibMap.createUntraversable(world, components, Coord(4, 0));
-    LibMap.createUntraversable(world, components, Coord(4, 2));
-    LibMap.createUntraversable(world, components, Coord(4, 3));
-    LibMap.createUntraversable(world, components, Coord(4, 5));
-    LibMap.createUntraversable(world, components, Coord(4, 6));
-    LibMap.createUntraversable(world, components, Coord(4, 9));
+    Coord[6] memory untraversableTiles = [Coord(4, 0), Coord(4, 2), Coord(4, 3), Coord(4, 5), Coord(4, 6), Coord(4, 9)];
 
-    Coord[11] memory lootBoxLocations = [
+    for (uint256 i = 0; i < untraversableTiles.length; ++i) {
+      LibMap.createUntraversable(world, components, untraversableTiles[i]);
+    }
+
+    Coord[11] memory lootBoxTiles = [
       Coord(4, 7),
-      Coord(4, 7),
-      Coord(4, 7),
-      Coord(4, 7),
-      Coord(4, 7),
-      Coord(4, 7),
-      Coord(6, 6),
-      Coord(6, 6),
-      Coord(6, 6),
+      Coord(4, 8),
+      Coord(2, 0),
       Coord(2, 4),
-      Coord(2, 4)
+      Coord(3, 7),
+      Coord(6, 7),
+      Coord(7, 6),
+      Coord(8, 6),
+      Coord(3, 3),
+      Coord(3, 4),
+      Coord(2, 3)
     ];
 
-    for (uint256 i = 0; i < 11; ++i) {
+    for (uint256 i = 0; i < lootBoxTiles.length; ++i) {
       uint256 lootBox = world.getUniqueEntityId();
       LibInventory.makePortable(components, lootBox);
       LibLoot.makeNormalLoot(components, lootBox);
-      LibMove.setPosition(components, lootBox, lootBoxLocations[i]);
+      LibMove.setPosition(components, lootBox, lootBoxTiles[i]);
     }
   }
 

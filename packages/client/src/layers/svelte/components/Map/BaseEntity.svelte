@@ -53,26 +53,11 @@
 {#if untraversable}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
-    class="base-entity grid-item"
-    class:untraversable
-    class:playing
-    style={"background:" + addressToColor(baseEntityId) + ";"}
-    class:player={isPlayer}
+    class="base-entity-2 grid-item untraversable"
     on:click|stopPropagation={() => {
-      if (!isPlayer && (isSame || adjacent)) {
-        transferActive = true;
-      }
+      // popUpEntity.set(baseEntityId);
     }}
-  >
-    <!-- ITEMS -->
-    <div class="inventory">
-      {#each Object.entries($items) as [itemId, item] (itemId)}
-        {#if item.carriedBy == baseEntityId}
-          <Item {itemId} {item} isOnMap={true} />
-        {/if}
-      {/each}
-    </div>
-  </div>
+  />
 {:else}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
@@ -84,14 +69,13 @@
     }}
     transition:scale={{ duration: 100, easing: quadOut }}
   >
-    <img draggable="false" src="/img/body3.png" alt="body" />
+    <img draggable="false" src="/img/bodies/small/3.png" alt="body" />
   </div>
 {/if}
 
 <style lang="scss">
   .base-entity-2 {
     aspect-ratio: 1;
-    border-radius: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,11 +83,17 @@
     cursor: pointer;
     object-fit: contain;
     padding: 10px;
-    width: 200px;
-    height: 200px;
+    height: 400px;
 
     &.active {
       animation: color-change 0.2s infinite;
+    }
+
+    &.untraversable {
+      width: 100%;
+      height: 100%;
+      background-image: url("/img/tiles/untraversable/1.png");
+      pointer-events: none;
     }
 
     img {
@@ -120,43 +110,6 @@
 
     100% {
       filter: invert(1);
-    }
-  }
-
-  .base-entity {
-    aspect-ratio: 1;
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 0;
-    cursor: pointer;
-    width: fit-content;
-    height: fit-content;
-    padding: 10px;
-
-    &.untraversable {
-      width: 100%;
-      height: 100%;
-      border-radius: 0;
-    }
-
-    &.player {
-      border: 4px dashed white;
-      box-sizing: border-box;
-    }
-
-    &.playing {
-      animation: color-change 0.3s infinite;
-    }
-
-    .inventory {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      max-width: 100px;
-      flex-wrap: wrap;
-      line-height: 0;
     }
   }
 </style>

@@ -67,6 +67,7 @@
 <div
   class="tile"
   class:adjacent
+  class:occupied={tileEntities.length > 0}
   class:canmoveto={$playerAbilities.includes("abilityMove") && adjacent}
   bind:this={element}
 >
@@ -102,7 +103,11 @@
     // border: 1px solid lightgrey;
     position: relative;
     background-size: contain;
-    background-image: url("/img/map2.png");
+    background-image: url("/img/tiles/normal/1.png");
+
+    &.occupied {
+      background-image: url("/img/tiles/occupied/1.png");
+    }
 
     &:hover {
       background-color: rgb(60, 60, 60);
