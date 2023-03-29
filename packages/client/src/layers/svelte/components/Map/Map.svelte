@@ -103,6 +103,10 @@
       height: var(--ww);
       transform-origin: top left;
       transform: scale(calc(var(--zoomscale) * 0.85)) translate(-50%, -50%);
+
+      .map-container {
+        margin: 0;
+      }
     }
 
     &.void {
@@ -118,6 +122,7 @@
     }
 
     .map-container {
+      margin: 400px;
       box-sizing: border-box;
       background: rgb(100, 100, 100);
       border: 1px solid white;

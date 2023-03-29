@@ -1,32 +1,30 @@
 <script lang="ts">
   import CastleCompact from "../Castle/CastleCompact.svelte";
-  import { castleExtended, popUpEntity } from "../UI";
+  import { castleExtended, popUpEntities } from "../UI";
   import { quadOut } from "svelte/easing";
   import { fly } from "svelte/transition";
+
+  export let baseEntityId: string;
 </script>
 
-<div class="pane" class:extended={$castleExtended} in:fly={{ duration: 200, y: 200, easing: quadOut }}>
-  <div class="castle">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div
-      on:click={() => {
-        popUpEntity.set("");
-      }}
-    >
-      CLOSE
-    </div>
-    <CastleCompact baseEntityId={$popUpEntity} />
+<div class:extended={$castleExtended} in:fly={{ duration: 200, y: 200, easing: quadOut }} class="castle">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div
+    on:click={() => {
+      popUpEntities.set([]);
+    }}
+  >
+    CLOSE
   </div>
+  <CastleCompact {baseEntityId} />
 </div>
 
 <style lang="scss">
-  .pane {
-    background: rgba(40, 40, 40, 1);
-  }
-
   .castle {
+    flex-grow: 0;
+    width: 460px;
+    background: rgba(40, 40, 40, 1);
     height: calc(100vh - 250px);
-    width: 100%;
     overflow: scroll;
   }
 

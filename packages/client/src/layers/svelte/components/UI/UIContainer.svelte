@@ -2,7 +2,7 @@
   import { quadOut } from "svelte/easing";
   import { fly, scale } from "svelte/transition";
   import { entities } from "../../modules/entities";
-  import { popUpEntity, spawnStage, isSpawned, leaderBoardActive, actionSequencerActive } from "./index";
+  import { popUpEntities, spawnStage, isSpawned, leaderBoardActive, actionSequencerActive } from "./index";
   // ...
   import Map from "../Map/Map.svelte";
   import UIPane from "./UIPane.svelte";
@@ -39,9 +39,11 @@
     <div class="ui-container-inner-map">
       <Map />
     </div>
-    {#if $popUpEntity !== ""}
+    {#if $popUpEntities.length > 0}
       <div class="ui-container-inner-pane">
-        <UIPane />
+        {#each $popUpEntities as baseEntityId (baseEntityId)}
+          <UIPane {baseEntityId} />
+        {/each}
       </div>
     {/if}
   {:else}
@@ -87,10 +89,13 @@
     .ui-container-inner-pane {
       position: fixed;
       right: 40px;
-      top: 50px;
-      width: 460px;
+      top: 80px;
+      display: flex;
       height: 90vh;
+      justify-content: end;
       z-index: 10000000;
+      flex-flow: row nowrap;
+      gap: 20px;
     }
 
     .ui-container-inner-map {

@@ -1,12 +1,13 @@
 import { initialState } from "./config";
 import { writable } from "svelte/store";
+import type { Writable } from "svelte/store"
 
 // --- STORES -----------------------------------------------------------------
 
 // UI
 export const menuVisible = writable(false);
 export const castleExtended = writable(false);
-export const popUpEntity = writable("");
+export const popUpEntities: Writable<string[]> = writable([]);
 export const spawnStage = writable(1);
 export const isSpawned = writable(false);
 export const leaderBoardActive = writable(true);
