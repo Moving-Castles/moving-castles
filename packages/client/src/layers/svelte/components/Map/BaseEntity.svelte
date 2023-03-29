@@ -23,7 +23,7 @@
 
   const handleEntityClick = () => {
     if (adjacent) {
-      popUpEntities.set([baseEntityId, $playerCore.carriedBy]);
+      popUpEntities.set([$playerCore.carriedBy, baseEntityId]);
     } else {
       popUpEntities.set([baseEntityId]);
     }
