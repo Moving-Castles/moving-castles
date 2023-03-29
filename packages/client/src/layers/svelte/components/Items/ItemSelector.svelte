@@ -43,13 +43,19 @@
       type = ItemType.BlankOrgan;
     }
   }
+
+  function dragStart(event: DragEvent) {
+    event.dataTransfer.setData("text/plain", itemId);
+  }
 </script>
 
 <div
   class="item"
   class:map={isOnMap}
   class:active={type !== ItemType.LootBox && item.activity && item.activity !== Activity.Idle}
+  draggable={true}
   transition:scale={{ duration: 100, easing: quadOut }}
+  on:dragstart={dragStart}
 >
   {#if type === ItemType.Core}
     <Core {itemId} {item} {showDialog} />

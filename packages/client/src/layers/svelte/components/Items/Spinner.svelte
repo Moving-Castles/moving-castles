@@ -25,6 +25,7 @@
 
 <style lang="scss">
   .spinner {
+    position: fixed;
     user-select: none;
 
     img {

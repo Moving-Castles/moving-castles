@@ -4,6 +4,7 @@
   import { playerAddress } from "../../modules/player";
   import Item from "../Items/ItemSelector.svelte";
   import EmptySlot from "./EmptySlot.svelte";
+  import { addToSequencer } from "../../modules/actionSequencer";
 
   export let baseEntityId: string;
   export let showCapacity = false;
@@ -19,6 +20,13 @@
   $: emptySlotNumber = $baseEntities[baseEntityId]
     ? $baseEntities[baseEntityId].carryingCapacity - inventoryItems.length
     : 0;
+
+  const onDrop = (event: any) => {
+    const item = event.detail.dataTransfer.getData("text/plain");
+
+    // Move this item into the current inventory
+    addToSequencer("system.Transfer", [item, baseEntityId]);
+  };
 </script>
 
 {#if showCapacity}
@@ -37,15 +45,17 @@
   {/each}
   {#if showEmptySlots}
     {#each Array(emptySlotNumber) as _, i (i)}
-      <EmptySlot />
+      <EmptySlot on:drop={onDrop} />
     {/each}
   {/if}
 </div>
 
 <style lang="scss">
   .inventory {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 140px);
+    grid-template-rows: repeat(4, 140px);
+    gap: 6px;
   }
 
   .inventory-item {
