@@ -139,10 +139,6 @@ export function seedToCastleName(id: string) {
 
 export function idToBody(id: string) {
   const trunctatedId = id.substr(id.length - 6);
-  // console.log('trunctatedId', trunctatedId)
   const smallBodies = get(staticContent).bodies.find((b) => b.label === "small")?.images;
-  // console.log('parseInt(id)', parseInt(trunctatedId, 16))
-  // console.log('smallBodies.length', smallBodies.length)
-  // console.log('--index', parseInt(trunctatedId, 16) % smallBodies.length)
   return smallBodies ? smallBodies[parseInt(trunctatedId, 16) % smallBodies.length] : "";
 }
