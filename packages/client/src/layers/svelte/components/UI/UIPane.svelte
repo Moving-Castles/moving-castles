@@ -3,7 +3,7 @@
   import { castleExtended, popUpEntities } from "../UI";
   import { quadOut } from "svelte/easing";
   import { fly } from "svelte/transition";
-  import { dragging } from "./index";
+  import { dragging } from "../Items";
 
   export let baseEntityId: string;
 

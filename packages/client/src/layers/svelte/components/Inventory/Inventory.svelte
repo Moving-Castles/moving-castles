@@ -5,7 +5,7 @@
   import Item from "../Items/ItemSelector.svelte";
   import EmptySlot from "./EmptySlot.svelte";
   import { addToSequencer } from "../../modules/actionSequencer";
-  import { dragging } from "../Items";
+  import { dragging } from "../Items/index";
 
   export let baseEntityId: string;
   export let showCapacity = false;
