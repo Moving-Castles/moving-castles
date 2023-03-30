@@ -14,6 +14,8 @@
   let boxState: BoxState = BoxState.UNOPENED;
 
   function open() {
+    // Is this my box?
+    // console.log($playerCore.carriedBy === )
     playSound("eventGood", "ui");
     boxState = BoxState.OPENING;
     addToSequencer("system.Open", [itemId]);
@@ -38,7 +40,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="loot-box" class:map={isOnMap} on:click|stopPropagation={click} on:mouseenter={mouseenter}>
+<div draggable="true" class="loot-box" class:map={isOnMap} on:click|stopPropagation={click} on:mouseenter={mouseenter}>
   {#if boxState === BoxState.OPENING}
     <div class="opening-overlay">
       <div>
@@ -53,7 +55,8 @@
 <style lang="scss">
   .loot-box {
     aspect-ratio: 1;
-    height: 100vw;
+    width: 140px;
+    // height: 100vw;
     // width: 100%;
     overflow: hidden;
     display: flex;
