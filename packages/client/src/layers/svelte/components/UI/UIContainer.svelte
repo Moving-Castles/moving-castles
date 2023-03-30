@@ -73,7 +73,6 @@
     width: 100vw;
     height: 100vh;
     color: var(--foreground);
-    color: white;
     box-sizing: border-box;
     display: flex;
 
@@ -101,7 +100,6 @@
     .ui-container-inner-map {
       width: 100vw;
       height: 100vh;
-      background: red;
     }
 
     &.extended {

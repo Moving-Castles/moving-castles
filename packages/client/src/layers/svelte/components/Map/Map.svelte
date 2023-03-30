@@ -124,7 +124,6 @@
     .map-container {
       margin: 400px;
       box-sizing: border-box;
-      background: rgb(100, 100, 100);
       border: 1px solid white;
       position: relative;
       width: var(--ww);
