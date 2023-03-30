@@ -6,6 +6,7 @@
   import { castleExtended } from "../UI";
 
   export let baseEntityId: string;
+  export let draggingOver: boolean;
 
   function play() {
     addToSequencer("system.Play");
@@ -16,20 +17,21 @@
   }
 </script>
 
-<div class="castle-compact">
+<div class="castle-compact" class:draggingOver>
   {#if baseEntityId}
     <div class="header">
       <div class="pfp" style={"background:" + addressToColor(baseEntityId) + ";"} />
       CASTLE:<strong> {seedToCastleName(baseEntityId)}</strong>
     </div>
 
-    <Inventory {baseEntityId} showCapacity={true} showEmptySlots={true} />
+    <Inventory {baseEntityId} {draggingOver} showCapacity={true} showEmptySlots={true} />
   {/if}
 </div>
 
 <style lang="scss">
   .castle-compact {
     padding: 10px;
+    position: relative;
 
     .play {
       font-size: 18px;

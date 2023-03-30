@@ -3,6 +3,7 @@
   import { scale } from "svelte/transition";
   import { Activity } from "../../modules/actionUpdater";
   import type { Entity } from "../../modules/entities";
+  import { playerCore } from "../../modules/player";
   import { ItemType } from "./types";
   // ...
   import Core from "./Core.svelte";
@@ -14,11 +15,16 @@
   import Untraversable from "./Untraversable.svelte";
   import GoalOrgan from "./GoalOrgan.svelte";
   import BlankOrgan from "./BlankOrgan.svelte";
+  import { dragging } from "./index";
 
   export let itemId: string;
   export let item: Entity;
+  export let baseEntityId: string;
   export let showDialog = true;
   export let isOnMap = false;
+  export let dropAllowed = false;
+
+  $: console.log("same owner ", baseEntityId === $playerCore.carriedBy);
 
   let type: ItemType;
 
@@ -45,17 +51,23 @@
   }
 
   function dragStart(event: DragEvent) {
+    event.dataTransfer.clearData();
     event.dataTransfer.setData("text/plain", itemId);
+    dragging.set(itemId);
   }
 </script>
 
 <div
   class="item"
+  class:dropAllowed
   class:map={isOnMap}
   class:active={type !== ItemType.LootBox && item.activity && item.activity !== Activity.Idle}
   draggable={true}
   transition:scale={{ duration: 100, easing: quadOut }}
   on:dragstart={dragStart}
+  on:dragenter|preventDefault
+  on:dragleave|preventDefault
+  on:dragend|preventDefault
 >
   {#if type === ItemType.Core}
     <Core {itemId} {item} {showDialog} />

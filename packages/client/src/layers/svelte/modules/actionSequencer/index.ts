@@ -10,6 +10,7 @@ import { network, blockNumber } from "../network";
 import { playerCore } from "../player";
 import { gameConfig } from "../entities";
 import { playSound } from "../../../howler";
+import { toastMessage } from "../../components/UI/index"
 
 // --- TYPES -----------------------------------------------------------------
 
@@ -137,9 +138,8 @@ async function execute() {
     if (get(playerCore).energy < action.requirements.energy) {
       // Add action to failed list
       failedActions.update((failedActions) => [action, ...failedActions]);
-      // @todo: handle lack of energy better
-      window.alert('Not enough energy to execute action: ' + String(action.systemId) + '. Requires ' + action.requirements.energy + ' energy.')
-      // playSound("error", "ui")
+      toastMessage({ message: 'Not enough energy to execute action: ' + String(action.systemId) + '. Requires ' + action.requirements.energy + ' energy.', type: 'warning', timestamp: performance.now()})
+      playSound("error", "ui")
       return;
     }
     // Add action to active list
@@ -157,6 +157,7 @@ async function execute() {
     // playSound("error", "ui")
     // @todo: handle error better
     window.alert(e);
+    toastMessage({ message: e, type: 'warning', timestamp: performance.now()})
     // Clear active list
     activeActions.update(() => []);
     // Add action to failed list
