@@ -3,6 +3,7 @@
   import { castleExtended, popUpEntities } from "../UI";
   import { quadOut } from "svelte/easing";
   import { fly } from "svelte/transition";
+  import { dragging } from "./index";
 
   export let baseEntityId: string;
 
@@ -16,15 +17,14 @@
   };
 
   const onDragLeave = (e) => {
-    console.log("leave");
     draggingOver = false;
   };
 
   const onDragEnd = (e: DragEvent | PointerEvent) => {
-    console.log("end");
     draggingOver = false;
     if (e.dataTransfer) {
       e.dataTransfer.clearData();
+      dragging.set("");
     }
   };
 </script>

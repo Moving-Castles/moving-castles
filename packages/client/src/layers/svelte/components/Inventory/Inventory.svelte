@@ -5,6 +5,7 @@
   import Item from "../Items/ItemSelector.svelte";
   import EmptySlot from "./EmptySlot.svelte";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { dragging } from "../Items";
 
   export let baseEntityId: string;
   export let showCapacity = false;
@@ -42,12 +43,12 @@
     {#if item.core && !showCores}
       <span />
     {:else}
-      <Item {itemId} {item} />
+      <Item {baseEntityId} {itemId} {item} />
     {/if}
   {/each}
   {#if showEmptySlots}
     {#each Array(emptySlotNumber) as _, i (i)}
-      <EmptySlot dropAllowed={!isPlayer} on:drop={onDrop} />
+      <EmptySlot dropAllowed={!isPlayer && !inventoryItems.map((i) => i[0]).includes($dragging)} on:drop={onDrop} />
     {/each}
   {/if}
 </div>
