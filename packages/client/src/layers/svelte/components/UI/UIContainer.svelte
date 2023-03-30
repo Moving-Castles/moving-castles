@@ -9,6 +9,7 @@
   import UIBar from "./UIBar.svelte";
   import Leaderboard from "../Leaderboard/Leaderboard.svelte";
   import ActionSequencer from "../ActionSequencer/ActionSequencer.svelte";
+  import Executor from "./Executor.svelte";
   // ---
   import LoadingScreen from "../SpawnSequence/LoadingScreen.svelte";
   import SpawnStart from "../SpawnSequence/SpawnStart.svelte";
@@ -25,7 +26,9 @@
 {/if}
 
 {#if $isSpawned}
-  <UIBar />
+  <div class="executor">
+    <Executor />
+  </div>
 {/if}
 
 {#if $isSpawned && $actionSequencerActive}
@@ -115,8 +118,8 @@
 
   .leaderboard {
     position: fixed;
-    top: 50px;
-    left: 10px;
+    top: 10px;
+    right: 10px;
     padding: 10px;
     background: red;
     z-index: 100;
@@ -133,5 +136,17 @@
     width: 300px;
     max-height: 400px;
     overflow-y: auto;
+  }
+
+  .executor {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 100px;
+
+    display: flex;
+    justify-content: space-between;
+    z-index: 1000;
+    box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.5);
   }
 </style>
