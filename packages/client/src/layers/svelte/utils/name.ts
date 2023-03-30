@@ -65,7 +65,8 @@ function reverseString(str: string): string {
 }
 
 export function idToAvatar(id: string) {
-  return !id ? "" : get(staticContent).cores[parseInt(id) % 5];
+  const cores = get(staticContent).cores;
+  return !id ? "" : cores[parseInt(id) % cores.length];
 }
 
 export function idToName(id: string) {
@@ -134,4 +135,14 @@ export function seedToCastleName(id: string) {
   const secondName = castleSecondNames[secondNameIndex % castleSecondNames.length];
 
   return firstName + " " + secondName;
+}
+
+export function idToBody(id: string) {
+  const trunctatedId = id.substr(id.length - 6);
+  // console.log('trunctatedId', trunctatedId)
+  const smallBodies = get(staticContent).bodies.find((b) => b.label === "small")?.images;
+  // console.log('parseInt(id)', parseInt(trunctatedId, 16))
+  // console.log('smallBodies.length', smallBodies.length)
+  // console.log('--index', parseInt(trunctatedId, 16) % smallBodies.length)
+  return smallBodies ? smallBodies[parseInt(trunctatedId, 16) % smallBodies.length] : "";
 }

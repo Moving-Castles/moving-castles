@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Entities } from "../../modules/entities";
   import { fade } from "svelte/transition";
   import { ready } from "../../modules/network";
   import Typewriter from "svelte-typewriter";
@@ -7,6 +6,7 @@
   import { playerCore } from "../../modules/player";
   import { entities } from "../../modules/entities";
   import { playSound } from "../../../howler";
+  import { idToBody } from "../../utils/name";
 
   import Item from "../Items/ItemSelector.svelte";
 
@@ -40,7 +40,7 @@
   }}
 >
   <!-- BEFORE -->
-  <img draggable="false" src="/img/bodies/small/1.png" alt="body" />
+  <img draggable="false" src={idToBody($playerCore.carriedBy)} alt="body" />
 
   {#if skip}
     <!-- SKIP TEXT -->

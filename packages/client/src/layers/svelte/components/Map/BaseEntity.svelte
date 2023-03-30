@@ -7,6 +7,7 @@
   import { items, baseEntities } from "../../modules/entities";
   import { playerCore } from "../../modules/player";
   import { addressToColor } from "../../utils/misc";
+  import { idToBody } from "../../utils/name";
 
   import Item from "../Items/ItemSelector.svelte";
   import Transfer from "./TransferDialog.svelte";
@@ -78,7 +79,7 @@
     transition:scale={{ duration: 100, easing: quadOut }}
   >
     <div class="shadow" />
-    <img class="body" draggable="false" src="/img/bodies/small/3.png" alt="body" />
+    <img class="body" draggable="false" src={idToBody(baseEntityId)} alt="body" />
   </div>
 {/if}
 
@@ -95,9 +96,9 @@
     height: 400px;
     position: relative;
 
-    &.player.debug {
-      border: 1px solid red;
-    }
+    // &.player.debug {
+    //   border: 1px solid red;
+    // }
 
     &.active {
       animation: color-change 0.2s infinite;
