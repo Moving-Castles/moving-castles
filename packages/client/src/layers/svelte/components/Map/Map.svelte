@@ -34,14 +34,14 @@
   }
 
   async function centerMapOnPlayer(smooth: boolean = true) {
-    await tick();
-    let playerEl = document.getElementsByClassName("player")[0];
-    console.log(playerEl);
-
-    if (playerEl && playerEl.parentElement) {
-      let playerTileEl = playerEl.parentElement;
-      playerTileEl.scrollIntoView({ block: "center", inline: "center", behavior: smooth ? "smooth" : "auto" });
-    }
+    setTimeout(() => {
+      let playerEl = document.getElementsByClassName("player")[0];
+      console.log(playerEl);
+      if (playerEl && playerEl.parentElement) {
+        let playerTileEl = playerEl.parentElement;
+        playerTileEl.scrollIntoView({ block: "center", inline: "center", behavior: smooth ? "smooth" : "auto" });
+      }
+    }, 300);
   }
 
   $: if ($playerBaseEntity.activity === Activity.Idle) {
