@@ -23,7 +23,6 @@
     }
   }
 
-  // select the element you want to animate
   let queueElement: HTMLElement;
   let activeElement: HTMLElement;
   let doneElement: HTMLElement;
@@ -31,30 +30,78 @@
   let queueConnector: HTMLElement;
   let activeConnector: HTMLElement;
 
+  let localQueuedActionsCount = 0;
+  let localActiveActionsCount = 0;
+  let localCompletedActionsCount = 0;
+  let localFailedActionsCount = 0;
+
   const CONNECTOR_TIME = 0.1;
   const NODE_TIME = 0.4;
 
-  function testTween() {
-    // TweenMax.to(element, 1, { backgroundColor: "green" }).to(element, 1, { backgroundColor: "blue" });
-    // const tl = new TimelineMax();
-
+  function animateAction(connectorEl: HTMLElement, nodeEl: HTMLElement, nodeColor: string) {
     const tl2 = new TimelineMax();
-    tl2.to(coreConnector, 0, { height: 0 });
-    tl2.to(coreConnector, CONNECTOR_TIME, { height: 100, opacity: 1 });
-    tl2.to(queueElement, 0, { backgroundColor: "orange" });
-    tl2.to(queueElement, NODE_TIME, { backgroundColor: "#808080" });
-    tl2.to(queueConnector, 0, { height: 0 });
-    tl2.to(queueConnector, CONNECTOR_TIME, { height: 100, opacity: 1 });
-    tl2.to(activeElement, 0, { backgroundColor: "orangered" });
-    tl2.to(activeElement, NODE_TIME, { backgroundColor: "#808080" });
-    tl2.to(activeConnector, 0, { height: 0 });
-    tl2.to(activeConnector, CONNECTOR_TIME, { height: 100, opacity: 1 });
-    tl2.to(doneElement, 0, { backgroundColor: "green" });
-    tl2.to(doneElement, NODE_TIME, { backgroundColor: "#808080" });
+    tl2.to(connectorEl, 0, { height: 0 });
+    tl2.to(connectorEl, CONNECTOR_TIME, { height: 100, opacity: 1 });
+    tl2.to(nodeEl, 0, { backgroundColor: nodeColor });
+    tl2.to(nodeEl, NODE_TIME, { backgroundColor: "#808080" });
+  }
+
+  function animateQueuedAction() {
+    animateAction(coreConnector, queueElement, "orange");
+  }
+
+  function animateActiveAction() {
+    animateAction(queueConnector, activeElement, "orange");
+  }
+
+  function animateCompletedAction() {
+    animateAction(activeConnector, doneElement, "green");
+  }
+
+  function animateFailedAction() {
+    animateAction(activeConnector, doneElement, "red");
+  }
+
+  function clearConnectors() {
+    const tl2 = new TimelineMax();
     tl2.to(coreConnector, 0.3, { opacity: 0 }, "end");
     tl2.to(queueConnector, 0.3, { opacity: 0 }, "end");
     tl2.to(activeConnector, 0.3, { opacity: 0 }, "end");
   }
+
+  queuedActions.subscribe((actions) => {
+    if (actions.length > localQueuedActionsCount) animateQueuedAction();
+    setTimeout(() => {
+      playSound("item", "ui");
+      localQueuedActionsCount = actions.length;
+    }, CONNECTOR_TIME * 1000);
+  });
+
+  activeActions.subscribe((actions) => {
+    if (actions.length > localActiveActionsCount) animateActiveAction();
+    setTimeout(() => {
+      playSound("item", "ui");
+      localActiveActionsCount = actions.length;
+    }, CONNECTOR_TIME * 1000);
+  });
+
+  completedActions.subscribe((actions) => {
+    if (actions.length > localCompletedActionsCount) animateCompletedAction();
+    setTimeout(() => {
+      playSound("error", "ui");
+      localCompletedActionsCount = actions.length;
+      clearConnectors();
+    }, CONNECTOR_TIME * 1000);
+  });
+
+  failedActions.subscribe((actions) => {
+    if (actions.length > localFailedActionsCount) animateFailedAction();
+    setTimeout(() => {
+      playSound("error", "ui");
+      localFailedActionsCount = actions.length;
+      clearConnectors();
+    }, CONNECTOR_TIME * 1000);
+  });
 </script>
 
 <div class="executor">
@@ -67,20 +114,28 @@
     <img draggable="false" class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
   </div>
   <div class="connector"><div class="line" bind:this={coreConnector} /></div>
-  <div class="node queue" bind:this={queueElement} class:focus={$queuedActions.length > 0}>
-    <div>Q:{$queuedActions.length}</div>
+  <div class="node queue" bind:this={queueElement}>
+    <div>{localQueuedActionsCount}</div>
   </div>
   <div class="connector"><div class="line" bind:this={queueConnector} /></div>
-  <div class="node active" bind:this={activeElement} class:focus={$activeActions.length > 0}>
-    <div>A:{$activeActions.length}</div>
+  <div class="node active" bind:this={activeElement}>
+    <div>{localActiveActionsCount}</div>
   </div>
   <div class="connector"><div class="line" bind:this={activeConnector} /></div>
-  <div class="node done" bind:this={doneElement}><div>C:{$completedActions.length} F:{$failedActions.length}</div></div>
+  <div class="node done" bind:this={doneElement}>
+    <div>
+      {localCompletedActionsCount}/{localFailedActionsCount}
+    </div>
+  </div>
   <div>
     <button on:click={toggleSequencer}>
       {$sequencerState === SequencerState.Running ? "stop" : "start"}
     </button>
-    <button on:click={testTween}>TEST</button>
+    <!-- <button on:click={animateQueuedAction}>TEST Q</button>
+    <button on:click={animateActiveAction}>TEST A</button>
+    <button on:click={animateCompletedAction}>TEST C</button>
+    <button on:click={animateFailedAction}>TEST F</button>
+    <button on:click={clearConnectors}>CLEAR</button> -->
   </div>
 </div>
 
@@ -109,7 +164,6 @@
       width: 100%;
       height: 100px;
       display: flex;
-      //   align-items: center;
       justify-content: center;
       background: white;
 
