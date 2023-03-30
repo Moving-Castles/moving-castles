@@ -63,7 +63,7 @@ export function getEnergyCost(systemId: keyof SystemTypes) {
 }
 
 export function addToSequencer(systemId: keyof SystemTypes, params: any[] = []) {
-  playSound("selectTwo", "ui")
+  // playSound("selectTwo", "ui")
   queuedActions.update((queuedActions) => {
     const newAction = {
       actionId: self.crypto.randomUUID(),
@@ -123,7 +123,7 @@ export function initActionSequencer() {
         activeActions.update((activeActions) => activeActions.filter((a) => a.tx !== action?.tx));
         // Add action to completed list
         completedActions.update((completedActions) => [action, ...completedActions]);
-        playSound("selectFour", "ui")
+        // playSound("selectFour", "ui")
       });
     }
   }
@@ -138,8 +138,6 @@ async function execute() {
     if (get(playerCore).energy < action.requirements.energy) {
       // Add action to failed list
       failedActions.update((failedActions) => [action, ...failedActions]);
-      // @todo: handle lack of energy better
-      // window.alert('Not enough energy to execute action: ' + String(action.systemId) + '. Requires ' + action.requirements.energy + ' energy.')
       toastMessage({ message: 'Not enough energy to execute action: ' + String(action.systemId) + '. Requires ' + action.requirements.energy + ' energy.', type: 'warning', timestamp: performance.now()})
       playSound("error", "ui")
       return;
@@ -152,11 +150,11 @@ async function execute() {
     activeActions.update((activeActions) => {
       activeActions[0].tx = tx.hash;
       activeActions[0].timestamp = Date.now();
-      playSound("selectOne", "ui")
+      // playSound("selectOne", "ui")
       return activeActions;
     });
   } catch (e) {
-    playSound("error", "ui")
+    // playSound("error", "ui")
     // @todo: handle error better
     window.alert(e);
     toastMessage({ message: e, type: 'warning', timestamp: performance.now()})
