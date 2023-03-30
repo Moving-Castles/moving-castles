@@ -2,6 +2,7 @@
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import Spinner from "./Spinner.svelte";
+  import { staticContent } from "../../modules/staticContent";
 
   export let itemId: string;
   export let isOnMap = false;
@@ -35,6 +36,8 @@
     if (boxState === BoxState.OPENING) return;
     playSound("cursor", "ui");
   }
+
+  const icon = $staticContent.organs.find((o) => o.label === "lootbox")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -46,7 +49,7 @@
       </div>
     </div>
   {:else}
-    ?
+    <img src={icon} alt="lootbox" />
   {/if}
 </div>
 
@@ -54,14 +57,18 @@
   .loot-box {
     aspect-ratio: 1;
     height: 100vw;
-    // width: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     color: black;
     cursor: pointer;
-    background: red;
+    // background: red;
+
+    img {
+      // height: 100%;
+      width: 100%;
+    }
 
     &:hover {
       opacity: 0.9;

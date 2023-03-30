@@ -98,8 +98,9 @@
 
     &.map {
       font-size: 32px;
-      height: 200px;
-      width: 200px;
+      height: 320px;
+      width: 320px;
+      border-radius: 10px;
     }
   }
 

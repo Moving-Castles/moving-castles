@@ -50,6 +50,10 @@ const localStaticContent = {
             images: ["/img/organs/goal/1.png"]
         },
         {
+            label: "lootbox",
+            images: ["/img/organs/lootbox/1.png"]
+        },
+        {
             label: "trash",
             images: ["/img/organs/trash/1.png",
                 "/img/organs/trash/2.png",
