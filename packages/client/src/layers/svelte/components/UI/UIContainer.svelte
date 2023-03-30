@@ -6,7 +6,7 @@
   // ...
   import Map from "../Map/Map.svelte";
   import UIPane from "./UIPane.svelte";
-  import UIBar from "./UIBar.svelte";
+  import UIToasts from "./UIToasts.svelte";
   import Leaderboard from "../Leaderboard/Leaderboard.svelte";
   import ActionSequencer from "../ActionSequencer/ActionSequencer.svelte";
   import Executor from "./Executor.svelte";
@@ -66,6 +66,8 @@
       {/if}
     </div>
   {/if}
+
+  <UIToasts />
 </div>
 
 <style lang="scss">
