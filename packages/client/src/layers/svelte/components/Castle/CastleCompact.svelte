@@ -1,16 +1,11 @@
 <script lang="ts">
   import { shortenAddress, addressToColor } from "../../utils/misc";
   import Inventory from "../Inventory/Inventory.svelte";
-  import { addToSequencer } from "../../modules/actionSequencer";
   import { seedToCastleName } from "../../utils/name";
   import { castleExtended } from "../UI";
 
   export let baseEntityId: string;
   export let draggingOver: boolean;
-
-  function play() {
-    addToSequencer("system.Play");
-  }
 
   function extendCastle() {
     castleExtended.set(true);

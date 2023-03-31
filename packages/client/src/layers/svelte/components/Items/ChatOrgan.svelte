@@ -3,8 +3,7 @@
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css";
   import { playerAbilities } from "../../modules/player";
-  import { addToSequencer } from "../../modules/actionSequencer";
-  import { pickUp } from "../../modules/player/actions";
+  import { pickUp, consume } from "../../modules/player/actions";
   import { playSound } from "../../../howler";
   import { staticContent } from "../../modules/staticContent";
 
@@ -28,13 +27,9 @@
 
   setInfo("T", "Ability: Talk");
 
-  function consume() {
-    addToSequencer("system.Consume", [itemId]);
-  }
-
   const click = () => {
     if (isOnMap) {
-      pickUp();
+      pickUp(itemId);
     }
   };
 
@@ -69,7 +64,7 @@
   <div class="dialog" bind:this={dialogEl}>
     <div class="description">{info.description}</div>
     {#if $playerAbilities.includes("abilityConsume")}
-      <button on:click={consume}>consume</button>
+      <button on:click={() => consume(itemId)}>consume</button>
     {/if}
   </div>
 {/if}

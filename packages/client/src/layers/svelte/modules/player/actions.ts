@@ -10,3 +10,11 @@ export function pickUp (itemId: string) {
     toastMessage({ type: "warning", message: "Your inventory is full", timestamp: performance.now() });
   }
 }
+
+export function consume (itemId: string) {
+  addToSequencer("system.Consume", [itemId]);
+}
+
+export function play() {
+  addToSequencer("system.Play");  
+}

@@ -1,8 +1,7 @@
 <script lang="ts">
   import { t } from "../Dialogue";
   import { playerAbilities, playerCore } from "../../modules/player";
-  import { addToSequencer } from "../../modules/actionSequencer";
-  import { pickUp } from "../../modules/player/actions";
+  import { pickUp, consume, play } from "../../modules/player/actions";
   import { playSound } from "../../../howler";
   import { Activity } from "../../modules/actionUpdater";
   import { staticContent } from "../../modules/staticContent";
@@ -25,17 +24,9 @@
 
   setInfo("P", "Ability: Play");
 
-  function play() {
-    addToSequencer("system.Play");
-  }
-
-  function consume() {
-    addToSequencer("system.Consume", [itemId]);
-  }
-
   const click = () => {
     if (isOnMap) {
-      pickUp();
+      pickUp(itemId);
     }
   };
 
@@ -53,7 +44,7 @@
     <div class="description">{info.description}</div>
     <button on:click={play}>{$playerCore.commit === Activity.Play ? "STOP" : "play"}</button>
     {#if $playerAbilities.includes("abilityConsume")}
-      <button on:click={consume}>consume</button>
+      <button on:click={() => consume(itemId)}>consume</button>
     {/if}
   </div>
 </div>

@@ -3,7 +3,7 @@
   import { addToSequencer } from "../../modules/actionSequencer";
   import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
-  import { pickUp } from "../../modules/player/actions";
+  import { pickUp, consume } from "../../modules/player/actions";
   import { t } from "../Dialogue";
 
   export let itemId: string;
@@ -22,13 +22,9 @@
 
   setInfo("M", "Ability: Move");
 
-  function consume() {
-    addToSequencer("system.Consume", [itemId]);
-  }
-
   const click = () => {
     if (isOnMap) {
-      pickUp();
+      pickUp(itemId);
     }
   };
 
@@ -45,7 +41,7 @@
   <div class="dialog">
     <div class="description">{info.description}</div>
     {#if $playerAbilities.includes("abilityConsume")}
-      <button on:click={consume}>consume</button>
+      <button on:click={() => consume(itemId)}>consume</button>
     {/if}
   </div>
 </div>

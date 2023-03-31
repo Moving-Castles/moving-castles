@@ -1,15 +1,11 @@
 <script lang="ts">
   import { Activity } from "../../modules/entities";
-  import { playerCore, playerBaseEntity, playerAddress } from "../../modules/player";
+  import { playerCore, playerBaseEntity } from "../../modules/player";
   import { shortenAddress, addressToColor } from "../../utils/misc";
   import Inventory from "../Inventory/Inventory.svelte";
-  import { addToSequencer } from "../../modules/actionSequencer";
   import { seedToCastleName } from "../../utils/name";
+  import { play } from "../../modules/player/actions";
   import { castleExtended } from "../UI";
-
-  function play() {
-    addToSequencer("system.Play");
-  }
 
   function extendCastle() {
     castleExtended.set(false);
