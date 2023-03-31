@@ -28,7 +28,7 @@ import {
 import { SystemAbis } from "contracts/types/SystemAbis.mjs";
 import { getNetworkConfig } from "./config";
 import { utils } from "ethers";
-import { toastMessage } from "../svelte/components/UI/index"
+import { toastMessage } from "../svelte/modules/toast"
 
 /**
  * The Network layer is the lowest layer in the client architecture.

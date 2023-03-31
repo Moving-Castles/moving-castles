@@ -7,6 +7,7 @@
   import { initActionSequencer } from "./modules/actionSequencer";
   import { initStaticContent } from "./modules/staticContent";
   import { initActionUpdater } from "./modules/actionUpdater";
+  import { toastMessage } from "./modules/toast";
 
   onMount(async () => {
     // App mounted. Start initializing...
@@ -33,7 +34,15 @@
       }
     }
   });
+
+  const testToast = () => {
+    if (import.meta.env.DEV) {
+      toastMessage({ message: "test", type: "warning", timestamp: performance.now() });
+    }
+  };
 </script>
+
+<svelte:window on:keypress={testToast} />
 
 <main>
   <UIContainer />

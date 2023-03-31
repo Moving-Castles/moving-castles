@@ -19,12 +19,6 @@ export const fragSpeed = writable(0);
 export const category = writable("gluttony");
 export const activeComponent = writable("");
 
-export interface Toast {
-  type: "warning" | "error"
-  message: HTMLElement | string
-  timestamp: DOMHighResTimeStamp
-}
-
 // Create custom store with simpler update methods
 function createComponentState() {
   const { subscribe, set, update } = writable(initialState());
@@ -89,9 +83,4 @@ export const userSettings = writable({
 });
 
 export const uiState = createComponentState();
-export const toasts: Writable<Toast[]> = writable([])
 
-export function toastMessage (toast: Toast) {
-  console.log('toasting message...', toast)
-  toasts.set([...get(toasts), toast])
-}

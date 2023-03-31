@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { toasts } from "./index";
+  import type { Toast } from "../../modules/toast";
+  import { toasts } from "../../modules/toast";
   import { flip } from "svelte/animate";
-  import Toast from "./Toast.svelte";
+  import ToastComponent from "./Toast.svelte";
   import { quadOut } from "svelte/easing";
   import { fly, fade } from "svelte/transition";
 
@@ -13,7 +14,7 @@
 <div class="toast-pane">
   {#each $toasts as toast (toast.timestamp)}
     <div animate:flip in:fly={{ duration: 200, y: 200, easing: quadOut }} out:fade>
-      <Toast {toast} on:end={onEnd} />
+      <ToastComponent {toast} on:end={onEnd} />
     </div>
   {/each}
 </div>

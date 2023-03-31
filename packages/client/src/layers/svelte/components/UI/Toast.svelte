@@ -1,20 +1,24 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { Toast } from "./index";
+  import type { Toast } from "../../modules/toast";
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher<{ end: Toast }>();
 
   export let toast: Toast;
 
+  const close = () => dispatch("end", toast);
+
   onMount(() => {
-    setTimeout(() => {
-      dispatch("end", toast);
-    }, 4000);
+    if (!import.meta.env.DEV) {
+      setTimeout(() => {
+        close();
+      }, 4000);
+    }
   });
 </script>
 
-<div class="toast {toast.type}">
+<div class="toast {toast.type}" on:click={close}>
   {#if toast.type === "warning"}
     <p class="exclamation">!</p>
   {/if}

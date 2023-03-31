@@ -10,7 +10,7 @@ import { network, blockNumber } from "../network";
 import { playerCore } from "../player";
 import { gameConfig } from "../entities";
 import { playSound } from "../../../howler";
-import { toastMessage } from "../../components/UI/index"
+import { toastMessage } from "../../modules/toast"
 
 // --- TYPES -----------------------------------------------------------------
 
