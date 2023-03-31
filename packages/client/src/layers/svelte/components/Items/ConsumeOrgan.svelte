@@ -2,6 +2,7 @@
   import { t } from "../Dialogue";
   import { playerAbilities } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { pickUp } from "../../modules/player/actions";
   import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
 
@@ -28,10 +29,6 @@
   const mouseenter = () => {
     playSound("cursor", "ui");
   };
-
-  function pickUp() {
-    addToSequencer("system.PickUp", [itemId]);
-  }
 
   const click = () => {
     if (isOnMap) {

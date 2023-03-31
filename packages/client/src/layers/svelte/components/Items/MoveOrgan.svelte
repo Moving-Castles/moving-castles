@@ -3,6 +3,7 @@
   import { addToSequencer } from "../../modules/actionSequencer";
   import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
+  import { pickUp } from "../../modules/player/actions";
   import { t } from "../Dialogue";
 
   export let itemId: string;
@@ -23,10 +24,6 @@
 
   function consume() {
     addToSequencer("system.Consume", [itemId]);
-  }
-
-  function pickUp() {
-    addToSequencer("system.PickUp", [itemId]);
   }
 
   const click = () => {

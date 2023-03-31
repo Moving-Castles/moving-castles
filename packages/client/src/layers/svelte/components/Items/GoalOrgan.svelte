@@ -2,6 +2,7 @@
   import { blockNumber } from "../../modules/network";
   import type { Entity } from "../../modules/entities";
   import { t } from "../Dialogue";
+  import { pickUp } from "../../modules/player/actions";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import { staticContent } from "../../modules/staticContent";
@@ -29,10 +30,6 @@
   const mouseenter = () => {
     playSound("cursor", "ui");
   };
-
-  function pickUp() {
-    addToSequencer("system.PickUp", [itemId]);
-  }
 
   const click = () => {
     if (isOnMap) {

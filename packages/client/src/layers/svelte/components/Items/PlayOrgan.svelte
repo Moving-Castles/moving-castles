@@ -2,6 +2,7 @@
   import { t } from "../Dialogue";
   import { playerAbilities, playerCore } from "../../modules/player";
   import { addToSequencer } from "../../modules/actionSequencer";
+  import { pickUp } from "../../modules/player/actions";
   import { playSound } from "../../../howler";
   import { Activity } from "../../modules/actionUpdater";
   import { staticContent } from "../../modules/staticContent";
@@ -30,10 +31,6 @@
 
   function consume() {
     addToSequencer("system.Consume", [itemId]);
-  }
-
-  function pickUp() {
-    addToSequencer("system.PickUp", [itemId]);
   }
 
   const click = () => {

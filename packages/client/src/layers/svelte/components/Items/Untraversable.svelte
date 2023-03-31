@@ -1,6 +1,6 @@
 <script lang="ts">
   import { t } from "../Dialogue";
-  import { addToSequencer } from "../../modules/actionSequencer";
+  import { pickUp } from "../../modules/player/actions";
   import { playSound } from "../../../howler";
 
   export let itemId: string;
@@ -18,13 +18,9 @@
 
   setInfo("X", "Untraversable");
 
-  function pickUp() {
-    addToSequencer("system.PickUp", [itemId]);
-  }
-
   const click = () => {
     if (isOnMap) {
-      pickUp();
+      pickUp(itemId);
     }
   };
 

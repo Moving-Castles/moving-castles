@@ -4,6 +4,7 @@
   import { addToSequencer } from "../../modules/actionSequencer";
   import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
+  import { pickUp } from "../../modules/player/actions";
 
   export let itemId: string;
   export let showDialog: boolean;
@@ -29,14 +30,9 @@
     playSound("cursor", "ui");
   };
 
-  function pickUp() {
-    console.log();
-    addToSequencer("system.PickUp", [itemId]);
-  }
-
   const click = () => {
     if (isOnMap) {
-      pickUp();
+      pickUp(itemId);
     }
   };
   const icon = $staticContent.organs.find((o) => o.label === "blank")?.images[0];
