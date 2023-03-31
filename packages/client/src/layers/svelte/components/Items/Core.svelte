@@ -25,10 +25,6 @@
     itemId === $playerAddress ? idToName(itemId) + " (you)" : idToName(itemId) + ": " + item.energy + " energy"
   );
 
-  function drop() {
-    addToSequencer("system.Drop", [itemId]);
-  }
-
   const mouseenter = () => {
     playSound("friendly", "misc");
   };
@@ -46,7 +42,6 @@
 
   <div class="dialog">
     <div class="description">{info.description}</div>
-    <button on:click={drop}>drop</button>
   </div>
 </div>
 

@@ -24,10 +24,6 @@
 
   setInfo("P", "Ability: Play");
 
-  function drop() {
-    addToSequencer("system.Drop", [itemId]);
-  }
-
   function play() {
     addToSequencer("system.Play");
   }
@@ -62,7 +58,6 @@
     {#if $playerAbilities.includes("abilityConsume")}
       <button on:click={consume}>consume</button>
     {/if}
-    <button on:click={drop}>drop</button>
   </div>
 </div>
 

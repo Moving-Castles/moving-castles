@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
+  import { onMount } from "svelte";
   import { playerCore, playerBaseEntity, multiCore, playerAbilities } from "../../modules/player";
   import { gameConfig } from "../../modules/entities";
   import { panzoom } from "../../modules/map";
+  import { playSound } from "../../../howler";
+
   import Chat from "../Chat/Chat.svelte";
   import Tile from "./Tile.svelte";
   import type { GridTile } from "./index";
@@ -13,30 +15,24 @@
   let zoomed = false;
   let grid: GridTile[] = [];
 
-  // $: key = uuid();
-
   function initGrid(unit: number) {
     let grid = [] as GridTile[];
     for (let y = 0; y < unit; y++) {
       for (let x = 0; x < unit; x++) {
         const newGridTile: GridTile = {
-          direction: ".",
-          coordinates: { x: x, y: y },
-          perlinFactor: 0,
-          resource: 100,
           id: `${x}-${y}`,
+          coordinates: { x: x, y: y },
         };
         grid = [...grid, newGridTile];
       }
     }
-
     return grid;
   }
 
+  // @todo: move this function to an external file so if can be used from other components
   async function centerMapOnPlayer(smooth: boolean = true) {
     setTimeout(() => {
       let playerEl = document.getElementsByClassName("player")[0];
-      console.log(playerEl);
       if (playerEl && playerEl.parentElement) {
         let playerTileEl = playerEl.parentElement;
         playerTileEl.scrollIntoView({ block: "center", inline: "center", behavior: smooth ? "smooth" : "auto" });
@@ -44,6 +40,7 @@
     }, 300);
   }
 
+  // @todo: only center on the player if it moved
   $: if ($playerBaseEntity.activity === Activity.Idle) {
     centerMapOnPlayer();
   }
@@ -63,7 +60,7 @@
   onMount(() => {
     grid = initGrid($gameConfig.worldWidth);
     centerMapOnPlayer(false);
-    console.log("center");
+    playSound("workSiteRain", "environment", true);
   });
 </script>
 
@@ -77,12 +74,10 @@
   use:panzoom
   class="ui-map"
   style="--zoomscale: {zoomScale}; --ww: {$gameConfig.worldWidth * 400 + 3}px;"
-  class:void={!($playerBaseEntity && $playerBaseEntity.position)}
   class:zoomed
 >
   <div class="map-container" class:zoomed bind:clientWidth={containerWidth}>
-    <!-- GRID -->
-    {#each grid as tile (`${tile.coordinates.x}-${tile.coordinates.y}`)}
+    {#each grid as tile (tile.id)}
       <Tile {tile} />
     {/each}
   </div>
@@ -107,11 +102,6 @@
       .map-container {
         margin: 0;
       }
-    }
-
-    &.void {
-      filter: grayscale(1);
-      opacity: 0.2;
     }
 
     .center-map-button {

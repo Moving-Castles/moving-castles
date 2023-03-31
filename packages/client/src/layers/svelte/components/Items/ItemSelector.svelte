@@ -5,6 +5,7 @@
   import type { Entity } from "../../modules/entities";
   import { playerCore } from "../../modules/player";
   import { ItemType } from "./types";
+  import { dragging } from "./index";
   // ...
   import Core from "./Core.svelte";
   import MoveOrgan from "./MoveOrgan.svelte";
@@ -15,7 +16,6 @@
   import Untraversable from "./Untraversable.svelte";
   import GoalOrgan from "./GoalOrgan.svelte";
   import BlankOrgan from "./BlankOrgan.svelte";
-  import { dragging } from "./index";
 
   export let itemId: string;
   export let item: Entity;
@@ -80,7 +80,7 @@
   {:else if type === ItemType.ChatOrgan}
     <ChatOrgan {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.LootBox}
-    <LootBox {itemId} {isOnMap} />
+    <LootBox {itemId} {item} {isOnMap} />
   {:else if type === ItemType.Untraversable}
     <Untraversable {itemId} {showDialog} {isOnMap} />
   {:else if type === ItemType.GoalOrgan}

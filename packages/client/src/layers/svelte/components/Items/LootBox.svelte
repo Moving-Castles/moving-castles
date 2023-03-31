@@ -1,10 +1,12 @@
 <script lang="ts">
+  import type { Entity } from "../../modules/entities";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import Spinner from "./Spinner.svelte";
   import { staticContent } from "../../modules/staticContent";
 
   export let itemId: string;
+  export let item: Entity;
   export let isOnMap = false;
 
   enum BoxState {
@@ -43,7 +45,14 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div draggable="true" class="loot-box" class:map={isOnMap} on:click|stopPropagation={click} on:mouseenter={mouseenter}>
+<div
+  draggable="true"
+  class="loot-box"
+  class:carried={item.carriedBy}
+  class:map={isOnMap}
+  on:click|stopPropagation={click}
+  on:mouseenter={mouseenter}
+>
   {#if boxState === BoxState.OPENING}
     <div class="opening-overlay">
       <div>
@@ -58,19 +67,21 @@
 <style lang="scss">
   .loot-box {
     aspect-ratio: 1;
-    width: 140px;
-    // height: 100vw;
-    // width: 100%;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     color: black;
     cursor: pointer;
-    // background: red;
+
+    &.carried {
+      animation: color-change 0.5s infinite alternate linear;
+    }
 
     img {
-      // height: 100%;
+      height: 100%;
       width: 100%;
     }
 
@@ -91,5 +102,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  @keyframes color-change {
+    0% {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    100% {
+      background-color: #ff008c;
+    }
   }
 </style>

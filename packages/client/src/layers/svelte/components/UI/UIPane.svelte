@@ -4,10 +4,13 @@
   import { quadOut } from "svelte/easing";
   import { fly } from "svelte/transition";
   import { dragging } from "../Items";
+  import { playSound } from "../../../howler";
+  import { onDestroy, onMount } from "svelte";
 
   export let baseEntityId: string;
 
   let draggingOver = false;
+  let sound: any;
 
   const close = () => popUpEntities.set($popUpEntities.filter((id) => id !== baseEntityId));
 
@@ -27,6 +30,14 @@
       dragging.set("");
     }
   };
+
+  onMount(async () => {
+    sound = playSound("guitar", "melody", true, true);
+  });
+
+  onDestroy(() => {
+    sound.stop();
+  });
 </script>
 
 <div

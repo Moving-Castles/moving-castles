@@ -18,10 +18,6 @@
 
   setInfo("X", "Untraversable");
 
-  function drop() {
-    addToSequencer("system.Drop", [itemId]);
-  }
-
   function pickUp() {
     addToSequencer("system.PickUp", [itemId]);
   }
@@ -43,7 +39,6 @@
 
   <div class="dialog">
     <div class="description">{info.description}</div>
-    <button on:click={drop}>drop</button>
   </div>
 </div>
 

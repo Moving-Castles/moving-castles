@@ -1,6 +1,6 @@
 import type { SoundAssets } from "../types";
 
-const BASE_VOLUME = 0.3;
+const BASE_VOLUME = 0.5;
 
 export const environment: SoundAssets = {
   drone: {

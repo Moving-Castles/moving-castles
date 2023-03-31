@@ -21,10 +21,6 @@
 
   setInfo("C", "Ability: Consume");
 
-  function drop() {
-    addToSequencer("system.Drop", [itemId]);
-  }
-
   function consume() {
     addToSequencer("system.Consume", [itemId]);
   }
@@ -51,7 +47,6 @@
   <img src={icon} alt="consume" />
   <div class="dialog">
     <div class="description">{info.description}</div>
-    <button on:click={drop}>drop</button>
     {#if $playerAbilities.includes("abilityConsume")}
       <button on:click={consume}>consume</button>
     {/if}

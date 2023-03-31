@@ -1,22 +1,16 @@
 <script lang="ts">
   import type { GridTile } from "./index";
-
-  import { onMount, afterUpdate, onDestroy } from "svelte";
-  import { addToSequencer } from "../../modules/actionSequencer";
   import { baseEntities, freeItems } from "../../modules/entities";
   import { playerCore, playerAbilities } from "../../modules/player";
-  import { chebyshev, isAdjacent } from "../../utils/space";
-  import { gameConfig } from "../../modules/entities";
+  import { isAdjacent } from "../../utils/space";
   import Item from "../Items/ItemSelector.svelte";
   import BaseEntity from "./BaseEntity.svelte";
-  import { makeOptions } from "../Dialogue/index";
-  import tippy from "tippy.js";
+  import MoveDialog from "./MoveDialog.svelte";
 
   export let tile: GridTile;
 
-  let element: HTMLElement;
-  let dialog: HTMLElement;
   let tileEntities: [string, BaseEntity][];
+  let moveDialogActive = false;
 
   $: adjacent = isAdjacent($baseEntities[$playerCore.carriedBy].position, tile.coordinates);
 
@@ -33,34 +27,13 @@
 
   $: totalItemsAndEntities = tileEntities.length + tileFreeItems.length;
 
-  function move() {
-    if (adjacent && $playerAbilities.includes("abilityMove")) {
-      addToSequencer("system.Move", [tile.coordinates]);
+  function toggleMoveDialog() {
+    if (adjacent) {
+      moveDialogActive = !moveDialogActive;
+    } else {
+      moveDialogActive = false;
     }
   }
-
-  function hide() {
-    element?._tippy?.hide();
-  }
-
-  function init() {
-    tippy(element, makeOptions(dialog));
-  }
-
-  function destroy() {
-    element?._tippy?.destroy();
-  }
-
-  onMount(() => {
-    if (adjacent) init();
-  });
-
-  afterUpdate(() => {
-    destroy();
-    if (adjacent) init();
-  });
-
-  onDestroy(destroy);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -69,16 +42,8 @@
   class:adjacent
   class:occupied={tileEntities.length > 0}
   class:canmoveto={$playerAbilities.includes("abilityMove") && adjacent}
-  bind:this={element}
+  on:click={toggleMoveDialog}
 >
-  <!-- Don't include in DOM if tooltip should not render -->
-  <div class="dialog" class:hidden={!adjacent} bind:this={dialog}>
-    Destination x:{tile.coordinates.x}, y:{tile.coordinates.y}<br /> Costs: {$gameConfig.moveCost} energy
-    <br />
-    <button class="success" on:click={move}>move</button>
-    <button class="cancel" on:click={hide}>abort</button>
-  </div>
-
   <div class="coords">{tile.coordinates.x}:{tile.coordinates.y}</div>
 
   <div class="tile-items item-count-{totalItemsAndEntities}">
@@ -94,16 +59,20 @@
   </div>
 </div>
 
+{#if moveDialogActive}
+  <MoveDialog {tile} on:close={toggleMoveDialog} />
+{/if}
+
 <style lang="scss">
   .tile {
     width: 400px;
     height: 400px;
     float: left;
     font-size: 8px;
-    // border: 1px solid lightgrey;
     position: relative;
     background-size: contain;
     background-image: url("/img/tiles/normal/1.png");
+    cursor: pointer;
 
     &.occupied {
       background-image: url("/img/tiles/occupied/1.png");
@@ -111,12 +80,6 @@
 
     &:hover {
       background-color: rgb(60, 60, 60);
-    }
-
-    .dialog {
-      &.hidden {
-        display: none;
-      }
     }
 
     &.canmoveto {

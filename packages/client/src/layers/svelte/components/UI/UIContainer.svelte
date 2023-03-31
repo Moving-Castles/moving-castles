@@ -97,7 +97,7 @@
       display: flex;
       height: 90vh;
       justify-content: end;
-      z-index: 10000000;
+      z-index: 1000;
       flex-flow: row nowrap;
       gap: 20px;
     }

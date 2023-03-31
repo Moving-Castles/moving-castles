@@ -22,10 +22,6 @@
 
   setInfo("$", "Goal");
 
-  function drop() {
-    addToSequencer("system.Drop", [itemId]);
-  }
-
   function harvest() {
     addToSequencer("system.Harvest");
   }
@@ -52,7 +48,6 @@
   <div class="dialog">
     <div class="description">{info.description}</div>
     <button on:click={harvest}>harvest</button>
-    <button on:click={drop}>drop</button>
   </div>
   <img src={icon} alt="goal" />
   {$blockNumber - parseInt(String(item.goal || ""))}
