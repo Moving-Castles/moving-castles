@@ -115,7 +115,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      transform: translateY(-30%);
+      transform: translateY(-15%);
     }
 
     .shadow {
@@ -128,7 +128,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, 0);
+      transform: translate(-50%, 90%);
     }
   }
 

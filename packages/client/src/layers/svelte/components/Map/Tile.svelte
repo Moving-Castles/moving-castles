@@ -3,6 +3,7 @@
   import { baseEntities, freeItems, untraversables } from "../../modules/entities";
   import { playerCore, playerAbilities } from "../../modules/player";
   import { isAdjacent } from "../../utils/space";
+  import { toastMessage } from "../../modules/toast";
   import Item from "../Items/ItemSelector.svelte";
   import BaseEntity from "./BaseEntity.svelte";
   import MoveDialog from "./MoveDialog.svelte";
@@ -43,6 +44,9 @@
     } else {
       moveDialogActive = false;
     }
+
+    if (untraversable)
+      toastMessage({ type: "warning", message: "You cannot pass thru here", timestamp: performance.now() });
   }
 </script>
 
