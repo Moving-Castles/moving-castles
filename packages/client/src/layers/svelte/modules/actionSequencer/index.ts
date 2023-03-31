@@ -156,7 +156,6 @@ async function execute() {
   } catch (e) {
     // playSound("error", "ui")
     // @todo: handle error better
-    window.alert(e);
     toastMessage({ message: e, type: 'warning', timestamp: performance.now() })
     // Clear active list
     activeActions.update(() => []);

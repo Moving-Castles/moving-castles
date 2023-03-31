@@ -95,8 +95,7 @@ export async function createNetworkLayer(config: GameConfig) {
     try {
       systems["system.Spawn"].executeTyped();
     } catch (e) {
-      toastMessage({ message: e, type: 'error', timestamp: performance.now()})
-      window.alert(e);
+      toastMessage({ message: e, type: 'error', timestamp: performance.now() })
     }
   }
 
