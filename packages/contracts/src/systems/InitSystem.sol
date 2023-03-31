@@ -25,7 +25,7 @@ contract InitSystem is System {
       worldHeight: 10,
       worldWidth: 10,
       initialEnergy: 100,
-      defaultCarryingCapacity: 10,
+      defaultCarryingCapacity: 4,
       moveCost: 10,
       pickUpCost: 5,
       dropCost: 5,
