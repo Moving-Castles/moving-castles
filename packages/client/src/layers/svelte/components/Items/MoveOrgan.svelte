@@ -4,7 +4,7 @@
   import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
   import { pickUp, consume } from "../../modules/player/actions";
-  import { t } from "../Dialogue";
+  import Dialog from "../Dialog/Dialog.svelte";
 
   export let itemId: string;
   export let showDialog: boolean;
@@ -36,15 +36,16 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div use:t class="organ move" on:click={click} on:mouseenter={mouseenter}>
+<div class="organ move" on:click={click} on:mouseenter={mouseenter}>
   <img src={icon} alt="move" />
-  <div class="dialog">
-    <div class="description">{info.description}</div>
-    {#if $playerAbilities.includes("abilityConsume")}
-      <button on:click={() => consume(itemId)}>consume</button>
-    {/if}
-  </div>
 </div>
+
+<Dialog bind:visible={showDialog}>
+  <div class="description">{info.description}</div>
+  {#if $playerAbilities.includes("abilityConsume")}
+    <button on:click={() => consume(itemId)}>consume</button>
+  {/if}
+</Dialog>
 
 <style lang="scss">
   .organ {

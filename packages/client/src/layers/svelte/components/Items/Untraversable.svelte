@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from "../Dialogue";
+  import { t } from "../Dialog";
   import { pickUp } from "../../modules/player/actions";
   import { playSound } from "../../../howler";
 

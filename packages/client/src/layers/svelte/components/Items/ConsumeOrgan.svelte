@@ -1,13 +1,17 @@
 <script lang="ts">
-  import { t } from "../Dialogue";
+  import { t } from "../Dialog";
+  import { isSpawned } from "../UI";
   import { playerAbilities } from "../../modules/player";
   import { pickUp, consume } from "../../modules/player/actions";
   import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
+  import Dialog from "../Dialog/Dialog.svelte";
 
   export let itemId: string;
   export let showDialog: boolean;
   export let isOnMap = false;
+
+  let dialogVisible = false;
 
   let info = {
     symbol: "",
@@ -26,24 +30,26 @@
   };
 
   const click = () => {
-    if (isOnMap) {
-      pickUp(itemId);
-    }
+    dialogVisible = true;
+    // if (isOnMap) {
+    //   pickUp(itemId);
+    // }
   };
 
   const icon = $staticContent.organs.find((o) => o.label === "consume")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div use:t={{ enable: !isOnMap }} class="organ consume" on:click={click} on:mouseenter={mouseenter}>
+<div class="organ consume" on:click={click} on:mouseenter={mouseenter}>
   <img src={icon} alt="consume" />
-  <div class="dialog">
-    <div class="description">{info.description}</div>
-    {#if $playerAbilities.includes("abilityConsume")}
-      <button on:click={() => consume(itemId)}>consume</button>
-    {/if}
-  </div>
 </div>
+
+<Dialog bind:visible={dialogVisible}>
+  <div class="description">{info.description}</div>
+  {#if $playerAbilities.includes("abilityConsume")}
+    <button on:click={() => consume(itemId)}>consume</button>
+  {/if}
+</Dialog>
 
 <style lang="scss">
   .organ {

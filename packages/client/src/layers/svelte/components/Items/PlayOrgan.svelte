@@ -1,13 +1,16 @@
 <script lang="ts">
-  import { t } from "../Dialogue";
+  import { t } from "../Dialog";
   import { playerAbilities, playerCore } from "../../modules/player";
   import { pickUp, consume, play } from "../../modules/player/actions";
   import { playSound } from "../../../howler";
   import { Activity } from "../../modules/actionUpdater";
   import { staticContent } from "../../modules/staticContent";
+  import Dialog from "../Dialog/Dialog.svelte";
 
   export let isOnMap = false;
   export let itemId: string;
+
+  let dialogVisible = false;
 
   let markerEl: HTMLElement;
   let dialogEl: HTMLElement;
@@ -25,9 +28,7 @@
   setInfo("P", "Ability: Play");
 
   const click = () => {
-    if (isOnMap) {
-      pickUp(itemId);
-    }
+    dialogVisible = true;
   };
 
   const mouseenter = () => {
@@ -38,16 +39,17 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div use:t={{ enable: isOnMap }} class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
+<div class="organ play" bind:this={markerEl} on:click={click} on:mouseenter={mouseenter}>
   <img src={icon} alt="play" />
-  <div class="dialog" bind:this={dialogEl}>
-    <div class="description">{info.description}</div>
-    <button on:click={play}>{$playerCore.commit === Activity.Play ? "STOP" : "play"}</button>
-    {#if $playerAbilities.includes("abilityConsume")}
-      <button on:click={() => consume(itemId)}>consume</button>
-    {/if}
-  </div>
 </div>
+
+<Dialog bind:visible={dialogVisible}>
+  <div class="description">{info.description}</div>
+  <button on:click={play}>{$playerCore.commit === Activity.Play ? "STOP" : "play"}</button>
+  {#if $playerAbilities.includes("abilityConsume")}
+    <button on:click={() => consume(itemId)}>consume</button>
+  {/if}
+</Dialog>
 
 <style lang="scss">
   .organ {

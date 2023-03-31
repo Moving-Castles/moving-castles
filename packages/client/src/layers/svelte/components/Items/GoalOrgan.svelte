@@ -1,7 +1,7 @@
 <script lang="ts">
   import { blockNumber } from "../../modules/network";
   import type { Entity } from "../../modules/entities";
-  import { t } from "../Dialogue";
+  import Dialog from "../Dialog/Dialog.svelte";
   import { pickUp } from "../../modules/player/actions";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
@@ -10,6 +10,8 @@
   export let itemId: string;
   export let item: Entity;
   export let isOnMap = false;
+
+  let dialogVisible = false;
 
   let info = {
     symbol: "",
@@ -32,23 +34,24 @@
   };
 
   const click = () => {
-    if (isOnMap) {
-      pickUp();
-    }
+    dialogVisible = true;
   };
 
   const icon = $staticContent.organs.find((o) => o.label === "goal")?.images[0];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="organ goal" use:t on:click={click} on:mouseenter={mouseenter}>
-  <div class="dialog">
-    <div class="description">{info.description}</div>
-    <button on:click={harvest}>harvest</button>
-  </div>
+<div class="organ goal" on:click={click} on:mouseenter={mouseenter}>
   <img src={icon} alt="goal" />
-  {$blockNumber - parseInt(String(item.goal || ""))}
+  <div class="count">
+    {$blockNumber - parseInt(String(item.goal || ""))}
+  </div>
 </div>
+
+<Dialog bind:visible={dialogVisible}>
+  <div class="description">{info.description}</div>
+  <button on:click={harvest}>harvest</button>
+</Dialog>
 
 <style lang="scss">
   .organ {
@@ -63,6 +66,16 @@
 
     &.goal {
       background-color: #d1de18;
+    }
+
+    .count {
+      position: absolute;
+      z-index: 1;
+      display: none;
+    }
+
+    &:hover .count {
+      display: block;
     }
 
     img {

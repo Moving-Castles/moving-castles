@@ -90,7 +90,7 @@ const pointerUp = (e: PointerEvent) => {
   document.removeEventListener('pointerup', pointerUp);
 }
 
-const pointerDown = (e: PointerEvent) => {
+function pointerDown (e: PointerEvent) {
   const el = get(mapElement)
 
   position.set({
@@ -109,10 +109,6 @@ const pointerDown = (e: PointerEvent) => {
 export const panzoom = (element: HTMLElement) => {
   mapElement.set(element)
   element.addEventListener('pointerdown', pointerDown)
-  // element.addEventListener('wheel', onWheel)
-  // element.addEventListener('gesturestart', onGestureStart)
-  // element.addEventListener('gesturechange', onGestureChange)
-  // element.addEventListener('gestureend', onGestureEnd)
 
   return {
     destroy: () => {

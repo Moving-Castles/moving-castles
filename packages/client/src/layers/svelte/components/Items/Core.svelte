@@ -1,15 +1,15 @@
 <script lang="ts">
   import { addressToColor } from "../../utils/misc";
   import type { Core } from "../../modules/entities";
-  import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
   import { playerAddress } from "../../modules/player";
   import { idToName, idToAvatar } from "../../utils/name";
-  import { t } from "../Dialogue";
+  import Dialog from "../Dialog/Dialog.svelte";
 
   export let itemId: string;
   export let item: Core;
 
+  let dialogVisible = false;
   let info = {
     symbol: "",
     description: "",
@@ -35,15 +35,15 @@
   class="core"
   class:self={itemId === $playerAddress}
   style={"background:" + addressToColor(itemId) + ";"}
+  on:click={() => (dialogVisible = true)}
   on:mouseenter={mouseenter}
-  use:t
 >
   <img draggable="false" class="core-avatar" src={idToAvatar(itemId)} alt="core" />
-
-  <div class="dialog">
-    <div class="description">{info.description}</div>
-  </div>
 </div>
+
+<Dialog bind:visible={dialogVisible}>
+  <div class="description">{info.description}</div>
+</Dialog>
 
 <style lang="scss">
   .core {

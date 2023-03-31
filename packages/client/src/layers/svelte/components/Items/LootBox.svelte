@@ -1,14 +1,10 @@
 <script lang="ts">
   import type { Entity } from "../../modules/entities";
-  import { baseEntities } from "../../modules/entities";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { playSound } from "../../../howler";
-  import { playerCore } from "../../modules/player";
   import Spinner from "./Spinner.svelte";
   import { staticContent } from "../../modules/staticContent";
   import { pickUp } from "../../modules/player/actions";
-  import { isAdjacent } from "../../utils/space";
-  import { toastMessage } from "../../modules/toast";
 
   export let itemId: string;
   export let item: Entity;
@@ -32,10 +28,6 @@
   const click = () => {
     if (boxState === BoxState.OPENING) return;
     if (isOnMap) {
-      if (!isAdjacent($baseEntities[$playerCore.carriedBy].position, item.position)) {
-        toastMessage({ type: "warning", message: "Loot is out of reach...", timestamp: performance.now() });
-        return;
-      }
       pickUp(itemId);
     } else {
       open();

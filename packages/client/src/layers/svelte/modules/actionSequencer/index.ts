@@ -65,6 +65,7 @@ export function getEnergyCost(systemId: keyof SystemTypes) {
 export function addToSequencer(systemId: keyof SystemTypes, params: any[] = []) {
   // playSound("selectTwo", "ui")
   queuedActions.update((queuedActions) => {
+    console.log(self)
     const newAction = {
       actionId: self.crypto.randomUUID(),
       systemId: systemId,
