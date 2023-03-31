@@ -6,6 +6,7 @@
   import EmptySlot from "./EmptySlot.svelte";
   import { addToSequencer } from "../../modules/actionSequencer";
   import { dragging } from "../Items/index";
+  import { carryingCapacity, itemCount } from "./index";
 
   export let baseEntityId: string;
   export let showCapacity = false;
@@ -13,10 +14,16 @@
   export let showCores = true;
   export let draggingOver = false;
 
+  let inventoryItems: [string, Entity][] = [];
+
   $: isPlayer = baseEntityId === $playerCore.carriedBy;
 
-  let inventoryItems: [string, Entity][] = [];
-  $: inventoryItems = Object.entries($entities).filter(([itemId, item]) => item.carriedBy === baseEntityId);
+  $: carryingCapacity.set($baseEntities[baseEntityId].carryingCapacity);
+
+  $: {
+    inventoryItems = Object.entries($entities).filter(([itemId, item]) => item.carriedBy === baseEntityId);
+    itemCount.set(inventoryItems.length);
+  }
 
   let emptySlotNumber = 0;
   $: emptySlotNumber = $baseEntities[baseEntityId]
@@ -34,7 +41,7 @@
 
 {#if showCapacity}
   <div class="cc">
-    Inventory: {inventoryItems.length}/{$baseEntities[baseEntityId] ? $baseEntities[baseEntityId].carryingCapacity : 0}
+    Inventory: {$itemCount}/{$baseEntities[baseEntityId] ? $baseEntities[baseEntityId].carryingCapacity : 0}
   </div>
 {/if}
 

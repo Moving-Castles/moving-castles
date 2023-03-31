@@ -4,6 +4,8 @@
   import { playSound } from "../../../howler";
   import Spinner from "./Spinner.svelte";
   import { staticContent } from "../../modules/staticContent";
+  import { atCapacity } from "../Inventory";
+  import { toastMessage } from "../../modules/toast";
 
   export let itemId: string;
   export let item: Entity;
@@ -25,7 +27,11 @@
   }
 
   function pickup() {
-    addToSequencer("system.PickUp", [itemId]);
+    if (!$atCapacity) {
+      addToSequencer("system.PickUp", [itemId]);
+    } else {
+      toastMessage({ type: "warning", message: "Your inventory is full", timestamp: performance.now() });
+    }
   }
   const click = () => {
     if (boxState === BoxState.OPENING) return;

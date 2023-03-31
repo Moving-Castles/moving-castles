@@ -30,6 +30,7 @@
   };
 
   function pickUp() {
+    console.log();
     addToSequencer("system.PickUp", [itemId]);
   }
 
