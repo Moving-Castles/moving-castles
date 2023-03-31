@@ -23,10 +23,9 @@
   export let showDialog = true;
   export let isOnMap = false;
   export let dropAllowed = false;
+  export let type: ItemType;
 
   $: console.log("same owner ", baseEntityId === $playerCore.carriedBy);
-
-  let type: ItemType;
 
   $: {
     if (item.core) {

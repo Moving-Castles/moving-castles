@@ -90,6 +90,7 @@ export type FreeItem = Omit<Item, 'carriedBy'> & {
 };
 
 export type Untraversable = {
+  carriedBy: string;
   untraversable: true;
   position: Coord;
 };

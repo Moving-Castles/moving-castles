@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GridTile } from "./index";
-  import { baseEntities, freeItems } from "../../modules/entities";
+  import { baseEntities, freeItems, untraversables } from "../../modules/entities";
   import { playerCore, playerAbilities } from "../../modules/player";
   import { isAdjacent } from "../../utils/space";
   import Item from "../Items/ItemSelector.svelte";
@@ -11,6 +11,8 @@
 
   let tileEntities: [string, BaseEntity][];
   let moveDialogActive = false;
+  let itemsTypes: [] = [];
+  let untraversable = false;
 
   $: adjacent = isAdjacent($baseEntities[$playerCore.carriedBy].position, tile.coordinates);
 
@@ -27,8 +29,16 @@
 
   $: totalItemsAndEntities = tileEntities.length + tileFreeItems.length;
 
-  function toggleMoveDialog() {
+  $: {
     if (adjacent) {
+      const tileEntityIds = tileEntities.map(([id, ent]) => id);
+      const carriedByIds = Object.values($untraversables).map((u) => u.carriedBy);
+      untraversable = tileEntityIds.some((id) => carriedByIds.includes(id));
+    }
+  }
+
+  function toggleMoveDialog() {
+    if (adjacent && !untraversable) {
       moveDialogActive = !moveDialogActive;
     } else {
       moveDialogActive = false;
@@ -53,8 +63,8 @@
     {/each}
 
     <!-- FREE ITEMS -->
-    {#each tileFreeItems as [itemId, item] (itemId)}
-      <Item {itemId} {item} isOnMap={true} />
+    {#each tileFreeItems as [itemId, item], i (itemId)}
+      <Item {itemId} {item} bind:type={itemsTypes[i]} isOnMap={true} />
     {/each}
   </div>
 </div>

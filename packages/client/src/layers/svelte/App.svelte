@@ -34,15 +34,7 @@
       }
     }
   });
-
-  const testToast = () => {
-    if (import.meta.env.DEV) {
-      toastMessage({ message: "test", type: "warning", timestamp: performance.now() });
-    }
-  };
 </script>
-
-<svelte:window on:keypress={testToast} />
 
 <main>
   <UIContainer />
