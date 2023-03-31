@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import type { Toast } from "../../modules/toast";
   import { createEventDispatcher } from "svelte";
+  import { playSound } from "../../../howler";
 
   const dispatch = createEventDispatcher<{ end: Toast }>();
 
@@ -10,6 +11,8 @@
   const close = () => dispatch("end", toast);
 
   onMount(() => {
+    // if (toast.type === "warning") playSound("eventBad", "ui");
+    playSound("error", "ui");
     if (!import.meta.env.DEV) {
       setTimeout(() => {
         close();

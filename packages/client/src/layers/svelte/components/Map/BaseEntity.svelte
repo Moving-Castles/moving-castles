@@ -4,13 +4,12 @@
   import { Activity } from "../../modules/actionUpdater";
   import { cores } from "../../modules/entities";
   import { chebyshev, isAdjacent } from "../../utils/space";
-  import { items, baseEntities } from "../../modules/entities";
+  import { items, baseEntities, entities } from "../../modules/entities";
   import { playerCore } from "../../modules/player";
   import { addressToColor } from "../../utils/misc";
   import { idToBody } from "../../utils/name";
 
-  import Item from "../Items/ItemSelector.svelte";
-  import Transfer from "./TransferDialog.svelte";
+  import CoreAvatar from "../../components/Core/CoreAvatar.svelte";
   import { popUpEntities } from "../UI";
 
   export let baseEntityId: string;
@@ -20,7 +19,6 @@
   let isPlayer = false;
   let isSame = false;
   let untraversable = false;
-  let playing = false;
 
   const handleEntityClick = () => {
     if (adjacent) {
@@ -30,9 +28,7 @@
     }
   };
 
-  $: playing = Object.values($cores)
-    .filter((c) => c.carriedBy === baseEntityId)
-    .some((c) => c.commit === Activity.Play);
+  $: carryingCores = Object.entries($entities).filter(([itemId, item]) => item.carriedBy === baseEntityId && item.core);
 
   $: isPlayer = baseEntityId === $playerCore.carriedBy;
 
@@ -45,10 +41,6 @@
   $: adjacent = isAdjacent(baseEntity.position, $baseEntities[$playerCore.carriedBy].position);
 
   $: untraversable = Object.values($items).some((i) => i.carriedBy === baseEntityId && i.untraversable);
-
-  $: if (isPlayer) {
-    console.log("baseEntity.activity", baseEntity.activity);
-  }
 </script>
 
 <!-- {#if transferActive}
@@ -81,6 +73,13 @@
     <div class="shadow" />
     <img class="body" draggable="false" src={idToBody(baseEntityId)} alt="body" />
   </div>
+
+  <div class="cores-display">
+    <!-- CORES -->
+    {#each carryingCores as [address, item]}
+      <CoreAvatar {address} />
+    {/each}
+  </div>
 {/if}
 
 <style lang="scss">
@@ -95,10 +94,6 @@
     padding: 10px;
     height: 400px;
     position: relative;
-
-    // &.player.debug {
-    //   border: 1px solid red;
-    // }
 
     &.active {
       animation: color-change 0.2s infinite;
@@ -123,13 +118,21 @@
       width: 200px;
       height: 80px;
       background-color: rgba(0, 0, 0, 0.5);
-      filter: blur(20px);
+      filter: blur(10px);
       border-radius: 100%;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, 90%);
     }
+  }
+
+  .cores-display {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    padding: 40px;
+    justify-content: space-between;
   }
 
   @keyframes color-change {

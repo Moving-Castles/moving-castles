@@ -9,6 +9,7 @@
   export let itemId: string;
   export let showDialog: boolean;
   export let isOnMap = false;
+  let dialogActive = false;
 
   let info = {
     symbol: "",
@@ -23,6 +24,7 @@
   setInfo("M", "Ability: Move");
 
   const click = () => {
+    dialogActive = !dialogActive;
     if (isOnMap) {
       pickUp(itemId);
     }
@@ -40,12 +42,14 @@
   <img src={icon} alt="move" />
 </div>
 
-<Dialog bind:visible={showDialog}>
-  <div class="description">{info.description}</div>
-  {#if $playerAbilities.includes("abilityConsume")}
-    <button on:click={() => consume(itemId)}>consume</button>
-  {/if}
-</Dialog>
+{#if showDialog}
+  <Dialog bind:visible={dialogActive}>
+    <div class="description">{info.description}</div>
+    {#if $playerAbilities.includes("abilityConsume")}
+      <button on:click={() => consume(itemId)}>consume</button>
+    {/if}
+  </Dialog>
+{/if}
 
 <style lang="scss">
   .organ {
