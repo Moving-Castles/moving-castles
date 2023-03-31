@@ -147,11 +147,8 @@ library LibMap {
     fragments[0] = QueryFragment(QueryType.HasValue, positionComponent, abi.encode(_coordinates));
     uint256[] memory results = LibQuery.query(fragments);
 
-    uint256 resultsLength = results.length;
-    for (uint256 i; i < resultsLength; ++i) {
-      if (LibAbility.checkInventoryForAbility(_components, results[i], UntraversableComponentID) > 0) return true;
-    }
-
+    // All occupied tiles are untraversable
+    if (results.length > 0) return true;
     return false;
   }
 

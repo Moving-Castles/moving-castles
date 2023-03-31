@@ -53,7 +53,8 @@
         "UntraversableComponent",
         "CommitComponent",
         "PointComponent",
-        "LootComponent"
+        "LootComponent",
+        "MatterComponent"
       ]
     },
     {

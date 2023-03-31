@@ -25,6 +25,13 @@ contract PickUpSystemTest is MudTest {
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
     Coord memory initialPosition = positionComponent.getValue(baseEntity);
 
+    // Increase carrying capacity of base entity
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarryingCapacityComponentID,
+      baseEntity,
+      abi.encode(9)
+    );
+
     vm.roll(2);
 
     // Create a portable entity on same tile

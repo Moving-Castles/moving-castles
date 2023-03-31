@@ -26,6 +26,13 @@ contract TransferSystemTest is MudTest {
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
     Coord memory initialPosition = positionComponent.getValue(baseEntity);
 
+    // Increase carrying capacity of base entity
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarryingCapacityComponentID,
+      baseEntity,
+      abi.encode(9)
+    );
+
     vm.roll(2);
 
     // Create a portable
@@ -46,6 +53,13 @@ contract TransferSystemTest is MudTest {
 
     // Get bob's base entity
     uint256 bobBaseEntity = carriedByComponent.getValue(addressToEntity(bob));
+
+    // Increase carrying capacity of bob's base entity
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarryingCapacityComponentID,
+      bobBaseEntity,
+      abi.encode(9)
+    );
 
     // Move bob to same position as Alice
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(

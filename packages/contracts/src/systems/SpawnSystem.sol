@@ -18,6 +18,7 @@ import { Coord } from "../components/PositionComponent.sol";
 
 import { ID as AbilityMoveComponentID } from "../components/AbilityMoveComponent.sol";
 import { ID as AbilityConsumeComponentID } from "../components/AbilityConsumeComponent.sol";
+import { MatterComponent, ID as MatterComponentID } from "../components/MatterComponent.sol";
 
 uint256 constant ID = uint256(keccak256("system.Spawn"));
 
@@ -29,6 +30,8 @@ contract SpawnSystem is System {
 
     require(!LibCore.isSpawned(components, coreEntity), "SpawnSystem: ID already exists");
 
+    MatterComponent matterComponent = MatterComponent(getAddressById(components, MatterComponentID));
+
     GameConfig memory gameConfig = LibConfig.getGameConfig(components);
 
     LibCore.spawn(components, coreEntity);
@@ -38,13 +41,25 @@ contract SpawnSystem is System {
     LibInventory.setCarryingCapacity(components, baseEntity, gameConfig.defaultCarryingCapacity);
     LibInventory.addToInventory(components, baseEntity, coreEntity);
 
-    // Place three loot boxes in inventory
-    for (uint256 i = 0; i < 3; ++i) {
-      uint256 lootBox = world.getUniqueEntityId();
-      LibInventory.makePortable(components, lootBox);
-      LibLoot.makeSpawnLoot(components, lootBox);
-      LibInventory.addToInventory(components, baseEntity, lootBox);
-    }
+    // Place move organ in inventory
+    uint256 moveOrgan = world.getUniqueEntityId();
+    LibInventory.makePortable(components, moveOrgan);
+    matterComponent.set(moveOrgan, gameConfig.organMatter);
+    LibAbility.giveAbility(components, moveOrgan, AbilityMoveComponentID);
+    LibInventory.addToInventory(components, baseEntity, moveOrgan);
+
+    // Place consume organ in inventory
+    uint256 consumeOrgan = world.getUniqueEntityId();
+    LibInventory.makePortable(components, consumeOrgan);
+    matterComponent.set(consumeOrgan, gameConfig.organMatter);
+    LibAbility.giveAbility(components, consumeOrgan, AbilityConsumeComponentID);
+    LibInventory.addToInventory(components, baseEntity, consumeOrgan);
+
+    // Place loot box in inventory
+    uint256 lootBox = world.getUniqueEntityId();
+    LibInventory.makePortable(components, lootBox);
+    LibLoot.makeSpawnLoot(components, lootBox);
+    LibInventory.addToInventory(components, baseEntity, lootBox);
 
     // Find valid spawn position
     Coord memory spawnPosition = LibMap.getSpawnPosition(components);

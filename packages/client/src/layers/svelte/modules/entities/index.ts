@@ -23,6 +23,7 @@ export type GameConfig = {
   moveCooldown: number;
   openCost: number;
   harvestCost: number;
+  organMatter: number;
 };
 
 // Default type with all potential properties.

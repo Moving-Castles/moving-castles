@@ -33,7 +33,8 @@ contract InitSystem is System {
       playCost: 50,
       moveCooldown: 1,
       openCost: 0,
-      harvestCost: 50
+      harvestCost: 50,
+      organMatter: 30
     });
     LibConfig.setGameConfig(components, gameConfig);
 

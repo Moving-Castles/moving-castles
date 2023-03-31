@@ -11,6 +11,9 @@ import { getAddressById, addressToEntity } from "solecs/utils.sol";
 import { LibAbility } from "./LibAbility.sol";
 import { LibInventory } from "./LibInventory.sol";
 import { LibUtils } from "./LibUtils.sol";
+import { LibConfig } from "../libraries/LibConfig.sol";
+
+import { GameConfig } from "../components/GameConfigComponent.sol";
 
 import { LootComponent, ID as LootComponentID } from "../components/LootComponent.sol";
 import { MatterComponent, ID as MatterComponentID } from "../components/MatterComponent.sol";
@@ -67,13 +70,15 @@ library LibLoot {
     MatterComponent matterComponent = MatterComponent(getAddressById(_components, MatterComponentID));
     GoalComponent goalComponent = GoalComponent(getAddressById(_components, GoalComponentID));
 
+    GameConfig memory gameConfig = LibConfig.getGameConfig(_components);
+
     uint32 lootType = lootComponent.getValue(_entity);
 
     // Remove loot Component from entity
     lootComponent.remove(_entity);
 
     // Give organ matter
-    matterComponent.set(_entity, 30);
+    matterComponent.set(_entity, gameConfig.organMatter);
 
     if (lootType == 1) {
       // Normal type loot

@@ -26,22 +26,23 @@ contract ConsumeSystemTest is MudTest {
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
     Coord memory initialPosition = positionComponent.getValue(baseEntity);
 
+    // Increase carrying capacity of base entity
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarryingCapacityComponentID,
+      baseEntity,
+      abi.encode(9)
+    );
+
     vm.roll(2);
 
-    // Give baseEntity a "consume organs"
-    uint256 c1 = world.getUniqueEntityId();
-    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, c1, abi.encode(1));
-    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityConsumeComponentID, c1, abi.encode(1));
-    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(CarriedByComponentID, c1, abi.encode(baseEntity));
-
-    // Give baseEntity a "move organs"
+    // Give baseEntity an extra move organ
     uint256 m1 = world.getUniqueEntityId();
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, m1, abi.encode(1));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityMoveComponentID, m1, abi.encode(1));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(MatterComponentID, m1, abi.encode(10));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(CarriedByComponentID, m1, abi.encode(baseEntity));
 
-    // Consume it
+    // Consume the move organ
     vm.startPrank(alice);
     consumeSystem.executeTyped(m1);
     vm.stopPrank();
@@ -69,6 +70,13 @@ contract ConsumeSystemTest is MudTest {
     uint256 baseEntity = carriedByComponent.getValue(addressToEntity(alice));
     Coord memory initialPosition = positionComponent.getValue(baseEntity);
 
+    // Increase carrying capacity of base entity
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(
+      CarryingCapacityComponentID,
+      baseEntity,
+      abi.encode(9)
+    );
+
     vm.roll(2);
 
     // Create a portable entity
@@ -85,17 +93,15 @@ contract ConsumeSystemTest is MudTest {
       abi.encode(baseEntity)
     );
 
-    // Give baseEntity two more "consume organs" for a total of two
+    // Give baseEntity two more "consume organs" for a total of three
     uint256 c1 = world.getUniqueEntityId();
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, c1, abi.encode(1));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityConsumeComponentID, c1, abi.encode(1));
+    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(CarriedByComponentID, c1, abi.encode(baseEntity));
 
     uint256 c2 = world.getUniqueEntityId();
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(PortableComponentID, c2, abi.encode(1));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(AbilityConsumeComponentID, c2, abi.encode(1));
-
-    // Place in inventory
-    ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(CarriedByComponentID, c1, abi.encode(baseEntity));
     ComponentDevSystem(system(ComponentDevSystemID)).executeTyped(CarriedByComponentID, c2, abi.encode(baseEntity));
 
     // Consume substanceBlock
@@ -104,8 +110,8 @@ contract ConsumeSystemTest is MudTest {
     vm.stopPrank();
 
     // Energy should be:
-    // gameConfig.initialEnergy + (10 * (2 * 2))
+    // gameConfig.initialEnergy + (10 * (3 * 2))
     // 3 => number of consume organs
-    assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy + 40);
+    assertEq(energyComponent.getValue(addressToEntity(alice)), gameConfig.initialEnergy + 60);
   }
 }

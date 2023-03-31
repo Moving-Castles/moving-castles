@@ -17,6 +17,7 @@ export function defineGameConfigComponent(world: World) {
       moveCooldown: Type.Number,
       openCost: Type.Number,
       harvestCost: Type.Number,
+      organMatter: Type.Number
     },
     {
       id: "GameConfig",
