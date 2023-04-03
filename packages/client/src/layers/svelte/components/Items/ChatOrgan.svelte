@@ -52,7 +52,7 @@
     }
   });
 
-  const icon = $staticContent.organs.find((o) => o.label === "chat")?.images[0];
+  const icon = $staticContent.organs.find((o) => o.type === "chat")?.w400;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

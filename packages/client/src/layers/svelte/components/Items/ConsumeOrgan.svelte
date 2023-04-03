@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { t } from "../Dialog";
   import { isSpawned } from "../UI";
   import { playerAbilities } from "../../modules/player";
   import { pickUp, consume } from "../../modules/player/actions";
@@ -36,7 +35,7 @@
     // }
   };
 
-  const icon = $staticContent.organs.find((o) => o.label === "consume")?.images[0];
+  const icon = $staticContent.organs.find((o) => o.type === "consume")?.w400;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

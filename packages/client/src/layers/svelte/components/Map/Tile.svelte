@@ -89,7 +89,7 @@
     cursor: pointer;
 
     &.occupied {
-      background-image: url("/img/tiles/occupied/1.png");
+      background-image: url("/img/tiles/untraversable/1.png");
     }
 
     &:hover {

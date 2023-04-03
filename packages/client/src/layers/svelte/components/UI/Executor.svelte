@@ -8,9 +8,10 @@
     sequencerState,
     SequencerState,
   } from "../../modules/actionSequencer";
-  import { idToAvatar } from "../../utils/name";
+  import { idToAvatarIndex } from "../../utils/name";
   import { playerCore, playerAddress } from "../../modules/player";
   import { playSound } from "../../../howler";
+  import { staticContent } from "../../modules/staticContent";
 
   function toggleSequencer() {
     sequencerState.set($sequencerState);
@@ -111,7 +112,12 @@
   <div class="core-item"><progress value={$playerCore.energy} max="200" /></div>
   <!-- ENERGY NUMBER -->
   <div class="core-item">
-    <img draggable="false" class="core-avatar" src={idToAvatar($playerAddress)} alt="core" />
+    <img
+      draggable="false"
+      class="core-avatar"
+      src={$staticContent.cores[idToAvatarIndex($playerAddress)].w100}
+      alt="core"
+    />
   </div>
   <div class="connector"><div class="line" bind:this={coreConnector} /></div>
   <div class="node queue" bind:this={queueElement}>

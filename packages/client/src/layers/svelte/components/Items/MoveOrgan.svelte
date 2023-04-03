@@ -34,7 +34,7 @@
     playSound("cursor", "ui");
   };
 
-  const icon = $staticContent.organs.find((o) => o.label === "move")?.images[0];
+  const icon = $staticContent.organs.find((o) => o.type === "move")?.w400;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

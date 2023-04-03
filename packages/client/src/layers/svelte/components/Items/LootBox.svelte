@@ -23,7 +23,6 @@
 
   function open() {
     // Is this my box?
-    //
     playSound("eventGood", "ui");
     boxState = BoxState.OPENING;
     addToSequencer("system.Open", [itemId]);
@@ -47,7 +46,7 @@
     playSound("cursor", "ui");
   }
 
-  const icon = $staticContent.organs.find((o) => o.label === "lootbox")?.images[0];
+  const icon = $staticContent.organs.find((o) => o.type === "loot")?.w400;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

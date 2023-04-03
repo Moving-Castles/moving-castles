@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { t } from "../Dialog";
   import { playerAbilities, playerCore } from "../../modules/player";
   import { pickUp, consume, play } from "../../modules/player/actions";
   import { playSound } from "../../../howler";
@@ -13,7 +12,6 @@
   let dialogVisible = false;
 
   let markerEl: HTMLElement;
-  let dialogEl: HTMLElement;
 
   let info = {
     symbol: "",
@@ -35,7 +33,7 @@
     playSound("cursor", "ui");
   };
 
-  const icon = $staticContent.organs.find((o) => o.label === "play")?.images[0];
+  const icon = $staticContent.organs.find((o) => o.type === "play")?.w400;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

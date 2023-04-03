@@ -69,6 +69,11 @@ export function idToAvatar(id: string) {
   return !id ? "" : cores[parseInt(id) % cores.length];
 }
 
+export function idToAvatarIndex(id: string) {
+  const cores = get(staticContent).cores;
+  return !id ? 0 : parseInt(id) % cores.length;
+}
+
 export function idToName(id: string) {
   if (!id) return "";
 
@@ -82,7 +87,6 @@ export function idToName(id: string) {
 
   return firstName + " " + middleName
 }
-
 
 const castleFirstNames = [
   "The Castle of",
@@ -141,4 +145,11 @@ export function idToBody(id: string) {
   const trunctatedId = id.substr(id.length - 6);
   const smallBodies = get(staticContent).bodies.find((b) => b.label === "small")?.images;
   return smallBodies ? smallBodies[parseInt(trunctatedId, 16) % smallBodies.length] : "";
+}
+
+export function idToBodyIndex(id: string, size: string = "small") {
+  const trunctatedId = id.substr(id.length - 6);
+  // const smallBodies = get(staticContent).bodies.find((b) => b.size === size);
+  const bodies = get(staticContent).bodies;
+  return bodies ? parseInt(trunctatedId, 16) % bodies.length : 0;
 }

@@ -37,7 +37,7 @@
     dialogVisible = true;
   };
 
-  const icon = $staticContent.organs.find((o) => o.label === "goal")?.images[0];
+  const icon = $staticContent.organs.find((o) => o.type === "goal")?.w400;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
