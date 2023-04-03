@@ -44,10 +44,12 @@
 
 {#if showDialog}
   <Dialog bind:visible={dialogActive}>
-    <div class="description">{info.description}</div>
-    {#if $playerAbilities.includes("abilityConsume")}
-      <button on:click={() => consume(itemId)}>consume</button>
-    {/if}
+    <div class="dialog">
+      <div class="description">{info.description}</div>
+      {#if $playerAbilities.includes("abilityConsume")}
+        <button on:click={() => consume(itemId)}>consume</button>
+      {/if}
+    </div>
   </Dialog>
 {/if}
 
@@ -73,6 +75,15 @@
 
     &:hover {
       opacity: 0.9;
+    }
+  }
+
+  .dialog {
+    display: flex;
+    flex-direction: column;
+    font-size: 64px;
+    button {
+      font-size: 32px;
     }
   }
 </style>

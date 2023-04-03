@@ -115,7 +115,7 @@
     <img
       draggable="false"
       class="core-avatar"
-      src={$staticContent.cores[idToAvatarIndex($playerAddress)].w100}
+      src={$staticContent.cores[idToAvatarIndex($playerAddress)].w400}
       alt="core"
     />
   </div>
