@@ -1,46 +1,40 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-import "solecs/System.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-import { getAddressById, addressToEntity } from "solecs/utils.sol";
-
+import { System } from "@latticexyz/world/src/System.sol";
+// ...
+import { CarriedBy } from "../codegen/tables/CarriedBy.sol";
+import { AbilityConsumeTableId } from "../codegen/tables/AbilityConsume.sol";
+import { Matter } from "../codegen/tables/Matter.sol";
+import { Portable } from "../codegen/tables/Portable.sol";
+// ...
 import { LibCore } from "../libraries/LibCore.sol";
 import { LibInventory } from "../libraries/LibInventory.sol";
 import { LibConsumable } from "../libraries/LibConsumable.sol";
 import { LibAbility } from "../libraries/LibAbility.sol";
-
-import { ID as AbilityConsumeComponentID } from "../components/AbilityConsumeComponent.sol";
-
-uint256 constant ID = uint256(keccak256("system.Consume"));
+import { LibUtils } from "../libraries/LibUtils.sol";
 
 contract ConsumeSystem is System {
-  constructor(IWorld _world, address _components) System(_world, _components) {}
+  function consume(bytes32 _consumableEntity) public {
+    bytes32 coreEntity = LibUtils.addressToEntityKey(_msgSender());
 
-  function execute(bytes memory arguments) public returns (bytes memory) {
-    uint256 _consumableEntity = abi.decode(arguments, (uint256));
-    uint256 coreEntity = addressToEntity(msg.sender);
+    require(LibCore.isSpawned(coreEntity), "ConsumeSystem: entity does not exist");
+    require(LibCore.isReady(coreEntity), "ConsumeSystem: entity is in cooldown");
+    require(!LibCore.isCommitted(coreEntity), "ConsumeSystem: entity is committed");
 
-    require(LibCore.isSpawned(components, coreEntity), "ConsumeSystem: entity does not exist");
-    require(LibCore.isReady(components, coreEntity), "ConsumeSystem: entity is in cooldown");
-    require(!LibCore.isCommitted(components, coreEntity), "ConsumeSystem: entity is committed");
+    bytes32 baseEntity = CarriedBy.get(coreEntity);
 
-    uint256 baseEntity = LibInventory.getCarriedBy(components, coreEntity);
+    require(CarriedBy.get(_consumableEntity) == baseEntity, "ConsumeSystem: not carried");
 
-    require(LibInventory.isCarriedBy(components, _consumableEntity, baseEntity), "ConsumeSystem: not carried");
-
-    uint32 abilityCount = LibAbility.checkInventoryForAbility(components, baseEntity, AbilityConsumeComponentID);
+    uint32 abilityCount = LibAbility.checkInventoryForAbility(AbilityConsumeTableId, baseEntity);
     require(abilityCount > 0, "ConsumeSystem: no item with AbilityConsume");
 
-    require(LibConsumable.isConsumable(components, _consumableEntity), "ConsumeSystem: not consumable");
+    require(Matter.get(_consumableEntity) > 0, "ConsumeSystem: not consumable");
 
-    uint32 energy = LibConsumable.convertToEnergy(components, _consumableEntity, abilityCount);
-    LibCore.increaseEnergy(components, coreEntity, energy);
+    uint32 energy = LibConsumable.convertToEnergy(_consumableEntity, abilityCount);
+    LibCore.increaseEnergy(coreEntity, energy);
 
-    LibInventory.removeFromInventory(components, _consumableEntity);
-    LibConsumable.destroy(components, _consumableEntity);
-  }
-
-  function executeTyped(uint256 _consumableEntity) public returns (bytes memory) {
-    return execute(abi.encode(_consumableEntity));
+    LibInventory.removeFromInventory(_consumableEntity);
+    Matter.deleteRecord(_consumableEntity);
+    Portable.deleteRecord(_consumableEntity);
   }
 }

@@ -1,72 +1,71 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-import "solecs/System.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-
-import { LibConfig } from "../libraries/LibConfig.sol";
-import { LibMap } from "../libraries/LibMap.sol";
-import { LibMove } from "../libraries/LibMove.sol";
-import { LibAbility } from "../libraries/LibAbility.sol";
-import { LibInventory } from "../libraries/LibInventory.sol";
-import { LibLoot } from "../libraries/LibLoot.sol";
-
-import { Coord } from "../components/PositionComponent.sol";
-import { GameConfig } from "../components/GameConfigComponent.sol";
-
-uint256 constant ID = uint256(keccak256("system.Init"));
+import { System } from "@latticexyz/world/src/System.sol";
+import { GameConfig, GameConfigData } from "../codegen/tables/GameConfig.sol";
+import { Position, PositionData } from "../codegen/tables/Position.sol";
+import { Untraversable } from "../codegen/tables/Untraversable.sol";
+import { Portable } from "../codegen/tables/Portable.sol";
+import { Loot } from "../codegen/tables/Loot.sol";
+import { LibUtils } from "../libraries/LibUtils.sol";
 
 contract InitSystem is System {
-  constructor(IWorld _world, address _components) System(_world, _components) {}
+  function init() public {
+    require(GameConfig.getWorldHeight() == 0, "InitSystem: already initialized");
 
-  function execute(bytes memory arguments) public returns (bytes memory) {
-    require(!LibConfig.isInitialized(components), "InitSystem: already initialized");
+    GameConfig.set(
+      GameConfigData({
+        worldHeight: 10,
+        worldWidth: 10,
+        initialEnergy: 100,
+        defaultCarryingCapacity: 4,
+        moveCost: 10,
+        pickUpCost: 5,
+        dropCost: 5,
+        transferCost: 5,
+        playCost: 50,
+        moveCooldown: 1,
+        openCost: 0,
+        harvestCost: 50,
+        organMatter: 30
+      })
+    );
 
-    GameConfig memory gameConfig = GameConfig({
-      worldHeight: 10,
-      worldWidth: 10,
-      initialEnergy: 100,
-      defaultCarryingCapacity: 4,
-      moveCost: 10,
-      pickUpCost: 5,
-      dropCost: 5,
-      transferCost: 5,
-      playCost: 50,
-      moveCooldown: 1,
-      openCost: 0,
-      harvestCost: 50,
-      organMatter: 30
-    });
-    LibConfig.setGameConfig(components, gameConfig);
+    // PositionData[6] memory untraversableTiles = [
+    //   PositionData(4, 0),
+    //   PositionData(4, 2),
+    //   PositionData(4, 3),
+    //   PositionData(4, 5),
+    //   PositionData(4, 6),
+    //   PositionData(4, 9)
+    // ];
 
-    Coord[6] memory untraversableTiles = [Coord(4, 0), Coord(4, 2), Coord(4, 3), Coord(4, 5), Coord(4, 6), Coord(4, 9)];
+    // for (uint256 i = 0; i < untraversableTiles.length; ++i) {
+    //   bytes32 untraversableEntity = LibUtils.getRandomKey();
+    //   Portable.set(untraversableEntity, true);
+    //   Untraversable.set(untraversableEntity, true);
+    //   Position.set(untraversableEntity, untraversableTiles[i]);
+    // }
 
-    for (uint256 i = 0; i < untraversableTiles.length; ++i) {
-      LibMap.createUntraversable(world, components, untraversableTiles[i]);
-    }
+    // PositionData[11] memory lootBoxTiles = [
+    //   PositionData(4, 7),
+    //   PositionData(4, 8),
+    //   PositionData(2, 0),
+    //   PositionData(2, 4),
+    //   PositionData(3, 7),
+    //   PositionData(6, 7),
+    //   PositionData(7, 6),
+    //   PositionData(8, 6),
+    //   PositionData(3, 3),
+    //   PositionData(3, 4),
+    //   PositionData(2, 3)
+    // ];
 
-    Coord[11] memory lootBoxTiles = [
-      Coord(4, 7),
-      Coord(4, 8),
-      Coord(2, 0),
-      Coord(2, 4),
-      Coord(3, 7),
-      Coord(6, 7),
-      Coord(7, 6),
-      Coord(8, 6),
-      Coord(3, 3),
-      Coord(3, 4),
-      Coord(2, 3)
-    ];
-
-    for (uint256 i = 0; i < lootBoxTiles.length; ++i) {
-      uint256 lootBox = world.getUniqueEntityId();
-      LibInventory.makePortable(components, lootBox);
-      LibLoot.makeNormalLoot(components, lootBox);
-      LibMove.setPosition(components, lootBox, lootBoxTiles[i]);
-    }
-  }
-
-  function executeTyped() public returns (bytes memory) {
-    return execute(abi.encode());
+    // for (uint256 i = 0; i < lootBoxTiles.length; ++i) {
+    //   bytes32 lootBox = LibUtils.getRandomKey();
+    //   Portable.set(lootBox, true);
+    //   // 1 == normal loot box
+    //   Loot.set(lootBox, 1);
+    //   Position.set(lootBox, lootBoxTiles[i]);
+    // }
   }
 }

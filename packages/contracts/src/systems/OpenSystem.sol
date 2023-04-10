@@ -1,44 +1,33 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-import "solecs/System.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-import { getAddressById, addressToEntity } from "solecs/utils.sol";
-
+import { System } from "@latticexyz/world/src/System.sol";
+// ...
+import { GameConfig, GameConfigData } from "../codegen/tables/GameConfig.sol";
+import { CarriedBy } from "../codegen/tables/CarriedBy.sol";
+import { Loot } from "../codegen/tables/Loot.sol";
+// ...
 import { LibCore } from "../libraries/LibCore.sol";
 import { LibLoot } from "../libraries/LibLoot.sol";
-import { LibInventory } from "../libraries/LibInventory.sol";
-import { LibConfig } from "../libraries/LibConfig.sol";
-
-import { GameConfig } from "../components/GameConfigComponent.sol";
-
-uint256 constant ID = uint256(keccak256("system.Open"));
+import { LibUtils } from "../libraries/LibUtils.sol";
 
 contract OpenSystem is System {
-  constructor(IWorld _world, address _components) System(_world, _components) {}
+  function open(bytes32 _lootEntity) public {
+    bytes32 coreEntity = LibUtils.addressToEntityKey(_msgSender());
 
-  function execute(bytes memory arguments) public returns (bytes memory) {
-    uint256 _lootEntity = abi.decode(arguments, (uint256));
-    uint256 coreEntity = addressToEntity(msg.sender);
+    GameConfigData memory gameConfig = GameConfig.get();
 
-    GameConfig memory gameConfig = LibConfig.getGameConfig(components);
+    require(LibCore.isSpawned(coreEntity), "OpenSystem: entity does not exist");
+    require(LibCore.isReady(coreEntity), "OpenSystem: entity is in cooldown");
+    require(!LibCore.isCommitted(coreEntity), "OpenSystem: entity is committed");
+    require(LibCore.checkEnergy(coreEntity, gameConfig.openCost), "OpenSystem: not enough energy");
 
-    require(LibCore.isSpawned(components, coreEntity), "OpenSystem: entity does not exist");
-    require(LibCore.isReady(components, coreEntity), "OpenSystem: entity is in cooldown");
-    require(!LibCore.isCommitted(components, coreEntity), "OpenSystem: entity is committed");
-    require(LibCore.checkEnergy(components, coreEntity, gameConfig.openCost), "OpenSystem: not enough energy");
+    bytes32 baseEntity = CarriedBy.get(coreEntity);
+    require(CarriedBy.get(_lootEntity) == baseEntity, "OpenSystem: not carried");
 
-    uint256 baseEntity = LibInventory.getCarriedBy(components, coreEntity);
+    require(Loot.get(_lootEntity) > 0, "OpenSystem: not loot");
 
-    require(LibInventory.isCarriedBy(components, _lootEntity, baseEntity), "OpenSystem: not carried");
+    LibLoot.open(_lootEntity);
 
-    require(LibLoot.isLoot(components, _lootEntity), "OpenSystem: not loot");
-
-    LibLoot.openLoot(components, _lootEntity);
-
-    LibCore.decreaseEnergy(components, coreEntity, gameConfig.openCost);
-  }
-
-  function executeTyped(uint256 _lootEntity) public returns (bytes memory) {
-    return execute(abi.encode(_lootEntity));
+    LibCore.decreaseEnergy(coreEntity, gameConfig.openCost);
   }
 }

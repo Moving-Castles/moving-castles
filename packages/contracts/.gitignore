@@ -8,6 +8,9 @@ deployments
 abi/
 types/
 broadcast/
-src/libraries/LibDeploy.sol
-src/libraries/test/LibDeploy.sol
 .DS_Store
+
+# Ignore all deploy artifacts
+deploys/**/*.json
+# Except the latest ones (so we can load these into client)
+!deploys/**/latest.json

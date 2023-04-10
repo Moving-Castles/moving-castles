@@ -1,52 +1,46 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-
-import "solecs/System.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-import { getAddressById, addressToEntity } from "solecs/utils.sol";
-
-import { LibMove } from "../libraries/LibMove.sol";
+import { System } from "@latticexyz/world/src/System.sol";
+// ...
+import { GameConfig, GameConfigData } from "../codegen/tables/GameConfig.sol";
+import { CarriedBy } from "../codegen/tables/CarriedBy.sol";
+import { Position, PositionData } from "../codegen/tables/Position.sol";
+import { AbilityMoveTableId } from "../codegen/tables/AbilityMove.sol";
+// ...
 import { LibCore } from "../libraries/LibCore.sol";
-import { LibInventory } from "../libraries/LibInventory.sol";
+import { LibMap } from "../libraries/LibMap.sol";
 import { LibAbility } from "../libraries/LibAbility.sol";
-import { LibConfig } from "../libraries/LibConfig.sol";
-
-import { GameConfig } from "../components/GameConfigComponent.sol";
-import { ID as AbilityMoveComponentID } from "../components/AbilityMoveComponent.sol";
-
-import { Coord } from "../components/PositionComponent.sol";
-
-uint256 constant ID = uint256(keccak256("system.Move"));
+import { LibUtils } from "../libraries/LibUtils.sol";
 
 contract MoveSystem is System {
-  constructor(IWorld _world, address _components) System(_world, _components) {}
+  // function move(PositionData memory _targetPosition) public {
+  function move(int32 x, int32 y) public {
+    bytes32 coreEntity = LibUtils.addressToEntityKey(_msgSender());
+    PositionData memory _targetPosition = PositionData(x, y);
 
-  function execute(bytes memory arguments) public returns (bytes memory) {
-    Coord memory _targetPosition = abi.decode(arguments, (Coord));
-    uint256 coreEntity = addressToEntity(msg.sender);
+    GameConfigData memory gameConfig = GameConfig.get();
 
-    GameConfig memory gameConfig = LibConfig.getGameConfig(components);
+    require(LibCore.isSpawned(coreEntity), "MoveSystem: entity does not exist");
+    require(LibCore.isReady(coreEntity), "MoveSystem: entity is in cooldown");
+    require(!LibCore.isCommitted(coreEntity), "MoveSystem: entity is committed");
+    // // @todo: calculate energy discount
+    require(LibCore.checkEnergy(coreEntity, gameConfig.moveCost), "MoveSystem: not enough energy");
 
-    require(LibCore.isSpawned(components, coreEntity), "MoveSystem: entity does not exist");
-    require(LibCore.isReady(components, coreEntity), "MoveSystem: entity is in cooldown");
-    require(!LibCore.isCommitted(components, coreEntity), "MoveSystem: entity is committed");
-    require(LibCore.checkEnergy(components, coreEntity, gameConfig.moveCost), "MoveSystem: not enough energy");
+    bytes32 baseEntity = CarriedBy.get(coreEntity);
 
-    uint256 baseEntity = LibInventory.getCarriedBy(components, coreEntity);
-
-    uint32 abilityCount = LibAbility.checkInventoryForAbility(components, baseEntity, AbilityMoveComponentID);
+    uint32 abilityCount = LibAbility.checkInventoryForAbility(AbilityMoveTableId, baseEntity);
     require(abilityCount > 0, "MoveSystem: no item with AbilityMove");
 
-    LibMove.step(components, baseEntity, _targetPosition);
+    PositionData memory currentPosition = Position.get(baseEntity);
+    require(LibMap.isWithinBounds(_targetPosition), "MoveSystem: out of bounds");
+    require(LibMap.isAdjacent(currentPosition, _targetPosition), "MoveSystem: not adjacent");
+    require(!LibMap.isUntraversable(_targetPosition), "MoveSystem: untraversable");
+    Position.set(baseEntity, _targetPosition);
 
     // Apply discount if entity has more than one "movement organ"
     uint32 calculatedMoveCost = gameConfig.moveCost - (2 * (abilityCount - 1));
 
-    LibCore.decreaseEnergy(components, coreEntity, calculatedMoveCost);
-    LibCore.setReadyBlock(components, coreEntity, gameConfig.moveCooldown);
-  }
-
-  function executeTyped(Coord memory _targetPosition) public returns (bytes memory) {
-    return execute(abi.encode(_targetPosition));
+    LibCore.decreaseEnergy(coreEntity, calculatedMoveCost);
+    LibCore.setReadyBlock(coreEntity, gameConfig.moveCooldown);
   }
 }
