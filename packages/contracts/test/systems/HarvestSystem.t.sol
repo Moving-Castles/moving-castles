@@ -39,8 +39,8 @@ contract HarvestSystemTest is MudV2Test {
     world.moving_castles_HarvestSystem_harvest();
     vm.stopPrank();
 
-    // Should be 200 !!!
-    assertEq(Point.get(world, coreEntity), 40);
+    // Should be 200 points
+    assertEq(Point.get(world, coreEntity), 200);
 
     // Core energy should be INITIAL_ENERGY - HARVEST_COST
     assertEq(Energy.get(world, coreEntity), gameConfig.initialEnergy - gameConfig.harvestCost);
@@ -94,7 +94,7 @@ contract HarvestSystemTest is MudV2Test {
 
     // As there are three cores in the base entity
     // the points for each core should be:
-    // (!!!) 200 / 3 = 66,6666... = 66 !!!
+    //  200 / 3 = 66,6666... = 66
     assertEq(Point.get(world, coreEntity), 66);
     assertEq(Point.get(world, LibUtils.addressToEntityKey(bob)), 66);
     assertEq(Point.get(world, LibUtils.addressToEntityKey(eve)), 66);

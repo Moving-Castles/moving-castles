@@ -172,7 +172,22 @@ library LibCore {
    */
   function getCoresByBaseEntity(bytes32 _baseEntity) internal view returns (bytes32[] memory) {
     bytes32[] memory inventory = LibInventory.getInventory(_baseEntity);
-    // !!! TODO
-    return inventory;
+
+    uint256 coreCount;
+    bytes32[] memory coresInInventory = new bytes32[](inventory.length);
+    for (uint256 i; i < inventory.length; i++) {
+      if (Core.get(inventory[i])) {
+        coresInInventory[coreCount] = inventory[i];
+        ++coreCount;
+      }
+    }
+
+    // Based on:
+    // https://ethereum.stackexchange.com/questions/46761/how-to-fill-dynamic-in-memory-array
+    bytes32[] memory trimmedResult = new bytes32[](coreCount);
+    for (uint256 j; j < trimmedResult.length; j++) {
+      trimmedResult[j] = coresInInventory[j];
+    }
+    return trimmedResult;
   }
 }
