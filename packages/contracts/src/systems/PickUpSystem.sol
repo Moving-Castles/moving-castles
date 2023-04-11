@@ -1,49 +1,37 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-import "solecs/System.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-import { getAddressById, addressToEntity } from "solecs/utils.sol";
-
-import { LibMove } from "../libraries/LibMove.sol";
+import { System } from "@latticexyz/world/src/System.sol";
+// ...
+import { Position, PositionData } from "../codegen/tables/Position.sol";
+import { CarriedBy } from "../codegen/tables/CarriedBy.sol";
+import { GameConfig, GameConfigData } from "../codegen/tables/GameConfig.sol";
+// ...
 import { LibCore } from "../libraries/LibCore.sol";
 import { LibMap } from "../libraries/LibMap.sol";
 import { LibInventory } from "../libraries/LibInventory.sol";
-import { LibConfig } from "../libraries/LibConfig.sol";
-
-import { GameConfig } from "../components/GameConfigComponent.sol";
-import { Coord } from "../components/PositionComponent.sol";
-
-uint256 constant ID = uint256(keccak256("system.PickUp"));
+import { LibUtils } from "../libraries/LibUtils.sol";
 
 contract PickUpSystem is System {
-  constructor(IWorld _world, address _components) System(_world, _components) {}
+  function pickUp(bytes32 _portableEntity) public {
+    bytes32 coreEntity = LibUtils.addressToEntityKey(_msgSender());
 
-  function execute(bytes memory arguments) public returns (bytes memory) {
-    uint256 _portableEntity = abi.decode(arguments, (uint256));
-    uint256 coreEntity = addressToEntity(msg.sender);
+    GameConfigData memory gameConfig = GameConfig.get();
 
-    GameConfig memory gameConfig = LibConfig.getGameConfig(components);
+    require(LibCore.isSpawned(coreEntity), "PickUpSystem: entity does not exist");
+    require(LibCore.isReady(coreEntity), "PickUpSystem: entity is in cooldown");
+    require(!LibCore.isCommitted(coreEntity), "PickUpSystem: entity is committed");
+    require(LibCore.checkEnergy(coreEntity, gameConfig.pickUpCost), "PickUpSystem: not enough energy");
 
-    require(LibCore.isSpawned(components, coreEntity), "PickUpSystem: entity does not exist");
-    require(LibCore.isReady(components, coreEntity), "PickUpSystem: entity is in cooldown");
-    require(!LibCore.isCommitted(components, coreEntity), "PickUpSystem: entity is committed");
-    require(LibCore.checkEnergy(components, coreEntity, gameConfig.pickUpCost), "PickUpSystem: not enough energy");
+    require(LibInventory.isPortable(_portableEntity), "PickUpSystem: entity is not portable");
 
-    require(LibInventory.isPortable(components, _portableEntity), "PickUpSystem: entity is not portable");
+    bytes32 baseEntity = CarriedBy.get(coreEntity);
+    PositionData memory baseEntityPosition = Position.get(baseEntity);
 
-    uint256 baseEntity = LibInventory.getCarriedBy(components, coreEntity);
-    Coord memory baseEntityPosition = LibMove.getPosition(components, baseEntity);
-
-    Coord memory portableEntityPosition = LibMove.getPosition(components, _portableEntity);
+    PositionData memory portableEntityPosition = Position.get(_portableEntity);
     require(LibMap.isAdjacent(baseEntityPosition, portableEntityPosition), "PickUpSystem: tile not adjacent");
 
-    LibMove.removePosition(components, _portableEntity);
-    LibInventory.addToInventory(components, baseEntity, _portableEntity);
-
-    LibCore.decreaseEnergy(components, coreEntity, gameConfig.pickUpCost);
-  }
-
-  function executeTyped(uint256 _portableEntity) public returns (bytes memory) {
-    return execute(abi.encode(_portableEntity));
+    Position.deleteRecord(_portableEntity);
+    LibInventory.addToInventory(baseEntity, _portableEntity);
+    LibCore.decreaseEnergy(coreEntity, gameConfig.pickUpCost);
   }
 }

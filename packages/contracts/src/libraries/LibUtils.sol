@@ -1,12 +1,5 @@
-// SPDX-License-Identifier: Unlicense
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-
-import { QueryFragment, QueryType } from "solecs/interfaces/Query.sol";
-import { LibQuery } from "solecs/LibQuery.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-
-import { IUint256Component } from "solecs/interfaces/IUint256Component.sol";
-import { getAddressById, addressToEntity } from "solecs/utils.sol";
 
 library LibUtils {
   /**
@@ -39,5 +32,18 @@ library LibUtils {
    */
   function abs(int32 x) internal pure returns (int32) {
     return x >= 0 ? x : -x;
+  }
+
+  /**
+   * @dev Conversion from address to bytes32
+   */
+  function addressToEntityKey(address _address) internal pure returns (bytes32 key) {
+    // ?? => bytes32(uint256(uint160(_address)) << 96)
+    return bytes32(uint256(uint160(_address)));
+  }
+
+  function getRandomKey() internal view returns (bytes32 key) {
+    // return keccak256(abi.encode(block.difficulty));
+    return keccak256(abi.encode(block.number, msg.sender, gasleft()));
   }
 }

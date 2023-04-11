@@ -5,7 +5,14 @@ optimizer = true
 optimizer_runs = 1000000
 verbosity = 1
 libs = ["../../node_modules", "../../../mud"]
-include_paths = ["../../node_modules"]
 src = "src"
+test = "test"
 out = "out"
-gas_reports = ["*"]
+extra_output_files = [
+  "abi",
+  "evm.bytecode"
+]
+fs_permissions = [{ access = "read", path = "./"}]
+
+[profile.lattice-testnet]
+eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"

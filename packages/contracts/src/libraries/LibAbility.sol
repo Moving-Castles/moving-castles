@@ -1,76 +1,34 @@
-// SPDX-License-Identifier: Unlicense
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-
-import { QueryFragment, QueryType } from "solecs/interfaces/Query.sol";
-import { LibQuery } from "solecs/LibQuery.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-import { IComponent } from "solecs/interfaces/IComponent.sol";
-
-import { IUint256Component } from "solecs/interfaces/IUint256Component.sol";
-import { getComponentById, getAddressById, addressToEntity } from "solecs/utils.sol";
-
+import { console } from "forge-std/console.sol";
 import { LibInventory } from "../libraries/LibInventory.sol";
+import { Ability } from "../codegen/tables/Ability.sol";
 
 library LibAbility {
   /**
-   * Give ability
-   *
-   * @param _components World components
-   * @param _entity Entity
-   * @param _componentId AbilityComponent
-   */
-  function giveAbility(IUint256Component _components, uint256 _entity, uint256 _componentId) internal {
-    IComponent abilityComponent = getComponentById(_components, _componentId);
-    abilityComponent.set(_entity, abi.encode(1));
-  }
-
-  /**
-   * Remove ability
-   *
-   * @param _components World components
-   * @param _entity Entity
-   * @param _componentId AbilityComponent
-   */
-  function removeAbility(IUint256Component _components, uint256 _entity, uint256 _componentId) internal {
-    IComponent abilityComponent = getComponentById(_components, _componentId);
-    abilityComponent.remove(_entity);
-  }
-
-  /**
    * Check entity for ability
    *
-   * @param _components World components
    * @param _entity Entity
-   * @param _componentId AbilityComponent
-   * @return
+   * @param _tableId Ability table ID
+   * @return result
    */
-  function checkEntityForAbility(
-    IUint256Component _components,
-    uint256 _entity,
-    uint256 _componentId
-  ) internal view returns (bool) {
-    IComponent abilityComponent = getComponentById(_components, _componentId);
-    return abilityComponent.has(_entity);
+  function checkEntityForAbility(uint256 _tableId, bytes32 _entity) internal view returns (bool result) {
+    return Ability.get(_tableId, _entity);
   }
 
   /**
    * Get the number of entities in inventory with the ability
    *
-   * @param _components World components
    * @param _baseEntity Base Entity
-   * @param _componentId AbilityComponent
-   * @return number the number of entities in the inventory with this ability
+   * @param _tableId Ability table ID
+   * @return result the number of entities in the inventory with this ability
    */
-  function checkInventoryForAbility(
-    IUint256Component _components,
-    uint256 _baseEntity,
-    uint256 _componentId
-  ) internal view returns (uint32) {
-    uint256[] memory inventory = LibInventory.getInventory(_components, _baseEntity);
+  function checkInventoryForAbility(uint256 _tableId, bytes32 _baseEntity) internal view returns (uint32 result) {
+    bytes32[] memory inventory = LibInventory.getInventory(_baseEntity);
     uint32 count;
     uint256 inventoryLength = inventory.length;
     for (uint256 i; i < inventoryLength; ++i) {
-      if (checkEntityForAbility(_components, inventory[i], _componentId)) {
+      if (checkEntityForAbility(_tableId, inventory[i])) {
         unchecked {
           ++count;
         }

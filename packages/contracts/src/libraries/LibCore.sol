@@ -1,105 +1,73 @@
-// SPDX-License-Identifier: Unlicense
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-
-import { QueryFragment, QueryType } from "solecs/interfaces/Query.sol";
-import { LibQuery } from "solecs/LibQuery.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-
-import { IUint256Component } from "solecs/interfaces/IUint256Component.sol";
-import { getAddressById, addressToEntity } from "solecs/utils.sol";
-
-import { LibConfig } from "../libraries/LibConfig.sol";
-import { GameConfig } from "../components/GameConfigComponent.sol";
-
-import { CoreComponent, ID as CoreComponentID } from "../components/CoreComponent.sol";
-import { CreationBlockComponent, ID as CreationBlockComponentID } from "../components/CreationBlockComponent.sol";
-import { ReadyBlockComponent, ID as ReadyBlockComponentID } from "../components/ReadyBlockComponent.sol";
-import { EnergyComponent, ID as EnergyComponentID } from "../components/EnergyComponent.sol";
-import { PortableComponent, ID as PortableComponentID } from "../components/PortableComponent.sol";
-import { CarriedByComponent, ID as CarriedByComponentID } from "../components/CarriedByComponent.sol";
-import { CommitComponent, ID as CommitComponentID } from "../components/CommitComponent.sol";
-import { PointComponent, ID as PointComponentID } from "../components/PointComponent.sol";
-
+import { GameConfig, GameConfigData } from "../codegen/tables/GameConfig.sol";
+import { Core } from "../codegen/tables/Core.sol";
+import { CreationBlock } from "../codegen/tables/CreationBlock.sol";
+import { ReadyBlock } from "../codegen/tables/ReadyBlock.sol";
+import { Energy } from "../codegen/tables/Energy.sol";
+import { Portable } from "../codegen/tables/Portable.sol";
+import { CarriedBy } from "../codegen/tables/CarriedBy.sol";
+import { Commit } from "../codegen/tables/Commit.sol";
+import { Point } from "../codegen/tables/Point.sol";
+import { Commit } from "../codegen/tables/Commit.sol";
+import { LibInventory } from "../libraries/LibInventory.sol";
 import { Activity } from "../utils/constants.sol";
 
 library LibCore {
   /**
    * Spawn a Core
    *
-   * @param _components World components
    * @param _coreEntity Entity Id. Should be address of the owner/controller of the Core
    */
-  function spawn(IUint256Component _components, uint256 _coreEntity) internal {
-    CoreComponent coreComponent = CoreComponent(getAddressById(_components, CoreComponentID));
-    ReadyBlockComponent readyBlockComponent = ReadyBlockComponent(getAddressById(_components, ReadyBlockComponentID));
-    EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
-    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
-    PortableComponent portableComponent = PortableComponent(getAddressById(_components, PortableComponentID));
-    CreationBlockComponent creationBlockComponent = CreationBlockComponent(
-      getAddressById(_components, CreationBlockComponentID)
-    );
-
-    GameConfig memory gameConfig = LibConfig.getGameConfig(_components);
-
-    coreComponent.set(_coreEntity);
-    creationBlockComponent.set(_coreEntity, block.number);
-    readyBlockComponent.set(_coreEntity, block.number);
-    energyComponent.set(_coreEntity, gameConfig.initialEnergy);
-    pointComponent.set(_coreEntity, 0);
-    portableComponent.set(_coreEntity);
+  function spawn(bytes32 _coreEntity) internal {
+    GameConfigData memory gameConfig = GameConfig.get();
+    Core.set(_coreEntity, true);
+    CreationBlock.set(_coreEntity, block.number);
+    ReadyBlock.set(_coreEntity, block.number);
+    Energy.set(_coreEntity, gameConfig.initialEnergy);
+    Point.set(_coreEntity, 0);
+    Portable.set(_coreEntity, true);
   }
 
   /**
    * Checks if a core with this id exists
    *
-   * @param _components world components
    * @param _coreEntity core entity Id
-   * @return bool does core with this Id exist?
+   * @return bool does a core with this Id exist?
    */
-  function isSpawned(IUint256Component _components, uint256 _coreEntity) internal view returns (bool) {
-    CoreComponent coreComponent = CoreComponent(getAddressById(_components, CoreComponentID));
-    return coreComponent.has(_coreEntity);
+  function isSpawned(bytes32 _coreEntity) internal view returns (bool) {
+    return Core.get(_coreEntity);
   }
 
   /**
    * Set the ready block for entity
    *
-   * @param _components World components
    * @param _entity Entity
    * @param _period How many block to add
    */
-  function setReadyBlock(IUint256Component _components, uint256 _entity, uint256 _period) internal {
-    ReadyBlockComponent readyBlockComponent = ReadyBlockComponent(getAddressById(_components, ReadyBlockComponentID));
-    readyBlockComponent.set(_entity, block.number + _period);
+  function setReadyBlock(bytes32 _entity, uint256 _period) internal {
+    ReadyBlock.set(_entity, block.number + _period);
   }
 
   /**
    * Check if the entity's cooldown period is over
    *
-   * @param _components World components
    * @param _entity Entity
    * @return bool is the cooldown period over?
    */
-  function isReady(IUint256Component _components, uint256 _entity) internal view returns (bool) {
-    ReadyBlockComponent readyBlockComponent = ReadyBlockComponent(getAddressById(_components, ReadyBlockComponentID));
-    return readyBlockComponent.getValue(_entity) >= block.number ? false : true;
+  function isReady(bytes32 _entity) internal view returns (bool) {
+    return ReadyBlock.get(_entity) >= block.number ? false : true;
   }
 
   /**
    * Check energy
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @param _amount Amount to check against
    * @return bool False if the core does not have enough energy
    */
-  function checkEnergy(
-    IUint256Component _components,
-    uint256 _coreEntity,
-    uint32 _amount
-  ) internal view returns (bool) {
-    EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
-    uint32 currentEnergy = energyComponent.getValue(_coreEntity);
+  function checkEnergy(bytes32 _coreEntity, uint32 _amount) internal view returns (bool) {
+    uint32 currentEnergy = Energy.get(_coreEntity);
     if (currentEnergy < _amount) return false;
     return true;
   }
@@ -107,82 +75,66 @@ library LibCore {
   /**
    * Decrease energy
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @param _amount Amount to decrease by
    * @return bool False if the core does not have enough energy
    */
-  function decreaseEnergy(IUint256Component _components, uint256 _coreEntity, uint32 _amount) internal returns (bool) {
-    EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
-    uint32 currentEnergy = energyComponent.getValue(_coreEntity);
+  function decreaseEnergy(bytes32 _coreEntity, uint32 _amount) internal returns (bool) {
+    uint32 currentEnergy = Energy.get(_coreEntity);
     if (currentEnergy < _amount) return false;
-    energyComponent.set(_coreEntity, currentEnergy - _amount);
+    Energy.set(_coreEntity, currentEnergy - _amount);
     return true;
   }
 
   /**
    * Increase energy
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @param _amount Amount to increase by
    */
-  function increaseEnergy(IUint256Component _components, uint256 _coreEntity, uint32 _amount) internal {
-    EnergyComponent energyComponent = EnergyComponent(getAddressById(_components, EnergyComponentID));
-    uint32 currentEnergy = energyComponent.getValue(_coreEntity);
-    energyComponent.set(_coreEntity, currentEnergy + _amount);
+  function increaseEnergy(bytes32 _coreEntity, uint32 _amount) internal {
+    uint32 currentEnergy = Energy.get(_coreEntity);
+    Energy.set(_coreEntity, currentEnergy + _amount);
   }
 
   /**
    * Commit to activity
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @param _activity Activity
    */
-  function commit(IUint256Component _components, uint256 _coreEntity, Activity _activity) internal {
-    CommitComponent commitComponent = CommitComponent(getAddressById(_components, CommitComponentID));
-    commitComponent.set(_coreEntity, uint32(_activity));
+  function commit(bytes32 _coreEntity, Activity _activity) internal {
+    Commit.set(_coreEntity, uint32(_activity));
   }
 
   /**
    * Uncommit from activity
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    */
-  function uncommit(IUint256Component _components, uint256 _coreEntity) internal {
-    CommitComponent commitComponent = CommitComponent(getAddressById(_components, CommitComponentID));
-    commitComponent.remove(_coreEntity);
+  function uncommit(bytes32 _coreEntity) internal {
+    Commit.deleteRecord(_coreEntity);
   }
 
   /**
    * Check if committed
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @return bool is the core committed to something?
    */
-  function isCommitted(IUint256Component _components, uint256 _coreEntity) internal view returns (bool) {
-    CommitComponent commitComponent = CommitComponent(getAddressById(_components, CommitComponentID));
-    return commitComponent.has(_coreEntity);
+  function isCommitted(bytes32 _coreEntity) internal view returns (bool) {
+    return Commit.get(_coreEntity) > 0;
   }
 
   /**
    * Check point
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @param _amount Amount to check against
    * @return bool False if the core does not have enough energy
    */
-  function checkPoint(
-    IUint256Component _components,
-    uint256 _coreEntity,
-    uint256 _amount
-  ) internal view returns (bool) {
-    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
-    uint256 currentPoint = pointComponent.getValue(_coreEntity);
+  function checkPoint(bytes32 _coreEntity, uint256 _amount) internal view returns (bool) {
+    uint256 currentPoint = Point.get(_coreEntity);
     if (currentPoint < _amount) return false;
     return true;
   }
@@ -190,52 +142,52 @@ library LibCore {
   /**
    * Decrease point
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @param _amount Amount to decrease by
    * @return bool False if the core does not have enough energy
    */
-  function decreasePoint(IUint256Component _components, uint256 _coreEntity, uint256 _amount) internal returns (bool) {
-    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
-    uint256 currentPoint = pointComponent.getValue(_coreEntity);
+  function decreasePoint(bytes32 _coreEntity, uint256 _amount) internal returns (bool) {
+    uint256 currentPoint = Point.get(_coreEntity);
     if (currentPoint < _amount) return false;
-    pointComponent.set(_coreEntity, currentPoint - _amount);
+    Point.set(_coreEntity, currentPoint - _amount);
     return true;
   }
 
   /**
    * Increase point
    *
-   * @param _components World components
    * @param _coreEntity Core entity
    * @param _amount Amount to increase by
    */
-  function increasePoint(IUint256Component _components, uint256 _coreEntity, uint256 _amount) internal {
-    PointComponent pointComponent = PointComponent(getAddressById(_components, PointComponentID));
-    uint256 currentPoint = pointComponent.getValue(_coreEntity);
-    pointComponent.set(_coreEntity, currentPoint + _amount);
+  function increasePoint(bytes32 _coreEntity, uint256 _amount) internal {
+    uint256 currentPoint = Point.get(_coreEntity);
+    Point.set(_coreEntity, currentPoint + _amount);
   }
-
-  // uint256[] memory cores = LibCore.getCoresByBaseEntity(components, baseEntity);
 
   /**
    * Get cores by base entity
    *
-   * @param _components world components
    * @param _baseEntity base entity
    * @return array cores in inventory of base entity
    */
-  function getCoresByBaseEntity(
-    IUint256Component _components,
-    uint256 _baseEntity
-  ) internal view returns (uint256[] memory) {
-    CarriedByComponent carriedByComponent = CarriedByComponent(getAddressById(_components, CarriedByComponentID));
-    CoreComponent coreComponent = CoreComponent(getAddressById(_components, CoreComponentID));
+  function getCoresByBaseEntity(bytes32 _baseEntity) internal view returns (bytes32[] memory) {
+    bytes32[] memory inventory = LibInventory.getInventory(_baseEntity);
 
-    QueryFragment[] memory fragments = new QueryFragment[](2);
-    fragments[0] = QueryFragment(QueryType.HasValue, carriedByComponent, abi.encode(_baseEntity));
-    fragments[1] = QueryFragment(QueryType.Has, coreComponent, abi.encode(1));
+    uint256 coreCount;
+    bytes32[] memory coresInInventory = new bytes32[](inventory.length);
+    for (uint256 i; i < inventory.length; i++) {
+      if (Core.get(inventory[i])) {
+        coresInInventory[coreCount] = inventory[i];
+        ++coreCount;
+      }
+    }
 
-    return LibQuery.query(fragments);
+    // Based on:
+    // https://ethereum.stackexchange.com/questions/46761/how-to-fill-dynamic-in-memory-array
+    bytes32[] memory trimmedResult = new bytes32[](coreCount);
+    for (uint256 j; j < trimmedResult.length; j++) {
+      trimmedResult[j] = coresInInventory[j];
+    }
+    return trimmedResult;
   }
 }

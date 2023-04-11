@@ -1,13 +1,14 @@
 {
   "solidity.remappings": [
+    "ds-test/=./node_modules/ds-test/src/",
+    "solmate/=./node_modules/@rari-capital/solmate/src/",
+    "forge-std/=./node_modules/forge-std/src/",
+    "@latticexyz/=./node_modules/@latticexyz/",
     "components/=./src/components",
     "systems/=./src/systems",
     "libraries/=./src/libraries",
     "memmove/=node_modules/memmove/src/",
-    "ds-test/=node_modules/ds-test/src/",
     "@openzeppelin/=node_modules/openzeppelin-solidity/",
-    "forge-std/=node_modules/forge-std/src/",
-    "solmate/=node_modules/@rari-capital/solmate/src",
     "persona/=node_modules/@latticexyz/persona/src/",
     "gsn/=node_modules/@opengsn/contracts/src/",
     "ds-test/=node_modules/ds-test/src/",

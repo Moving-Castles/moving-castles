@@ -1,72 +1,61 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
-import "solecs/System.sol";
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-import { getAddressById, addressToEntity } from "solecs/utils.sol";
-
-import { LibConfig } from "../libraries/LibConfig.sol";
+import { System } from "@latticexyz/world/src/System.sol";
+// ...
+import { GameConfig, GameConfigData } from "../codegen/tables/GameConfig.sol";
+import { Position, PositionData } from "../codegen/tables/Position.sol";
+import { Core } from "../codegen/tables/Core.sol";
+import { Portable } from "../codegen/tables/Portable.sol";
+import { Matter } from "../codegen/tables/Matter.sol";
+import { CarryingCapacity } from "../codegen/tables/CarryingCapacity.sol";
+import { AbilityMove, AbilityMoveTableId } from "../codegen/tables/AbilityMove.sol";
+import { AbilityConsume, AbilityConsumeTableId } from "../codegen/tables/AbilityConsume.sol";
+import { Loot } from "../codegen/tables/Loot.sol";
+// ...
 import { LibInventory } from "../libraries/LibInventory.sol";
 import { LibCore } from "../libraries/LibCore.sol";
-import { LibMove } from "../libraries/LibMove.sol";
-import { LibMap } from "../libraries/LibMove.sol";
+import { LibMap } from "../libraries/LibMap.sol";
 import { LibAbility } from "../libraries/LibAbility.sol";
 import { LibUtils } from "../libraries/LibUtils.sol";
 import { LibLoot } from "../libraries/LibLoot.sol";
 
-import { GameConfig } from "../components/GameConfigComponent.sol";
-import { Coord } from "../components/PositionComponent.sol";
-
-import { ID as AbilityMoveComponentID } from "../components/AbilityMoveComponent.sol";
-import { ID as AbilityConsumeComponentID } from "../components/AbilityConsumeComponent.sol";
-import { MatterComponent, ID as MatterComponentID } from "../components/MatterComponent.sol";
-
-uint256 constant ID = uint256(keccak256("system.Spawn"));
-
 contract SpawnSystem is System {
-  constructor(IWorld _world, address _components) System(_world, _components) {}
+  function spawn() public {
+    bytes32 coreEntity = LibUtils.addressToEntityKey(_msgSender());
 
-  function execute(bytes memory arguments) public returns (bytes memory) {
-    uint256 coreEntity = addressToEntity(msg.sender);
+    require(!LibCore.isSpawned(coreEntity), "SpawnSystem: ID already exists");
 
-    require(!LibCore.isSpawned(components, coreEntity), "SpawnSystem: ID already exists");
+    GameConfigData memory gameConfig = GameConfig.get();
 
-    MatterComponent matterComponent = MatterComponent(getAddressById(components, MatterComponentID));
-
-    GameConfig memory gameConfig = LibConfig.getGameConfig(components);
-
-    LibCore.spawn(components, coreEntity);
+    LibCore.spawn(coreEntity);
 
     // Place the core in the inventory of a new base entity
-    uint256 baseEntity = world.getUniqueEntityId();
-    LibInventory.setCarryingCapacity(components, baseEntity, gameConfig.defaultCarryingCapacity);
-    LibInventory.addToInventory(components, baseEntity, coreEntity);
-
-    // Place move organ in inventory
-    uint256 moveOrgan = world.getUniqueEntityId();
-    LibInventory.makePortable(components, moveOrgan);
-    matterComponent.set(moveOrgan, gameConfig.organMatter);
-    LibAbility.giveAbility(components, moveOrgan, AbilityMoveComponentID);
-    LibInventory.addToInventory(components, baseEntity, moveOrgan);
-
-    // Place consume organ in inventory
-    uint256 consumeOrgan = world.getUniqueEntityId();
-    LibInventory.makePortable(components, consumeOrgan);
-    matterComponent.set(consumeOrgan, gameConfig.organMatter);
-    LibAbility.giveAbility(components, consumeOrgan, AbilityConsumeComponentID);
-    LibInventory.addToInventory(components, baseEntity, consumeOrgan);
-
-    // Place loot box in inventory
-    uint256 lootBox = world.getUniqueEntityId();
-    LibInventory.makePortable(components, lootBox);
-    LibLoot.makeSpawnLoot(components, lootBox);
-    LibInventory.addToInventory(components, baseEntity, lootBox);
+    bytes32 baseEntity = LibUtils.getRandomKey();
+    CarryingCapacity.set(baseEntity, gameConfig.defaultCarryingCapacity);
+    LibInventory.addToInventory(baseEntity, coreEntity);
 
     // Find valid spawn position
-    Coord memory spawnPosition = LibMap.getSpawnPosition(components);
-    LibMove.setPosition(components, baseEntity, spawnPosition);
-  }
+    PositionData memory spawnPosition = LibMap.getSpawnPosition();
+    Position.set(baseEntity, spawnPosition);
 
-  function executeTyped() public returns (bytes memory) {
-    return execute(abi.encode());
+    // Place move organ in inventory
+    bytes32 moveOrgan = LibUtils.getRandomKey();
+    Portable.set(moveOrgan, true);
+    Matter.set(moveOrgan, gameConfig.organMatter);
+    AbilityMove.set(moveOrgan, true);
+    LibInventory.addToInventory(baseEntity, moveOrgan);
+
+    // Place consume organ in inventory
+    bytes32 consumeOrgan = LibUtils.getRandomKey();
+    Portable.set(consumeOrgan, true);
+    Matter.set(consumeOrgan, gameConfig.organMatter);
+    AbilityConsume.set(moveOrgan, true);
+    LibInventory.addToInventory(baseEntity, consumeOrgan);
+
+    // Place loot box in inventory
+    bytes32 lootBox = LibUtils.getRandomKey();
+    Portable.set(lootBox, true);
+    Loot.set(lootBox, 2);
+    LibInventory.addToInventory(baseEntity, lootBox);
   }
 }
