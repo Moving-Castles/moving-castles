@@ -1,11 +1,11 @@
 <script lang="ts">
   export let address: string;
-  import { playerCore, playerAddress } from "../../modules/player";
-  import { idToName, idToAvatar } from "../../utils/name";
+  import { idToAvatarIndex } from "../../utils/name";
+  import { staticContent } from "../../modules/staticContent";
 </script>
 
 <div class="core-avatar">
-  <img draggable="false" class="core-avatar" src={idToAvatar(address)} alt="core" />
+  <img draggable="false" class="core-avatar" src={$staticContent.cores[idToAvatarIndex(address)].w400} alt="core" />
   <div class="shadow" />
 </div>
 

@@ -21,6 +21,7 @@
   });
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="toast {toast.type}" on:click={close}>
   {#if toast.type === "warning"}
     <p class="exclamation">!</p>
@@ -36,8 +37,11 @@
     max-width: 40ch;
     display: flex;
     flex-flow: column nowrap;
-    text-shadow: 0px 2px #000;
     font-size: 1.2rem;
+    background: yellow;
+    color: black;
+    padding: 10px;
+    cursor: pointer;
 
     &.warning {
       // color: var(--warning);

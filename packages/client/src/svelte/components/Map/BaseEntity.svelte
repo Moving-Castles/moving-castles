@@ -6,8 +6,8 @@
   import { chebyshev, isAdjacent } from "../../utils/space";
   import { items, baseEntities, entities } from "../../modules/entities";
   import { playerCore } from "../../modules/player";
-  import { addressToColor } from "../../utils/misc";
-  import { idToBody } from "../../utils/name";
+  import { idToBodyIndex } from "../../utils/name";
+  import { staticContent } from "../../modules/staticContent";
 
   import CoreAvatar from "../../components/Core/CoreAvatar.svelte";
   import { popUpEntities } from "../UI";
@@ -71,7 +71,7 @@
     transition:scale={{ duration: 100, easing: quadOut }}
   >
     <div class="shadow" />
-    <img class="body" draggable="false" src={idToBody(baseEntityId)} alt="body" />
+    <img draggable="false" class="body" src={$staticContent.bodies[idToBodyIndex(baseEntityId)].w800} alt="body" />
   </div>
 
   <div class="cores-display">

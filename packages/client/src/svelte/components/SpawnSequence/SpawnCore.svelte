@@ -5,7 +5,7 @@
   import { network } from "../../modules/network"
   import { spawnStage } from "../UI"
   import { playerCore, playerAddress } from "../../modules/player"
-  import { idToName, idToAvatar } from "../../utils/name"
+  import { idToName, idToAvatarIndex } from "../../utils/name"
   import { playSound } from "../../../howler"
   import { staticContent } from "../../modules/staticContent"
 
@@ -42,7 +42,11 @@
 
 <div class="spawn-sequence" in:fade>
   {#if $playerCore && counter > 20}
-    <img draggable="false" src={idToAvatar($playerAddress)} alt="core" />
+    <img
+      draggable="false"
+      src={$staticContent.cores[idToAvatarIndex($playerAddress)].w800}
+      alt="core"
+    />
     <div class="core-item"><strong>{idToName($playerAddress)}</strong></div>
     <button
       on:click={() => {
@@ -51,7 +55,11 @@
       }}>Accept your fate</button
     >
   {:else}
-    <img draggable="false" src={$staticContent.cores[coreIndex]} alt="core" />
+    <img
+      draggable="false"
+      src={$staticContent.cores[coreIndex].w400}
+      alt="core"
+    />
   {/if}
 </div>
 

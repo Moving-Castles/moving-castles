@@ -3,8 +3,9 @@
   import type { Core } from "../../modules/entities";
   import { playSound } from "../../../howler";
   import { playerAddress } from "../../modules/player";
-  import { idToName, idToAvatar } from "../../utils/name";
+  import { idToName, idToAvatarIndex } from "../../utils/name";
   import Dialog from "../Dialog/Dialog.svelte";
+  import { staticContent } from "../../modules/staticContent";
 
   export let itemId: string;
   export let item: Core;
@@ -38,7 +39,7 @@
   on:click={() => (dialogVisible = true)}
   on:mouseenter={mouseenter}
 >
-  <img draggable="false" class="core-avatar" src={idToAvatar(itemId)} alt="core" />
+  <img draggable="false" class="core-avatar" src={$staticContent.cores[idToAvatarIndex(itemId)].w400} alt="core" />
 </div>
 
 <Dialog bind:visible={dialogVisible}>

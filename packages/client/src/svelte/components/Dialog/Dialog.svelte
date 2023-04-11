@@ -18,4 +18,8 @@
     inset: 0;
     z-index: 999999;
   }
+
+  .dialog {
+    font-size: 32px;
+  }
 </style>

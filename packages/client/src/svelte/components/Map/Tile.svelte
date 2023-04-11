@@ -58,19 +58,14 @@
   class:canmoveto={$playerAbilities.includes("abilityMove") && adjacent}
   on:click={toggleMoveDialog}
 >
-  <div class="coords">{tile.coordinates.x}:{tile.coordinates.y}</div>
-
-  <div class="tile-items item-count-{totalItemsAndEntities}">
-    <!-- BASE ENTITIES -->
-    {#each tileEntities as [baseEntityId, baseEntity], index (baseEntityId + index)}
-      <BaseEntity {baseEntityId} {baseEntity} />
-    {/each}
-
-    <!-- FREE ITEMS -->
-    {#each tileFreeItems as [itemId, item], i (itemId)}
-      <Item {itemId} {item} bind:type={itemsTypes[i]} isOnMap={true} />
-    {/each}
-  </div>
+  <!-- BASE ENTITIES -->
+  {#each tileEntities as [baseEntityId, baseEntity], index (baseEntityId + index)}
+    <BaseEntity {baseEntityId} {baseEntity} />
+  {/each}
+  <!-- FREE ITEMS -->
+  {#each tileFreeItems as [itemId, item], i (itemId)}
+    <Item {itemId} {item} bind:type={itemsTypes[i]} isOnMap={true} />
+  {/each}
 </div>
 
 {#if moveDialogActive}
@@ -83,7 +78,9 @@
     height: 400px;
     float: left;
     font-size: 8px;
-    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-size: contain;
     background-image: url("/img/tiles/normal/1.png");
     cursor: pointer;
@@ -97,16 +94,19 @@
     }
 
     &.canmoveto {
-      &:hover::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        mix-blend-mode: overlay;
-        pointer-events: none;
+      &:hover {
+        background-image: url("/img/tiles/occupied/1.png");
       }
+      // &:hover::after {
+      //   content: "";
+      //   position: absolute;
+      //   inset: 0;
+      //   width: 100%;
+      //   height: 100%;
+      //   background-color: #fff;
+      //   mix-blend-mode: overlay;
+      //   pointer-events: none;
+      // }
     }
 
     .coords {
@@ -114,12 +114,5 @@
       top: 10px;
       right: 10px;
     }
-  }
-
-  // Grid system
-  .tile-items {
-    position: absolute;
-    justify-items: center;
-    align-items: center;
   }
 </style>

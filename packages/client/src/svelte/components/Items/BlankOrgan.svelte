@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { t } from "../Dialog";
   import { playerAbilities } from "../../modules/player";
   import { staticContent } from "../../modules/staticContent";
   import { playSound } from "../../../howler";
@@ -34,7 +33,7 @@
       pickUp(itemId);
     }
   };
-  const icon = $staticContent.organs.find((o) => o.label === "blank")?.images[0];
+  const icon = $staticContent.organs.find((o) => o.type === "blank")?.w400;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

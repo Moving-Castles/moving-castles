@@ -6,7 +6,8 @@
   import { playerCore } from "../../modules/player"
   import { entities } from "../../modules/entities"
   import { playSound } from "../../../howler"
-  import { idToBody } from "../../utils/name"
+  import { idToBodyIndex } from "../../utils/name"
+  import { staticContent } from "../../modules/staticContent"
 
   import Item from "../Items/ItemSelector.svelte"
 
@@ -44,7 +45,11 @@
   }}
 >
   <!-- BEFORE -->
-  <img draggable="false" src={idToBody($playerCore.carriedBy)} alt="body" />
+  <img
+    draggable="false"
+    src={$staticContent.bodies[idToBodyIndex($playerCore.carriedBy)].w400}
+    alt="body"
+  />
 
   {#if skip}
     <!-- SKIP TEXT -->
