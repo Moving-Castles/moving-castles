@@ -8,6 +8,7 @@
   import { idToName, idToAvatarIndex } from "../../utils/name"
   import { playSound } from "../../../howler"
   import { staticContent } from "../../modules/staticContent"
+  import { WorldFunctions } from "../../modules/actionSequencer"
 
   let typewriterDone = false
 
@@ -15,7 +16,7 @@
   let counter = 0
 
   onMount(async () => {
-    $network.worldSend("moving_castles_SpawnSystem_spawn", [])
+    $network.worldSend(WorldFunctions.Spawn, [])
     setInterval(() => {
       coreIndex =
         coreIndex == $staticContent.cores.length - 1 ? 0 : coreIndex + 1

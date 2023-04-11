@@ -15,6 +15,7 @@ import { toastMessage } from "../../modules/toast"
 // --- TYPES -----------------------------------------------------------------
 
 export enum WorldFunctions {
+  Spawn = "moving_castles_SpawnSystem_spawn",
   Move = "moving_castles_MoveSystem_move",
   PickUp = "moving_castles_PickUpSystem_pickUp",
   Drop = "moving_castles_DropSystem_drop",

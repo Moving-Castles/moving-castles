@@ -21,6 +21,10 @@
 
   let boxState: BoxState = BoxState.UNOPENED
 
+  const mouseenter = () => {
+    playSound("cursor", "ui")
+  }
+
   function open() {
     // Is this my box?
     //

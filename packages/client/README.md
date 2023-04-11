@@ -1,1 +1,1 @@
-# Reference Implementation Client
+# Client
