@@ -525,9 +525,9 @@
     "@ethersproject/strings" "^5.7.0"
 
 "@grpc/grpc-js@^1.7.3":
-  version "1.8.13"
-  resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.8.13.tgz#e775685962909b76f8d4b813833c3d123867165b"
-  integrity sha512-iY3jsdfbc0ARoCLFvbvUB8optgyb0r1XLPb142u+QtgBcKJYkCIFt3Fd/881KqjLYWjsBJF57N3b8Eop9NDfUA==
+  version "1.8.14"
+  resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.8.14.tgz#4fe0f9917d6f094cf59245763c275442b182e9ad"
+  integrity sha512-w84maJ6CKl5aApCMzFll0hxtFNT6or9WwMslobKaqWUEf1K+zhlL43bSQhFreyYWIWR+Z0xnVFC1KtLm4ZpM/A==
   dependencies:
     "@grpc/proto-loader" "^0.7.0"
     "@types/node" ">=12.12.47"
@@ -592,20 +592,24 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@latticexyz/cli@^2.0.0-alpha.79":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/cli/-/cli-2.0.0-alpha.79.tgz#c311b8ed3029418439f283cdf0fa01049fab77ec"
-  integrity sha512-cUmRAcq86yiFb/ydKoFwqR30upBe9JircYkCA/imu4UQS0YCC9mmykEv1GMWPG5aK2c+1jqKOK2BCrPNGq1dpA==
+"@latticexyz/cli@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/cli/-/cli-2.0.0-alpha.93.tgz#43a8904973c8ebef2175a8b8edf040b52d2d3cc5"
+  integrity sha512-AeEXMSDZNWjsQq1mQT34pMxeIgyP/8dg4d0FWnUPmc5tmvzmpytppBhvTAvOdcUrRbkzLMcidRFFfrnQ38fUXA==
   dependencies:
+    "@ethersproject/abi" "^5.7.0"
+    "@ethersproject/providers" "^5.7.2"
     "@improbable-eng/grpc-web" "^0.15.0"
     "@improbable-eng/grpc-web-node-http-transport" "^0.15.0"
-    "@latticexyz/config" "^2.0.0-alpha.79+cd224a52"
-    "@latticexyz/schema-type" "^2.0.0-alpha.79+cd224a52"
-    "@latticexyz/services" "^2.0.0-alpha.79+cd224a52"
-    "@latticexyz/solecs" "^2.0.0-alpha.79+cd224a52"
-    "@latticexyz/std-contracts" "^2.0.0-alpha.79+cd224a52"
+    "@latticexyz/config" "2.0.0-alpha.93+16190e69"
+    "@latticexyz/schema-type" "2.0.0-alpha.93+16190e69"
+    "@latticexyz/services" "2.0.0-alpha.93+16190e69"
+    "@latticexyz/solecs" "2.0.0-alpha.93+16190e69"
+    "@latticexyz/std-contracts" "2.0.0-alpha.93+16190e69"
+    "@latticexyz/store" "2.0.0-alpha.93+16190e69"
+    "@latticexyz/world" "2.0.0-alpha.93+16190e69"
     "@solidity-parser/parser" "^0.16.0"
-    "@typechain/ethers-v5" "^10.1.1"
+    "@typechain/ethers-v5" "^10.2.0"
     chalk "^5.0.1"
     chokidar "^3.5.3"
     dotenv "^16.0.3"
@@ -627,12 +631,12 @@
     zod "^3.21.4"
     zod-validation-error "^1.3.0"
 
-"@latticexyz/config@^2.0.0-alpha.79+cd224a52":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/config/-/config-2.0.0-alpha.79.tgz#efc40dc06b607a855232fea9792c09523ec5c8d6"
-  integrity sha512-mZD6G1GGGoVJC209xoe2MCXCP+8m4ucN9Rs539FjzUnl1ATDBlJQQGihJJuZ8Ua4+4XLpnXWvBl0zhLeDI1NWw==
+"@latticexyz/config@2.0.0-alpha.93+16190e69":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/config/-/config-2.0.0-alpha.93.tgz#e96f85003fc3724f23ff9ed0d0e81e504aabe605"
+  integrity sha512-k5XOAV/etLDl1W2c2F/BZV5rvpdnK+b7SdILZuABqFWM7TIkrBnrEus4iJzux+AVublxa9oC83dvnlwJVxJRSA==
   dependencies:
-    "@latticexyz/schema-type" "^2.0.0-alpha.79+cd224a52"
+    "@latticexyz/schema-type" "^2.0.0-alpha.93+16190e69"
     chalk "^5.2.0"
     esbuild "^0.17.15"
     ethers "^6.3.0"
@@ -640,64 +644,64 @@
     zod "^3.21.4"
     zod-validation-error "^1.3.0"
 
-"@latticexyz/network@^2.0.0-alpha.79":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/network/-/network-2.0.0-alpha.79.tgz#21246c3ee2dbed3e451bf734343cc9181c4fcd26"
-  integrity sha512-+QkVYZ9vPAclDfDGvUaSK78n4sSCzROCrdOZ/P+v8usTZ59yWy5LXIrKIg018mRn7oxNHDMPMvU0B8VGraTOIg==
+"@latticexyz/network@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/network/-/network-2.0.0-alpha.93.tgz#57eafb8de6883f3c86a77c40df6bdb0568d9ae07"
+  integrity sha512-by/fp6Kpz5AICZFUsm2a53GtvJqTSwwjmEyMjOqSH5q+z3ggLFpq/wrvKucBbI1yT/FSdcf2uGNJtT0AldtZow==
   dependencies:
     debug "^4.3.4"
     lodash "^4.17.21"
 
-"@latticexyz/recs@^2.0.0-alpha.79":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/recs/-/recs-2.0.0-alpha.79.tgz#81d7449e089066c0e6cc983cdfe007d6b81009ee"
-  integrity sha512-EPH0jJ1EAlnctS342ThvxH4Iv3Lzi0QSU+tHV57PoYHzn09Kfvgq7K9YPo7gMKEOTQGZ/8SaD+LWGGGn9UDRXg==
+"@latticexyz/recs@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/recs/-/recs-2.0.0-alpha.93.tgz#867f43806c25d8ab9ba655e2382cf0404ce5a883"
+  integrity sha512-Mq/51Ve4DDZA+LFMiWhvYbsB5HKG5MqDSPLEMC8pY2VGuhJStJZl8AmiczMQYAYgqZmbDO1PQliLl5GCoa07mw==
 
-"@latticexyz/schema-type@^2.0.0-alpha.79", "@latticexyz/schema-type@^2.0.0-alpha.79+cd224a52":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/schema-type/-/schema-type-2.0.0-alpha.79.tgz#933c93f56260ad9add24ad3d3682c0c78db0f0a6"
-  integrity sha512-9rftX+EI+6DJ1r08i8AdbQhDSlZfbLv8drvjupVL+ljDtBY7dzDZz8kuFE5ncWziEafU/aaoGocfTQfPsqPHcg==
+"@latticexyz/schema-type@2.0.0-alpha.93+16190e69", "@latticexyz/schema-type@^2.0.0-alpha.93", "@latticexyz/schema-type@^2.0.0-alpha.93+16190e69":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/schema-type/-/schema-type-2.0.0-alpha.93.tgz#4f116685bdae23440316634657f88c937d0e5256"
+  integrity sha512-3vbfpVTmjywieo+THNR6Fhttx9gn7zR7YOw7RfJL4nsqYEJyc6H65Jch3WYS7++V/bup9YDehhcDxKGY7vE2wQ==
 
-"@latticexyz/services@^2.0.0-alpha.79", "@latticexyz/services@^2.0.0-alpha.79+cd224a52":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/services/-/services-2.0.0-alpha.79.tgz#e5d4749044644dd9326680db0064ab06a77fcf01"
-  integrity sha512-0vt6vnID4Dm+xiA1AQ8CygMer8ITDUnM7Ko7ydJp55+d/GBbfaVg13kXS9bGHRhvKIn7pKGlSq5kqAdkZGHPmg==
+"@latticexyz/services@2.0.0-alpha.93+16190e69", "@latticexyz/services@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/services/-/services-2.0.0-alpha.93.tgz#9b789ab977956688dd40d289fbbd2dc96abdfe55"
+  integrity sha512-YKdXDftsq2eYeak3+57CgoqHB6XmqcWSSbdrLL1UI03vmh610VKpu5fMw8aDAVNVhasdFOjjIpn38QqJxdO5mw==
   dependencies:
     long "^5.2.1"
-    nice-grpc-common "^2.0.0"
-    protobufjs "^7.1.2"
+    nice-grpc-common "^2.0.2"
+    protobufjs "^7.2.3"
 
-"@latticexyz/solecs@^2.0.0-alpha.79", "@latticexyz/solecs@^2.0.0-alpha.79+cd224a52":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/solecs/-/solecs-2.0.0-alpha.79.tgz#241795ac3f0e0f4187bb0ce944f2fdcf7bac4ab5"
-  integrity sha512-elEo6l5aWnhTM0gNG43rSSoah3eN2vPSg0WrKsocP6IPuCD49gT5SQyYEH75emrm+bozhKa5F9v0ZLRI94MpbA==
+"@latticexyz/solecs@2.0.0-alpha.93+16190e69", "@latticexyz/solecs@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/solecs/-/solecs-2.0.0-alpha.93.tgz#37fc06bb614ea850fccee7a33c2bb306d9e23376"
+  integrity sha512-uAbWLCMxYUMELGHQw7BHBECUJbAPdYAAADx4yUPuyEX38BRb32krx2A4jo29mfrVBRDynppX88k2GG4rmVTXyg==
 
-"@latticexyz/std-client@^2.0.0-alpha.79":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/std-client/-/std-client-2.0.0-alpha.79.tgz#d5ed50af2d81623f0de95b8bc25016ca8e97d0bd"
-  integrity sha512-qtMAR9vxKAfBjLZRx9ljF9LaPszY+yNNXUi0Ay0MhnFnbk/KcxMh1O8A8ZXDSvDF7knneVgXe2dJEVLkg4fvCg==
+"@latticexyz/std-client@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/std-client/-/std-client-2.0.0-alpha.93.tgz#8739e231fc3665916f8669b092d96d2be8d63239"
+  integrity sha512-dWbWQnEHuTSZAOtAp24p43pKlmH/ctw9MfvTnmDKsCnZy2DsJHwceV9d0pISlXTFhsVX3EDWMDOuejEE1nZ7KA==
 
-"@latticexyz/std-contracts@^2.0.0-alpha.79", "@latticexyz/std-contracts@^2.0.0-alpha.79+cd224a52":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/std-contracts/-/std-contracts-2.0.0-alpha.79.tgz#f9bd077ea661078a93a8574d0d511e40ec7539cd"
-  integrity sha512-tzq02V13D6hQkCnG5jimKlMD8AhytCeYW/S8/n8Meyc+qDqoG0OBrA6D/D3eY9DzMrMYGOl5mA2S4bQlWqgvSQ==
+"@latticexyz/std-contracts@2.0.0-alpha.93+16190e69", "@latticexyz/std-contracts@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/std-contracts/-/std-contracts-2.0.0-alpha.93.tgz#6436702a22718fd1d852ce03d0d793dfdb665f62"
+  integrity sha512-MIVJxLf5TjjqXhGrPv0Vzqu77nDHJYuszjuaxMj0S7vN+Zmr7LeqFMgqPh9kDlr4IUHwVVF7jEX3pVrjwr9ADw==
 
-"@latticexyz/store@^2.0.0-alpha.79":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/store/-/store-2.0.0-alpha.79.tgz#82826f35a5b6f4a79ab9bacf6b1d917024b85c0c"
-  integrity sha512-/fgdtUHLdRa1yjAKyPOxhft3UZus6SpHvUteTJ2JSqFvXF2AwYF1ZZog5rEtUOR6HquyCZgmnlzlFM1OeFK+fA==
+"@latticexyz/store@2.0.0-alpha.93+16190e69", "@latticexyz/store@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/store/-/store-2.0.0-alpha.93.tgz#ede1159e2f356eed3712a82ff5ef6b918e74a18b"
+  integrity sha512-ZxKs+p5MNqvDMX3E6eiNEc3NOHJ1kxFuO28BpIO1ZXw0SDFa2x+8I3C2aaA2jJToCIwdSZyiBe+k6UVXZp6hEw==
 
-"@latticexyz/utils@^2.0.0-alpha.79":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/utils/-/utils-2.0.0-alpha.79.tgz#466fcf90ccecd1ab369d196eb0af08c3f59b34f7"
-  integrity sha512-kL/z3YFHyRUQtd/DIzgXHNlU4WkhtAcS+S/R4iA6WRWuCeQreWkKoYMSbxj+lyd+/HGrT+5RhKRN4CTVWTnBxw==
+"@latticexyz/utils@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/utils/-/utils-2.0.0-alpha.93.tgz#05244516b39732b6e19120f2bb2767524dab65d9"
+  integrity sha512-om8zfYu7IIeEoVGzHV/RdlEh9knNNAxLLqqBU7yE1DGjpIl4OdvhWTSsz+Q9rY6+CLjHJAFcXAJPXrVfffNzSQ==
   dependencies:
     typedoc-plugin-markdown "^3.13.6"
 
-"@latticexyz/world@^2.0.0-alpha.79":
-  version "2.0.0-alpha.79"
-  resolved "https://registry.yarnpkg.com/@latticexyz/world/-/world-2.0.0-alpha.79.tgz#3d6aca3759537a818bebde2bae6a0a54d209f060"
-  integrity sha512-fSo891oaRu7Zf6Vdn9Gq4Gweet9AFF/DemEZga2TNGVkitweKM3OKECIVU/LiCAKfEjftE2UHIXdc0AK8mXCwg==
+"@latticexyz/world@2.0.0-alpha.93+16190e69", "@latticexyz/world@^2.0.0-alpha.93":
+  version "2.0.0-alpha.93"
+  resolved "https://registry.yarnpkg.com/@latticexyz/world/-/world-2.0.0-alpha.93.tgz#8c6ba6d04d660007446060288ee1415ab13d5bf3"
+  integrity sha512-qKrbfgg0Mab0f/ioC/msMHZsRbi+wJ83v08SpVqh9Rz0LLlPMVXS56z/ost35toq1nGz/ZmNKhxj25pU9XPOCA==
 
 "@morgan-stanley/ts-mocking-bird@^0.6.2":
   version "0.6.4"
@@ -924,9 +928,9 @@
     import-meta-resolve "^2.2.0"
 
 "@sveltejs/kit@^1.15.0":
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.15.2.tgz#2d351b15aa39ab792c36c2c236c7e31a2010a6b0"
-  integrity sha512-rLNxZrjbrlPf8AWW8GAU4L/Vvu17e9v8EYl7pUip7x72lTft7RcxeP3z7tsrHpMSBBxC9o4XdKzFvz1vMZyXZw==
+  version "1.15.5"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.15.5.tgz#d2bed8e56b063834771e61a8cdf87b079fe90fba"
+  integrity sha512-NyNtgIJBNo3AXMkl0iN10VrKgQS6VM6E+rcqZnZMn12dOo7SwFflj1du0ZgXNCZ1tx6VuEpSz9+FpPjswr4gEg==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^2.0.0"
     "@types/cookie" "^0.5.1"
@@ -979,7 +983,7 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/svelte/-/svelte-4.0.1.tgz#f36c1085fbdd868c10fb0426141956483dd4867b"
   integrity sha512-B+XlGpmuAQzJqDoBATNCvEPqQg0HkO7S8pM14QDI5NsmtymzRexQ1N+nX2H6RTtFbuFgaZD4I8AAi8voGg0GLg==
 
-"@typechain/ethers-v5@^10.1.1", "@typechain/ethers-v5@^10.2.0":
+"@typechain/ethers-v5@^10.2.0":
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/@typechain/ethers-v5/-/ethers-v5-10.2.0.tgz#68f5963efb5214cb2d881477228e4b5b315473e1"
   integrity sha512-ikaq0N/w9fABM+G01OFmU3U3dNnyRwEahkdvi9mqy1a3XwKiPZaF/lu54OcNaEWnpvEYyhhS0N7buCtLQqC92w==
@@ -2718,7 +2722,7 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-nice-grpc-common@^2.0.0, nice-grpc-common@^2.0.1, nice-grpc-common@^2.0.2:
+nice-grpc-common@^2.0.1, nice-grpc-common@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/nice-grpc-common/-/nice-grpc-common-2.0.2.tgz#e6aeebb2bd19d87114b351e291e30d79dd38acf7"
   integrity sha512-7RNWbls5kAL1QVUOXvBsv1uO0wPQK3lHv+cY1gwkTzirnG1Nop4cBJZubpgziNbaVc/bl9QJcyvsf/NQxa3rjQ==
@@ -2981,7 +2985,7 @@ progress-stream@^2.0.0:
     speedometer "~1.0.0"
     through2 "~2.0.3"
 
-protobufjs@^7.0.0, protobufjs@^7.1.2:
+protobufjs@^7.0.0, protobufjs@^7.2.3:
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-7.2.3.tgz#01af019e40d9c6133c49acbb3ff9e30f4f0f70b2"
   integrity sha512-TtpvOqwB5Gdz/PQmOjgsrGH1nHjAQVCN7JG4A6r1sXRWESL5rNMAiRcBQlCAdKxZcAbstExQePYG8xof/JVRgg==
@@ -3136,9 +3140,9 @@ safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
 
 sass@^1.61.0:
-  version "1.61.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.61.0.tgz#d1f6761bb833887b8fdab32a24e052c40531d02b"
-  integrity sha512-PDsN7BrVkNZK2+dj/dpKQAWZavbAQ87IXqVvw2+oEYI+GwlTWkvbQtL7F2cCNbMqJEYKPh1EcjSxsnqIb/kyaQ==
+  version "1.62.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.62.0.tgz#3686b2195b93295d20765135e562366b33ece37d"
+  integrity sha512-Q4USplo4pLYgCi+XlipZCWUQz5pkg/ruSSgJ0WRDSb/+3z9tXUOkQ7QPYn4XrhZKYAK4HlpaQecRwKLJX6+DBg==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
@@ -3414,9 +3418,9 @@ totalist@^3.0.0:
   integrity sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==
 
 ts-command-line-args@^2.2.0:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/ts-command-line-args/-/ts-command-line-args-2.4.2.tgz#b4815b23c35f8a0159d4e69e01012d95690bc448"
-  integrity sha512-mJLQQBOdyD4XI/ZWQY44PIdYde47JhV2xl380O7twPkTQ+Y5vFDHsk8LOeXKuz7dVY5aDCfAzRarNfSqtKOkQQ==
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/ts-command-line-args/-/ts-command-line-args-2.5.0.tgz#7eeed3a6937b2612ea08a0794cf9d43fbbea89c4"
+  integrity sha512-Ff7Xt04WWCjj/cmPO9eWTJX3qpBZWuPWyQYG1vnxJao+alWWYjwJBc5aYz3h5p5dE08A6AnpkgiCtP/0KXXBYw==
   dependencies:
     "@morgan-stanley/ts-mocking-bird" "^0.6.2"
     chalk "^4.1.0"

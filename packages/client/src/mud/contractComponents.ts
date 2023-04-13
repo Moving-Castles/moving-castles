@@ -156,7 +156,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
     GameConfig: (() => {
-      const tableId = new TableId("moving_castles", "game_config");
+      const tableId = new TableId("moving_castles", "GameConfig");
       return defineComponent(
         world,
         {

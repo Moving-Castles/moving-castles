@@ -17,8 +17,8 @@ import { EncodeArray } from "@latticexyz/store/src/tightcoder/EncodeArray.sol";
 import { Schema, SchemaLib } from "@latticexyz/store/src/Schema.sol";
 import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCounter.sol";
 
-uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16("moving_castles"), bytes16("Portable"))));
-uint256 constant PortableTableId = _tableId;
+bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16("moving_castles"), bytes16("Portable")));
+bytes32 constant PortableTableId = _tableId;
 
 library Portable {
   /** Get the table's schema */

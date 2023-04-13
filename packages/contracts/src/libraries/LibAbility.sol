@@ -12,7 +12,7 @@ library LibAbility {
    * @param _tableId Ability table ID
    * @return result
    */
-  function checkEntityForAbility(uint256 _tableId, bytes32 _entity) internal view returns (bool result) {
+  function checkEntityForAbility(bytes32 _tableId, bytes32 _entity) internal view returns (bool result) {
     return Ability.get(_tableId, _entity);
   }
 
@@ -23,7 +23,7 @@ library LibAbility {
    * @param _tableId Ability table ID
    * @return result the number of entities in the inventory with this ability
    */
-  function checkInventoryForAbility(uint256 _tableId, bytes32 _baseEntity) internal view returns (uint32 result) {
+  function checkInventoryForAbility(bytes32 _tableId, bytes32 _baseEntity) internal view returns (uint32 result) {
     bytes32[] memory inventory = LibInventory.getInventory(_baseEntity);
     uint32 count;
     uint256 inventoryLength = inventory.length;
