@@ -14,27 +14,22 @@
 
   onMount(async () => {
     // App mounted. Start initializing...
-
-    initStaticContent()
-
     const mudLayer = await setup()
     network.set(mudLayer)
-
+    initStaticContent()
     initActionSequencer()
-
     initActionUpdater()
 
-    // Create systems to listen to all component changes
-    for (const componentKey of Object.keys(mudLayer.components)) {
-      if (componentKey === "LoadingState") {
-        createLoadingStateSystem()
-      } else {
-        createComponentSystem(componentKey)
-      }
+    // Create systems to listen to changes to defined component
+    for (const componentKey of Object.keys(mudLayer.contractComponents)) {
+      createComponentSystem(componentKey)
     }
 
+    // Listen to changes to the LoadingState component
+    createLoadingStateSystem()
+
     // For convenience, we store the block number in a svelte store
-    mudLayer.network.blockNumber$.subscribe(x => blockNumber.set(x))
+    mudLayer.network.blockNumber$.subscribe((x: number) => blockNumber.set(x))
   })
 </script>
 

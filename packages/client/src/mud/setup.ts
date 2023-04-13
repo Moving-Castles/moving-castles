@@ -87,5 +87,6 @@ export async function setup() {
     worldContract,
     worldSend: bindFastTxExecute(worldContract),
     fastTxExecutor,
+    contractComponents
   };
 }
