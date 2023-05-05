@@ -14,9 +14,9 @@
 
   onMount(async () => {
     // App mounted. Start initializing...
+    initStaticContent()
     const mudLayer = await setup()
     network.set(mudLayer)
-    initStaticContent()
     initActionSequencer()
     initActionUpdater()
 

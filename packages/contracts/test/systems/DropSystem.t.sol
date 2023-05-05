@@ -44,8 +44,6 @@ contract DropSystemTest is MudV2Test {
 
     // Core energy should be INITIAL_ENERGY - DROP_COST
     assertEq(Energy.get(world, coreEntity), gameConfig.initialEnergy - gameConfig.dropCost);
-
-    vm.stopPrank();
   }
 
   function testDropCore() public {
@@ -75,7 +73,5 @@ contract DropSystemTest is MudV2Test {
 
     // Core energy should be INITIAL_ENERGY - DROP_COST
     assertEq(Energy.get(world, coreEntity), gameConfig.initialEnergy - gameConfig.dropCost);
-
-    vm.stopPrank();
   }
 }

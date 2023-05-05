@@ -22,7 +22,7 @@ export default mudConfig({
         CreationBlock: "uint256",
         Energy: "uint32",
         GameConfig: {
-            fileSelector: "game_config",
+            name: "GameConfig",
             schema: {
                 worldHeight: "int32",
                 worldWidth: "int32",
