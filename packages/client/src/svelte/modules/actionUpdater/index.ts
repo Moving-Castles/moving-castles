@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { queuedActions, activeActions, completedActions, failedActions } from "../actionSequencer";
+import { queuedActions, completedActions, failedActions } from "../actionSequencer";
 import { entities } from "../entities";
 import { playerCore, playerAddress } from "../player";
 import type { Action } from "../actionSequencer";

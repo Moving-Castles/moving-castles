@@ -16,14 +16,7 @@ import { toastMessage } from "../../modules/toast"
 
 export enum WorldFunctions {
   Spawn = "moving_castles_SpawnSystem_spawn",
-  Move = "moving_castles_MoveSystem_move",
-  PickUp = "moving_castles_PickUpSystem_pickUp",
-  Drop = "moving_castles_DropSystem_drop",
-  Transfer = "moving_castles_TransferSystem_transfer",
-  Play = "moving_castles_PlaySystem_play",
-  Open = "moving_castles_OpenSystem_open",
-  Harvest = "moving_castles_HarvestSystem_harvest",
-  Consume = "moving_castles_ConsumeSystem_consume",
+  Travel = "moving_castles_MoveSystem_travel"
 }
 
 export enum SequencerState {

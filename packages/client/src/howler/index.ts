@@ -1,24 +1,11 @@
 import { Howl } from "howler";
 import { soundLibrary } from "./sound-library";
-import { sample } from "lodash";
-import { writable, get } from "svelte/store";
-import { userSettings } from "../svelte/components/UI";
+import { writable } from "svelte/store";
 
 export const music = writable(new Howl({ src: [""] }));
 export const fx = writable(new Howl({ src: [""] }));
 
-// const AUDIO_EVENTS = {
-//   MOVE_INIT: 
-// }
-
-
-// export function triggerSound(audioEventId: string) {
-
-//   playSound(...AUDIO_EVENTS[audioEventId]);
-// }
-
 export function playSound(id: string, category: string, loop = false, fade = false) {
-  const settings = get(userSettings);
 
   let timeout;
 
@@ -45,35 +32,4 @@ export function playSound(id: string, category: string, loop = false, fade = fal
     sound.play();
   }
   return sound;
-}
-
-export function startEnvironmentSoundSystem() {
-  const settings = get(userSettings);
-  if (settings.fx.value === true) {
-    music.set(playSound("workSitePlain", "environment", true));
-  }
-}
-
-export function startMelodySoundSystem(timeout = 0) {
-  const settings = get(userSettings);
-
-  if (settings.music.value == true) {
-    music.set(playSound(sample(Object.keys(soundLibrary.melody)) || "", "melody"));
-    get(music).on("end", () => {
-      setTimeout(() => {
-        startMelodySoundSystem(timeout);
-      }, timeout);
-    });
-  }
-}
-
-export function startHarmonySoundSystem() {
-  const settings = get(userSettings);
-
-  if (settings.music.value == true) {
-    music.set(playSound("organLoop", "harmony", false, true));
-    get(music).on("end", () => {
-      startMelodySoundSystem(60000);
-    });
-  }
 }

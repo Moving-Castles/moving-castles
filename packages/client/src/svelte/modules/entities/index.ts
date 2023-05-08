@@ -2,9 +2,6 @@
  *  Central store for all entities in the game.
  * 
  */
-
-import type { Activity } from "../actionUpdater";
-import type { Coord } from "@latticexyz/utils";
 import { writable, get, derived } from "svelte/store";
 import { network } from "../network";
 
@@ -29,70 +26,27 @@ export type GameConfig = {
 // Default type with all potential properties.
 export type Entity = {
   gameConfig?: GameConfig;
+  core?: boolean;
+  avatar?: number;
+  name?: string;
   creationBlock?: number;
   readyBlock?: number;
-  matter?: number;
   energy?: number;
-  position?: Coord;
   portable?: boolean;
-  carryingCapacity?: number;
-  core?: boolean;
-  commit?: Activity;
   carriedBy?: string;
-  inventory?: string[];
-  abilityMove?: boolean;
-  abilityConsume?: boolean;
-  abilityPlay?: boolean;
-  abilityChat?: boolean;
-  untraversable?: boolean;
-  loot?: number;
-  goal?: number;
-  point?: number;
-  activity?: Activity
+  realmId?: number;
 };
 
 export type Core = {
-  core: true;
-  portable: true;
+  core: boolean;
+  avatar: number;
+  name: string;
   creationBlock: number;
   readyBlock: number;
   energy: number;
+  portable: boolean;
   carriedBy: string;
-  point: number;
-  commit?: Activity;
-  activity: Activity
-};
-
-export type BaseEntity = {
-  position: Coord;
-  carryingCapacity: number;
-  inventory: string[];
-  activity: Activity
-};
-
-export type Item = {
-  portable: true;
-  matter?: number;
-  position?: Coord;
-  carriedBy?: string;
-  abilityMove?: boolean;
-  abilityConsume?: boolean;
-  abilityPlay?: boolean;
-  abilityChat?: boolean;
-  untraversable?: boolean;
-  loot?: number;
-  goal?: number;
-  activity: Activity
-};
-
-export type FreeItem = Omit<Item, 'carriedBy'> & {
-  position: Coord;
-};
-
-export type Untraversable = {
-  carriedBy: string;
-  untraversable: true;
-  position: Coord;
+  realmId: number;
 };
 
 // - - - -
@@ -105,21 +59,6 @@ export type Cores = {
   [index: string]: Core;
 };
 
-export type BaseEntities = {
-  [index: string]: BaseEntity;
-};
-
-export type Items = {
-  [index: string]: Item;
-};
-
-export type Untraversables = {
-  [index: string]: Untraversable;
-};
-
-export type FreeItems = {
-  [index: string]: FreeItem;
-};
 
 // --- STORES -----------------------------------------------------------------
 
@@ -135,28 +74,6 @@ export const cores = derived(entities, ($entities) => {
   return Object.fromEntries(Object.entries($entities).filter(([key, entity]) => entity.core)) as Cores;
 });
 
-export const baseEntities = derived(entities, ($entities) => {
-  return Object.fromEntries(
-    Object.entries($entities).filter(([key, entity]) => entity.carryingCapacity)
-  ) as BaseEntities;
-  // @todo add inventory array to entities
-});
-
-export const items = derived(entities, ($entities) => {
-  return Object.fromEntries(Object.entries($entities).filter(([key, entity]) => entity.portable)) as Items;
-});
-
-export const freeItems = derived(entities, ($entities) => {
-  return Object.fromEntries(
-    Object.entries($entities).filter(([key, entity]) => entity.portable && entity.position)
-  ) as FreeItems;
-});
-
-export const untraversables = derived(entities, ($entities) => {
-  return Object.fromEntries(
-    Object.entries($entities).filter(([key, entity]) => entity.untraversable)
-  ) as Untraversables;
-});
 
 // --- FUNCTIONS -----------------------------------------------------------------
 

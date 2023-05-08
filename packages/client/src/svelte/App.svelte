@@ -1,16 +1,23 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import { setup } from "../mud/setup"
-  import { entities } from "./modules/entities"
   import { createComponentSystem, createLoadingStateSystem } from "./systems"
-  import UIContainer from "./components/UI/UIContainer.svelte"
-  import { network, blockNumber } from "./modules/network"
+  import { network, ready, blockNumber } from "./modules/network"
+  import { playerCore } from "./modules/player"
   import { initStaticContent } from "./modules/staticContent"
   import { initActionSequencer } from "./modules/actionSequencer"
   import { initActionUpdater } from "./modules/actionUpdater"
 
+  import Loading from "./components/Loading/Loading.svelte"
+  import Spawn from "./components/Spawn/Spawn.svelte"
+  import Void from "./components/Void/Void.svelte"
+
+  // - - - - -
+  import { entities } from "./modules/entities"
   $: console.log("$entities", $entities)
   $: console.log("$network", $network)
+  $: console.log($playerCore)
+  // - - - - -
 
   onMount(async () => {
     // App mounted. Start initializing...
@@ -34,5 +41,14 @@
 </script>
 
 <main>
-  <UIContainer />
+  {#if !$ready}
+    <Loading />
+  {/if}
+  {#if $ready}
+    {#if !$playerCore}
+      <Spawn />
+    {:else}
+      <Void />
+    {/if}
+  {/if}
 </main>
