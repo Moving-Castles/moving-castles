@@ -191,3 +191,42 @@ library LibCore {
     return trimmedResult;
   }
 }
+
+// import { query, QueryFragment, QueryType } from "../src/modules/keysintable/query.sol";
+
+//  function testHasQuery() public {
+//     _installKeysInTableModule();
+
+//     world.setRecord(namespace, name1, key1, abi.encode(1));
+//     world.setRecord(namespace, name1, key2, abi.encode(1));
+//     world.setRecord(namespace, name2, key1, abi.encode(0));
+
+//     // Query should return all keys in table1
+//     QueryFragment[] memory fragments = new QueryFragment[](1);
+//     // The value argument is ignored in for Has query fragments
+//     fragments[0] = QueryFragment(QueryType.Has, table1, new bytes(0));
+//     // !gasreport HasQuery
+//     bytes32[][] memory keyTuples = query(world, fragments);
+
+//     assertTrue(keyTuples.length == 2);
+//     assertTrue(keyTuples[0][0] == key1[0]);
+//     assertTrue(keyTuples[1][0] == key2[0]);
+//   }
+
+//   function testHasValueQuery() public {
+//     _installKeysInTableModule();
+//     _installKeysWithValueModule();
+
+//     world.setRecord(namespace, name1, key1, abi.encode(2));
+//     world.setRecord(namespace, name1, key2, abi.encode(1));
+//     world.setRecord(namespace, name1, key3, abi.encode(1));
+//     // Query should return all keys in table1 with value 1
+//     QueryFragment[] memory fragments = new QueryFragment[](1);
+//     fragments[0] = QueryFragment(QueryType.HasValue, table1, abi.encode(1));
+//     // !gasreport HasValueQuery
+//     bytes32[][] memory keyTuples = query(world, fragments);
+
+//     assertTrue(keyTuples.length == 2);
+//     assertTrue(keyTuples[0][0] == key2[0]);
+//     assertTrue(keyTuples[1][0] == key3[0]);
+//   }
