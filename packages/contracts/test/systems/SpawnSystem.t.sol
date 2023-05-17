@@ -16,14 +16,9 @@ contract SpawnSystemTest is MudV2Test {
 
     // Check that the core was spawned correctly
     assertTrue(Core.get(world, coreEntity));
-    assertEq(CreationBlock.get(world, coreEntity), block.number);
     assertEq(ReadyBlock.get(world, coreEntity), block.number);
     assertEq(Energy.get(world, coreEntity), 0);
-    assertTrue(Portable.get(world, coreEntity));
-    assertEq(Avatar.get(world, coreEntity), 0);
-    assertEq(Name.get(world, coreEntity), "Player1");
-    assertEq(RealmId.get(world, coreEntity), 0);
-    assertEq(CarriedBy.get(world, coreEntity), 0);
+    assertEq(Points.get(world, coreEntity), 0);
   }
 
   function testRevertRespawn() public {

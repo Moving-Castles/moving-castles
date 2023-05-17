@@ -1,17 +1,23 @@
-import { mudConfig } from "@latticexyz/config";
+import { mudConfig } from "@latticexyz/world/register";
+import { resolveTableId } from "@latticexyz/config";
 
 export default mudConfig({
     deploysDirectory: "./deploys",
     namespace: "moving_castles",
     tables: {
-        Avatar: "uint256",
-        CarriedBy: "bytes32",
         Core: "bool",
-        CreationBlock: "uint256",
+        CarriedBy: "bytes32",
         Energy: "uint32",
-        Name: "string",
-        Portable: "bool",
+        Points: "uint32",
         ReadyBlock: "uint256",
-        RealmId: "uint256",
-    }
+        Health: "uint32",
+        Active: "bool"
+    },
+    modules: [
+        {
+            name: "KeysWithValueModule",
+            root: true,
+            args: [resolveTableId("CarriedBy")],
+        },
+    ],
 });

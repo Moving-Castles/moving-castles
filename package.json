@@ -5,21 +5,27 @@
     "type": "git",
     "url": "https://github.com/moving-castles/moving-castles.git"
   },
-  "workspaces": [
-    "packages/contracts",
-    "packages/client"
-  ],
   "scripts": {
-    "initialize": "yarn workspaces run initialize",
-    "dev": "run-pty % yarn dev:node % yarn dev:client % yarn dev:contracts",
-    "dev:client": "yarn workspace client run dev",
-    "dev:node": "yarn workspace contracts run devnode",
-    "dev:contracts": "yarn workspace contracts run dev",
-    "link:mud": "for i in node_modules/@latticexyz/*; do yarn link @latticexyz/$(basename $i); done",
-    "unlink:mud": "for i in node_modules/@latticexyz/*; do yarn unlink @latticexyz/$(basename $i); done && yarn install --force"
+    "build": "pnpm recursive run build",
+    "dev": "pnpm run initialize && pnpm recursive run dev",
+    "dev:client": "pnpm --filter 'client' run dev",
+    "dev:contracts": "pnpm --filter 'contracts' dev",
+    "dev:node": "mud devnode",
+    "initialize": "pnpm recursive run initialize",
+    "mud:up": "pnpm recursive exec mud set-version -v canary && pnpm install",
+    "prepare": "(forge --version || pnpm foundry:up)",
+    "test": "pnpm recursive run test"
   },
   "devDependencies": {
-    "run-pty": "^4.0.3"
+    "@latticexyz/cli": "2.0.0-alpha.1.125",
+    "@typescript-eslint/eslint-plugin": "5.59.6",
+    "@typescript-eslint/parser": "5.59.6",
+    "eslint": "8.40.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.4"
   },
-  "dependencies": {}
+  "engines": {
+    "node": "18.x",
+    "pnpm": "8.x"
+  }
 }

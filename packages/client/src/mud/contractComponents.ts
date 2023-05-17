@@ -5,12 +5,12 @@ import { defineComponent, Type as RecsType, World } from "@latticexyz/recs";
 
 export function defineContractComponents(world: World) {
   return {
-    Avatar: (() => {
-      const tableId = new TableId("moving_castles", "Avatar");
+    Core: (() => {
+      const tableId = new TableId("moving_castles", "Core");
       return defineComponent(
         world,
         {
-          value: RecsType.BigInt,
+          value: RecsType.Boolean,
         },
         {
           metadata: {
@@ -35,36 +35,6 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Core: (() => {
-      const tableId = new TableId("moving_castles", "Core");
-      return defineComponent(
-        world,
-        {
-          value: RecsType.Boolean,
-        },
-        {
-          metadata: {
-            contractId: tableId.toHexString(),
-            tableId: tableId.toString(),
-          },
-        }
-      );
-    })(),
-    CreationBlock: (() => {
-      const tableId = new TableId("moving_castles", "CreationBlock");
-      return defineComponent(
-        world,
-        {
-          value: RecsType.BigInt,
-        },
-        {
-          metadata: {
-            contractId: tableId.toHexString(),
-            tableId: tableId.toString(),
-          },
-        }
-      );
-    })(),
     Energy: (() => {
       const tableId = new TableId("moving_castles", "Energy");
       return defineComponent(
@@ -80,27 +50,12 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Name: (() => {
-      const tableId = new TableId("moving_castles", "Name");
+    Points: (() => {
+      const tableId = new TableId("moving_castles", "Points");
       return defineComponent(
         world,
         {
-          value: RecsType.String,
-        },
-        {
-          metadata: {
-            contractId: tableId.toHexString(),
-            tableId: tableId.toString(),
-          },
-        }
-      );
-    })(),
-    Portable: (() => {
-      const tableId = new TableId("moving_castles", "Portable");
-      return defineComponent(
-        world,
-        {
-          value: RecsType.Boolean,
+          value: RecsType.Number,
         },
         {
           metadata: {
@@ -125,12 +80,27 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    RealmId: (() => {
-      const tableId = new TableId("moving_castles", "RealmId");
+    Health: (() => {
+      const tableId = new TableId("moving_castles", "Health");
       return defineComponent(
         world,
         {
-          value: RecsType.BigInt,
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Active: (() => {
+      const tableId = new TableId("moving_castles", "Active");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Boolean,
         },
         {
           metadata: {

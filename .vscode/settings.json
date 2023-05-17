@@ -16,5 +16,6 @@
     "royalty-registry/=node_modules/@manifoldxzy/royalty-registry/contracts/",
     "std-contracts/=node_modules/@latticexyz/std-contracts/src/",
   ],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "solidity.monoRepoSupport": true
 }

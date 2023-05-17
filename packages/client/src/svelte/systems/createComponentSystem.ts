@@ -17,7 +17,10 @@ export function createComponentSystem(componentKey: string) {
         ? nextValue.value
         : nextValue;
 
-    const entityID = indexToID(update.entity);
+    console.log(update.entity)
+
+    // const entityID = indexToID(update.entity);
+    const entityID = update.entity;
     const propertyName = toCamelCase(componentKey);
 
     entities.update((value) => {

@@ -27,26 +27,19 @@ export type GameConfig = {
 export type Entity = {
   gameConfig?: GameConfig;
   core?: boolean;
-  avatar?: number;
-  name?: string;
-  creationBlock?: number;
   readyBlock?: number;
   energy?: number;
-  portable?: boolean;
   carriedBy?: string;
-  realmId?: number;
+  active?: boolean;
+  health?: number;
 };
 
 export type Core = {
   core: boolean;
-  avatar: number;
-  name: string;
-  creationBlock: number;
   readyBlock: number;
   energy: number;
-  portable: boolean;
+  points: number;
   carriedBy: string;
-  realmId: number;
 };
 
 // - - - -
@@ -77,7 +70,10 @@ export const cores = derived(entities, ($entities) => {
 
 // --- FUNCTIONS -----------------------------------------------------------------
 
-export const indexToID = (index: number) => get(network).world?.entities[index];
+export const indexToID = (index: number) => {
+  console.log('get(network)', get(network))
+  return get(network).world?.entities[index]
+}
 
 export const getCores = (address: string) =>
   Object.entries(get(entities)).filter(([id, ent]) => ent.core && ent.carriedBy === address);

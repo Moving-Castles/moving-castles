@@ -5,7 +5,10 @@ import { defineContractComponents } from "./contractComponents";
 import { world } from "./world";
 import { Contract, Signer, utils } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
-import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
+// import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
+import { IWorld__factory } from "contracts/types/ethers-contracts/factories/IWorld__factory";
+import { getTableIds } from "@latticexyz/utils";
+import storeConfig from "contracts/mud.config";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -17,10 +20,8 @@ export async function setup() {
     world,
     contractComponents,
     syncThread: "main",
-    fetchSystemCalls: true,
+    storeConfig
   });
-
-  result.startSync();
 
   // Request drip from faucet
   const signer = result.network.signer.get();
@@ -47,18 +48,30 @@ export async function setup() {
     setInterval(requestDrip, 20000);
   }
 
+  const provider = result.network.providers.get().json;
+  const signerOrProvider = signer ?? provider;
   // Create a World contract instance
-  const worldContract = IWorld__factory.connect(
-    networkConfig.worldAddress,
-    signer ?? result.network.providers.get().json
-  );
+  const worldContract = IWorld__factory.connect(networkConfig.worldAddress, signerOrProvider);
+
+  if (networkConfig.snapSync) {
+    const currentBlockNumber = await provider.getBlockNumber();
+    const tableRecords = await getSnapSyncRecords(
+      networkConfig.worldAddress,
+      getTableIds(storeConfig),
+      currentBlockNumber,
+      signerOrProvider
+    );
+
+    console.log(`Syncing ${tableRecords.length} records`);
+    result.startSync(tableRecords, currentBlockNumber);
+  } else {
+    result.startSync();
+  }
 
   // Create a fast tx executor
   const fastTxExecutor =
     signer?.provider instanceof JsonRpcProvider
-      ? await createFastTxExecutor(
-        signer as Signer & { provider: JsonRpcProvider }
-      )
+      ? await createFastTxExecutor(signer as Signer & { provider: JsonRpcProvider })
       : null;
 
   // TODO: infer this from fastTxExecute signature?
@@ -70,9 +83,7 @@ export async function setup() {
     }
   ) => Promise<ReturnType<C[F]>>;
 
-  function bindFastTxExecute<C extends Contract>(
-    contract: C
-  ): BoundFastTxExecuteFn<C> {
+  function bindFastTxExecute<C extends Contract>(contract: C): BoundFastTxExecuteFn<C> {
     return async function (...args) {
       if (!fastTxExecutor) {
         throw new Error("no signer");
