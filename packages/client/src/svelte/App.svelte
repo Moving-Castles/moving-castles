@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { mount as mountDevTools } from "@latticexyz/dev-tools";
   import { onMount } from "svelte"
   import { setup } from "../mud/setup"
   import { createComponentSystem, createLoadingStateSystem } from "./systems"
@@ -21,7 +22,7 @@
 
   onMount(async () => {
     // App mounted. Start initializing...
-    initStaticContent()
+    // initStaticContent()
     const mudLayer = await setup()
     network.set(mudLayer)
     initActionSequencer()
@@ -37,6 +38,8 @@
 
     // For convenience, we store the block number in a svelte store
     mudLayer.network.blockNumber$.subscribe((x: number) => blockNumber.set(x))
+
+    mountDevTools();
   })
 </script>
 

@@ -7,17 +7,16 @@
   },
   "scripts": {
     "build": "pnpm recursive run build",
-    "dev": "pnpm run initialize && pnpm recursive run dev",
+    "dev": "concurrently \"cd packages/contracts && pnpm run dev\" \"cd packages/client && pnpm run dev\"",
     "dev:client": "pnpm --filter 'client' run dev",
     "dev:contracts": "pnpm --filter 'contracts' dev",
-    "dev:node": "mud devnode",
     "initialize": "pnpm recursive run initialize",
     "mud:up": "pnpm recursive exec mud set-version -v canary && pnpm install",
     "prepare": "(forge --version || pnpm foundry:up)",
     "test": "pnpm recursive run test"
   },
   "devDependencies": {
-    "@latticexyz/cli": "2.0.0-alpha.1.125",
+    "@latticexyz/cli": "2.0.0-alpha.1.138",
     "@typescript-eslint/eslint-plugin": "5.59.6",
     "@typescript-eslint/parser": "5.59.6",
     "eslint": "8.40.0",

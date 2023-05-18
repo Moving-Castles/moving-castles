@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17;
 import { System } from "@latticexyz/world/src/System.sol";
-import { Core, Points, ReadyBlock, Energy, CarriedBy } from "../codegen/Tables.sol";
+import { Core, Points, ReadyBlock, Energy } from "../codegen/Tables.sol";
 import { LibUtils } from "../libraries/Libraries.sol";
 
 contract SpawnSystem is System {
