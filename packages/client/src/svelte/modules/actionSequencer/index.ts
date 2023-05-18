@@ -16,10 +16,7 @@ import { toastMessage } from "../../modules/toast"
 
 export enum WorldFunctions {
   Spawn = "moving_castles_SpawnSystem_spawn",
-  Join = "moving_castles_JoinSystem_join",
-  Start = "moving_castles_MatchSystem_start",
-  End = "moving_castles_MatchSystem_end",
-  Attack = "moving_castles_AttackSystem_attack",
+  Count = "moving_castles_CountSystem_count",
 }
 
 export enum SequencerState {

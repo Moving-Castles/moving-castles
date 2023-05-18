@@ -6,126 +6,43 @@
   import { playerAddress } from "../../modules/player"
   import OffChain from "../OffChain/OffChain.svelte"
 
-  const BODY_ONE =
-    "0x0000000000000000000000000000000000000000000000000000000000000001"
-  const BODY_TWO =
-    "0x0000000000000000000000000000000000000000000000000000000000000002"
-
-  let ready = false
-  $: {
-    ready =
-      Object.values($entities).find(entity => entity.carriedBy === BODY_ONE) &&
-      Object.values($entities).find(entity => entity.carriedBy === BODY_TWO)
+  function count(val) {
+    $network.worldSend(WorldFunctions.Count, [val])
   }
 
-  let active = false
-  $: {
-    active = $entities["0x0666"]?.active
-  }
-
-  let done = false
-  $: {
-    done = $entities["0x01"].health == 0 || $entities["0x02"].health == 0
-  }
-
-  function joinBodyOne() {
-    $network.worldSend(WorldFunctions.Join, [1])
-  }
-
-  function joinBodyTwo() {
-    $network.worldSend(WorldFunctions.Join, [2])
-  }
-
-  function startMatch() {
-    $network.worldSend(WorldFunctions.Start, [])
-  }
-
-  function endMatch() {
-    $network.worldSend(WorldFunctions.End, [])
-  }
-
-  function attack() {
-    $network.worldSend(WorldFunctions.Attack, [])
+  let myArray: number[] = []
+  for (let i = 1; i <= 20; i++) {
+    myArray.push(i)
   }
 </script>
 
-<div class="void" class:active={$entities["0x0666"]?.active}>
-  <div>
-    <div class="pane left">
-      <div>
-        <button on:click={joinBodyOne}>BODY 1</button>
-        {#if active}
-          <div>
-            {$entities["0x01"]?.health}
-          </div>
-        {/if}
-        {#each Object.entries($cores) as [key, value]}
-          {#if value.carriedBy === BODY_ONE}
-            <div class="core">
-              <div class="core__name">
-                {key}
-                {#if key === $playerAddress}(YOU){/if}
-              </div>
-            </div>
-          {/if}
-        {/each}
+<div class="void">
+  {#each myArray as button}
+    <button
+      on:click={() => {
+        count(button)
+      }}
+      class:counted={$entities["0x060d"]?.counter >= button}
+    >
+      {button}
+    </button>
+  {/each}
+</div>
+
+<div class="info">
+  <hr />
+  <div>ON CHAIN CORES:</div>
+  {#each Object.entries($cores) as [key, value]}
+    <div class="core">
+      <div class="core__name">
+        {key}
+        {#if key === $playerAddress}(YOU){/if}
       </div>
     </div>
-
-    <div class="pane right">
-      <div>
-        <button on:click={joinBodyTwo}>BODY 2</button>
-        {#if active}
-          <div>
-            {$entities["0x02"]?.health}
-          </div>
-        {/if}
-        {#each Object.entries($cores) as [key, value]}
-          {#if value.carriedBy === BODY_TWO}
-            <div class="core">
-              <div class="core__name">
-                {key}
-                {#if key === $playerAddress}(YOU){/if}
-              </div>
-            </div>
-          {/if}
-        {/each}
-      </div>
-    </div>
-
-    <div class="mid">
-      {#if active}
-        MATCH
-      {:else}
-        LOBBY
-      {/if}
-      {#if ready}
-        {#if !active}
-          <button on:click={startMatch}>START</button>
-        {:else if done}
-          <button on:click={endMatch}>END</button>
-        {/if}
-      {/if}
-      {#if active}
-        <button on:click={attack}>ATTACK</button>
-      {/if}
-    </div>
-    <div class="info">
-      <hr />
-      <div>ON CHAIN CORES:</div>
-      {#each Object.entries($cores) as [key, value]}
-        <div class="core">
-          <div class="core__name">
-            {key}
-            {#if key === $playerAddress}(YOU){/if}
-          </div>
-        </div>
-      {/each}
-      <hr />
-      <OffChain />
-      <hr />
-    </div>
-  </div>
+  {/each}
+  <hr />
+  <!-- <OffChain /> -->
+  <hr />
 </div>
 
 <style lang="scss">
@@ -149,6 +66,12 @@
   button {
     font-size: 32px;
     display: block;
+    margin: 10px;
+    cursor: pointer;
+
+    &.counted {
+      background: red;
+    }
   }
 
   .pane {
